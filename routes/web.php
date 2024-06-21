@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailVerificationController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/email/verify-new-email/{token}', [EmailVerificationController::class, 'verifyNewEmail'])->name('verify.new.email');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

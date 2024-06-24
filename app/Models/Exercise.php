@@ -5,17 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Muscle extends Model
+
+class Exercise extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
         'lang',
+        'image',
+        'muscle_id',
     ];
 
-    public function exercises()
+    public function muscle()
     {
-        return $this->hasMany(Exercise::class);
+        return $this->belongsTo(Muscle::class);
     }
 }

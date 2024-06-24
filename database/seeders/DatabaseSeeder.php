@@ -23,5 +23,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MuscleSeeder::class,
         ]);
+
+        $this->call([
+            ExerciseSeeder::class,
+        ]);
     }
 }

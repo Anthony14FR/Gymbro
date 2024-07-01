@@ -16,6 +16,6 @@ class Muscle extends Model
 
     public function exercises()
     {
-        return $this->hasMany(Exercise::class);
+        return $this->belongsToMany(Exercise::class, 'exercise_muscle');
     }
 }

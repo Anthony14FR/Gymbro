@@ -13,45 +13,38 @@ class MuscleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Muscles en francais
         $musclesFR = [
             'Abdominaux',
+            'Abdominaux obliques',
             'Adducteurs',
             'Biceps',
-            'Bras',
-            'Carrés des lombes',
-            'Cuisses',
             'Deltoides',
             'Dos',
-            'Erecteurs du rachis',
             'Fessiers',
             'Ischio-jambiers',
             'Mollets',
-            'Obliques',
             'Pectoraux',
             'Quadriceps',
-            'Trapezes',
+            'Trapèzes',
             'Triceps',
+            'Arrière Épaule',
         ];
 
         $musclesEN = [
             'Abs',
+            'Abs obliques',
             'Adductors',
             'Biceps',
-            'Arms',
-            'Quadratus lumborum',
-            'Thighs',
             'Deltoids',
             'Back',
-            'Erector spinae',
             'Glutes',
             'Hamstrings',
             'Calves',
-            'Obliques',
             'Pectorals',
             'Quadriceps',
             'Trapezius',
             'Triceps',
+            'Rear Deltoid',
         ];
 
         foreach ($musclesFR as $muscle) {

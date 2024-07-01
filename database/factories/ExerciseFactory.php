@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Muscle;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Exercise>
  */
 class ExerciseFactory extends Factory
 {
@@ -21,7 +21,14 @@ class ExerciseFactory extends Factory
             'name' => $this->faker->unique()->word(),
             'lang' => 'fr',
             'image' => $this->faker->imageUrl(),
-            'muscle_id' => Muscle::factory(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Exercise $exercise) {
+            $muscles = Muscle::inRandomOrder()->take(2)->pluck('id');
+            $exercise->muscles()->attach($muscles);
+        });
     }
 }

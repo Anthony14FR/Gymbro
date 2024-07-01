@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Exercise extends Model
 {
     use HasFactory;
@@ -14,11 +13,10 @@ class Exercise extends Model
         'name',
         'lang',
         'image',
-        'muscle_id',
     ];
 
-    public function muscle()
+    public function muscles()
     {
-        return $this->belongsTo(Muscle::class);
+        return $this->belongsToMany(Muscle::class, 'exercise_muscle');
     }
 }

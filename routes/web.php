@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\ProgramController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,4 +30,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/exercises', [ExerciseController::class, 'index']);
 });
-require __DIR__.'/auth.php';
+
+// Programs
+Route::middleware('auth')->group(function () {
+    Route::resource('programs', ProgramController::class);
+    Route::post('programs/{program}/exercises', [ProgramController::class, 'addExercise']);
+    Route::delete('programs/{program}/exercises/{exercise}', [ProgramController::class, 'removeExercise']);
+    Route::put('programs/{program}', [ProgramController::class, 'update']);
+    Route::post('programs/{program}/save', [ProgramController::class, 'saveProgram']);
+});
+require __DIR__ . '/auth.php';

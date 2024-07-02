@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-3xl font-bold mb-4 container mx-auto">{{ $program ? 'Edit Program' : 'Create Program' }}</h1>
+    <h1 class="text-3xl font-bold mb-4 container mx-auto">{{ $program->exists ? 'Edit Program' : 'Create Program' }}</h1>
     <form id="programForm" class="space-y-4">
         @csrf
-        @method($program ? 'PUT' : 'POST')
+        @if($program->exists)
+            @method('PUT')
+        @else
+            @method('POST')
+        @endif
         <div class="mb-4">
             <label for="name" class="block text-lg font-medium">Name</label>
             <input type="text" name="name" id="name" class="input input-bordered w-full" value="{{ $program->name ?? '' }}" required>
@@ -14,7 +18,7 @@
             <textarea name="description" id="description" class="textarea textarea-bordered w-full" required>{{ $program->description ?? '' }}</textarea>
         </div>
     </form>
-    <div id="programArea" class="{{ $program ? '' : 'hidden' }}">
+    <div id="programArea" class="{{ $program->exists ? '' : 'hidden' }}">
         <div class="flex justify-between items-center">
             <div>
                 <div class="flex">
@@ -44,27 +48,28 @@
                                     </div>
                                     <table class="table-auto w-full">
                                         <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Exercise</th>
-                                                <th>Repetitions</th>
-                                                <th>Break (s)</th>
-                                                <th>Weight (kg)</th>
-                                                <th>Action</th>
-                                            </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Exercise</th>
+                                            <th>Repetitions</th>
+                                            <th>Break (s)</th>
+                                            <th>Weight (kg)</th>
+                                            <th>Action</th>
+                                        </tr>
                                         </thead>
                                         <tbody id="exercise-list-{{ $dayIndex }}">
-                                            @foreach ($exercises as $index => $exercise)
-                                                <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $exercise->name }}</td>
-                                                    <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">
-                                                    <td><input type="number" name="repetitions" placeholder="Rep" class="input input-bordered w-full" value="{{ $exercise->pivot.rep }}" onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})"></td>
-                                                    <td><input type="number" name="break" placeholder="Break" class="input input-bordered w-full" value="{{ $exercise->pivot.break }}" onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})"></td>
-                                                    <td><input type="number" name="weight" placeholder="Weight" class="input input-bordered w-full" value="{{ $exercise->pivot.weight }}" onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})"></td>
-                                                    <td><button type="button" class="btn btn-circle btn-outline" onclick="removeExercise(this, {{ $exercise->id }}, {{ $dayIndex }})">X</button></td>
-                                                </tr>
-                                            @endforeach
+                                        @foreach ($exercises as $index => $exercise)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $exercise->name }}</td>
+                                                <input type="hidden" name="exercise_program_id" value="{{ $exercise->pivot->id }}">
+                                                <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">
+                                                <td><input type="number" name="rep" placeholder="Rep" class="input input-bordered w-full" value="{{ $exercise->pivot->rep }}" onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})"></td>
+                                                <td><input type="number" name="break_time" placeholder="Break" class="input input-bordered w-full" value="{{ $exercise->pivot->break }}" onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})"></td>
+                                                <td><input type="number" name="weight" placeholder="Weight" class="input input-bordered w-full" value="{{ $exercise->pivot->weight }}" onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})"></td>
+                                                <td><button type="button" class="btn btn-circle btn-outline" onclick="removeExercise(this, '{{ $exercise->pivot->id }}')">X</button></td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -88,7 +93,7 @@
 
         function debounceUpdateProgramDetails() {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(updateProgramDetails, 1000); // Delay of 1 second
+            debounceTimer = setTimeout(updateProgramDetails, 1000);
         }
 
         function updateProgramDetails() {
@@ -103,15 +108,15 @@
                 },
                 body: JSON.stringify({ name, description })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error:', data.error);
-                } else {
-                    console.log('Program details updated:', data);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        console.log('Program details updated:', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         function addExercise(exerciseId, exerciseName) {
@@ -129,11 +134,12 @@
             exerciseDiv.innerHTML = `
                 <td>${exerciseCount}</td>
                 <td>${exerciseName}</td>
+                <input type="hidden" name="exercise_program_id" value="">
                 <input type="hidden" name="exercise_id" value="${exerciseId}">
-                <td><input type="number" name="repetitions" placeholder="Rep" class="input input-bordered w-full" onchange="saveExercise(this, ${exerciseId}, ${dayIndex}, ${exerciseCount})"></td>
-                <td><input type="number" name="break" placeholder="Break" class="input input-bordered w-full" onchange="saveExercise(this, ${exerciseId}, ${dayIndex}, ${exerciseCount})"></td>
+                <td><input type="number" name="rep" placeholder="Rep" class="input input-bordered w-full" onchange="saveExercise(this, ${exerciseId}, ${dayIndex}, ${exerciseCount})"></td>
+                <td><input type="number" name="break_time" placeholder="Break" class="input input-bordered w-full" onchange="saveExercise(this, ${exerciseId}, ${dayIndex}, ${exerciseCount})"></td>
                 <td><input type="number" name="weight" placeholder="Weight" class="input input-bordered w-full" onchange="saveExercise(this, ${exerciseId}, ${dayIndex}, ${exerciseCount})"></td>
-                <td><button type="button" class="btn btn-circle btn-outline" onclick="removeExercise(this, ${exerciseId}, ${dayIndex})">X</button></td>
+                <td><button type="button" class="btn btn-circle btn-outline" onclick="removeExercise(this, '')">X</button></td>
             `;
 
             const dayContainer = document.getElementById(`exercise-list-${dayIndex}`);
@@ -147,51 +153,59 @@
 
         function saveExercise(element, exerciseId, dayIndex, order) {
             const row = element.closest('tr');
-            const repetitions = row.querySelector('input[name="repetitions"]').value || 0;
-            const breakTime = row.querySelector('input[name="break"]').value || 0;
+            const rep = row.querySelector('input[name="rep"]').value || 0;
+            const breakTime = row.querySelector('input[name="break_time"]').value || 0;
             const weight = row.querySelector('input[name="weight"]').value || 0;
+            const exerciseProgramId = row.querySelector('input[name="exercise_program_id"]').value;
 
-            fetch(`/programs/${programId}/exercises`, {
-                method: 'POST',
+            const url = exerciseProgramId ? `/programs/${programId}/exercises/${exerciseProgramId}` : `/programs/${programId}/exercises`;
+            const method = exerciseProgramId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ day: dayIndex, exercise_id: exerciseId, order: order, repetitions, break: breakTime, weight })
+                body: JSON.stringify({ day: dayIndex, exercise_id: exerciseId, order: order, rep: rep, break_time: breakTime, weight: weight })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error:', data.error);
-                } else {
-                    console.log('Success:', data);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        console.log('Success:', data);
+                        if (!exerciseProgramId) {
+                            row.querySelector('input[name="exercise_program_id"]').value = data.id;
+                            row.querySelector('button').setAttribute('onclick', `removeExercise(this, ${data.id})`);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
 
-        function removeExercise(button, exerciseId, dayIndex) {
+
+
+        function removeExercise(button, exerciseProgramId) {
             const row = button.closest('tr');
             row.remove();
-            exerciseCounts[dayIndex]--;
-            updateExerciseOrder(dayIndex);
 
-            fetch(`/programs/${programId}/exercises/${exerciseId}`, {
+            fetch(`/programs/${programId}/exercises/${exerciseProgramId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error:', data.error);
-                } else {
-                    console.log('Deleted:', data);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        console.log('Deleted:', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         function addDay() {
@@ -245,15 +259,15 @@
 
                 rows.forEach(row => {
                     const exerciseId = row.querySelector('input[name="exercise_id"]').value;
-                    const repetitions = row.querySelector('input[name="repetitions"]').value || 0;
-                    const breakTime = row.querySelector('input[name="break"]').value || 0;
+                    const rep = row.querySelector('input[name="rep"]').value || 0;
+                    const breakTime = row.querySelector('input[name="break_time"]').value || 0;
                     const weight = row.querySelector('input[name="weight"]').value || 0;
 
                     dayData.exercises.push({
                         exercise_id: exerciseId,
-                        repetitions,
-                        break: breakTime,
-                        weight
+                        rep: rep,
+                        break_time: breakTime,
+                        weight: weight
                     });
                 });
 
@@ -268,51 +282,20 @@
                 },
                 body: JSON.stringify(programData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error:', data.error);
-                } else {
-                    alert('Program saved!');
-                    console.log('Program saved:', data);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        alert('Program saved!');
+                        console.log('Program saved:', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize the program form for editing
             document.getElementById('programArea').classList.remove('hidden');
-
-            // Load existing days and exercises
-            const days = @json($days);
-            Object.keys(days).forEach(day => {
-                dayCount = parseInt(day);
-                addDay();
-
-                days[day].forEach((exercise, index) => {
-                    const exerciseDiv = document.createElement('tr');
-                    exerciseCounts[day] = (exerciseCounts[day] || 0) + 1;
-                    const exerciseCount = exerciseCounts[day];
-
-                    exerciseDiv.innerHTML = `
-                        <td>${exerciseCount}</td>
-                        <td>${exercise.name}</td>
-                        <input type="hidden" name="exercise_id" value="${exercise.id}">
-                        <td><input type="number" name="repetitions" placeholder="Rep" class="input input-bordered w-full" value="${exercise.pivot.rep}" onchange="saveExercise(this, ${exercise.id}, ${day}, ${exerciseCount})"></td>
-                        <td><input type="number" name="break" placeholder="Break" class="input input-bordered w-full" value="${exercise.pivot.break}" onchange="saveExercise(this, ${exercise.id}, ${day}, ${exerciseCount})"></td>
-                        <td><input type="number" name="weight" placeholder="Weight" class="input input-bordered w-full" value="${exercise.pivot.weight}" onchange="saveExercise(this, ${exercise.id}, ${day}, ${exerciseCount})"></td>
-                        <td><button type="button" class="btn btn-circle btn-outline" onclick="removeExercise(this, ${exercise.id}, ${day})">X</button></td>
-                    `;
-
-                    const dayContainer = document.getElementById(`exercise-list-${day}`);
-                    if (dayContainer) {
-                        dayContainer.appendChild(exerciseDiv);
-                    } else {
-                        console.error('Day container not found for day:', day);
-                    }
-                });
-            });
         });
     </script>
 @endsection

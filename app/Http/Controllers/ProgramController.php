@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Program;
@@ -24,13 +25,20 @@ class ProgramController extends Controller
 
     public function edit($id = null)
     {
-        $muscles = Muscle::with('exercises')->get();
-        $program = $id ? Program::with('exercises')->find($id) : null;
-        $days = [];
-
-        if ($program) {
-            $days = $program->exercises->sortBy('pivot.order')->groupBy('pivot.day');
+        if (is_null($id)) {
+            $program = Program::create([
+                'name' => 'Nom du programme',
+                'description' => 'Description du programme',
+                'user_id' => Auth::id(),
+            ]);
+            return redirect()->route('programs.edit', ['id' => $program->id]);
         }
+
+        $muscles = Muscle::with('exercises')->get();
+        $program = Program::with(['exercises' => function($query) {
+            $query->withPivot('id', 'rep', 'break', 'weight', 'order', 'day');
+        }])->findOrFail($id);
+        $days = $program->exercises->sortBy('pivot.order')->groupBy('pivot.day');
 
         $exerciseCounts = [];
         foreach ($days as $day => $exercises) {
@@ -39,6 +47,8 @@ class ProgramController extends Controller
 
         return view('programs.edit', compact('muscles', 'program', 'days', 'exerciseCounts'));
     }
+
+
 
     public function store(Request $request)
     {
@@ -65,51 +75,65 @@ class ProgramController extends Controller
         }
     }
 
+    public function updateExercise(Request $request, $programId, $exerciseProgramId)
+    {
+        try {
+            DB::table('exercises_programs')
+                ->where('id', $exerciseProgramId)
+                ->update([
+                    'order' => $request->order,
+                    'rep' => $request->rep,
+                    'break' => $request->break_time,
+                    'weight' => $request->weight,
+                ]);
+
+            return response()->json(['success' => true, 'id' => $exerciseProgramId]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function addExercise(Request $request, Program $program)
     {
         try {
-            $existingRecord = DB::table('exercises_programs')
+            $order = $program->exercises()->wherePivot('day', $request->day)->count() + 1;
+            $program->exercises()->attach($request->exercise_id, [
+                'day' => $request->day,
+                'order' => $order,
+                'rep' => $request->rep,
+                'break' => $request->break_time,
+                'weight' => $request->weight,
+            ]);
+
+            $exerciseProgramId = DB::table('exercises_programs')
                 ->where('exercise_id', $request->exercise_id)
                 ->where('program_id', $program->id)
                 ->where('day', $request->day)
-                ->first();
+                ->where('order', $order)
+                ->latest('id')
+                ->value('id');
 
-            if ($existingRecord) {
-                DB::table('exercises_programs')
-                    ->where('id', $existingRecord->id)
-                    ->update([
-                        'order' => $request->order,
-                        'rep' => $request->repetitions,
-                        'break' => $request->break,
-                        'weight' => $request->weight,
-                    ]);
-            } else {
-                $order = $program->exercises()->wherePivot('day', $request->day)->count() + 1;
-                $program->exercises()->attach($request->exercise_id, [
-                    'day' => $request->day,
-                    'order' => $order,
-                    'rep' => $request->repetitions,
-                    'break' => $request->break,
-                    'weight' => $request->weight,
-                ]);
-            }
-
-            return response()->json(['success' => true]);
+            return response()->json(['success' => true, 'id' => $exerciseProgramId]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function removeExercise(Request $request, Program $program, Exercise $exercise)
+
+
+    public function removeExercise($programId, $exerciseProgramId)
     {
         try {
-            $program->exercises()->detach($exercise->id);
+            DB::table('exercises_programs')->where('id', $exerciseProgramId)->delete();
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+
+
 
     public function saveProgram(Request $request, Program $program)
     {
@@ -126,8 +150,8 @@ class ProgramController extends Controller
                     $program->exercises()->attach($exercise['exercise_id'], [
                         'day' => $day['day'],
                         'order' => $exercise['order'],
-                        'rep' => $exercise['repetitions'],
-                        'break' => $exercise['break'],
+                        'rep' => $exercise['rep'],
+                        'break' => $exercise['break_time'],
                         'weight' => $exercise['weight'],
                     ]);
                 }
@@ -144,6 +168,6 @@ class ProgramController extends Controller
         $program->delete();
 
         return redirect()->route('programs.index')
-                         ->with('success', 'Program deleted successfully.');
+            ->with('success', 'Program deleted successfully.');
     }
 }

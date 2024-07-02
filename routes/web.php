@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/programs/{program}/exercises', [ProgramController::class, 'addExercise']);
     Route::delete('/programs/{program}/exercises/{exerciseProgram}', [ProgramController::class, 'removeExercise'])->name('programs.removeExercise');
     Route::post('/programs/{program}/save', [ProgramController::class, 'saveProgram']);
+    Route::put('/programs/{program}/toggle-status', [ProgramController::class, 'toggleStatus']);
     Route::get('/programs/{id}/export-pdf', [ProgramController::class, 'exportPdf'])->name('programs.exportPdf');
     Route::resource('programs', ProgramController::class)->except(['edit', 'update', 'store']);
 });

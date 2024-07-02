@@ -14,11 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            MuscleSeeder::class,
-            ExerciseSeeder::class,
-        ]);
-
         User::create([
             'username' => 'admin',
             'email' => 'admin@orus.com',
@@ -26,5 +21,21 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
             'remember_token' => Str::random(10),
         ]);
+
+        User::create([
+            'username' => 'user',
+            'email' => 'user@orus.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('user'),
+            'remember_token' => Str::random(10),
+        ]);
+
+        $this->call([
+            MuscleSeeder::class,
+            ExerciseSeeder::class,
+            ProgramSeeder::class,
+        ]);
+
+
     }
 }

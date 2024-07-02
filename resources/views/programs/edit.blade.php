@@ -20,6 +20,10 @@
         <div class="text-center">
             <a href="{{ route('programs.index') }}" class="btn btn-outline">Save</a>
         </div>
+        <div class="mb-4">
+            <label for="status" class="block text-lg font-medium">Public</label>
+            <input type="checkbox" name="status" id="status" class="toggle toggle-success" {{ $program->status == 1 ? 'checked' : '' }} onchange="toggleStatus()">
+        </div>
         <br>
     </form>
     <div id="programArea" class="{{ $program->exists ? '' : 'hidden' }}">
@@ -252,5 +256,28 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('programArea').classList.remove('hidden');
         });
+
+        function toggleStatus() {
+            const status = document.getElementById('status').checked ? 1 : 0;
+
+            fetch(`/programs/${programId}/toggle-status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ status: status })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        console.log('Status updated:', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
     </script>
 @endsection

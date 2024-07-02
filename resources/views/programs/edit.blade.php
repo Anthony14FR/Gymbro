@@ -17,6 +17,10 @@
             <label for="description" class="block text-lg font-medium">Description</label>
             <textarea name="description" id="description" class="textarea textarea-bordered w-full" required>{{ $program->description ?? '' }}</textarea>
         </div>
+        <div class="text-center">
+            <a href="{{ route('programs.index') }}" class="btn btn-outline">Save</a>
+        </div>
+        <br>
     </form>
     <div id="programArea" class="{{ $program->exists ? '' : 'hidden' }}">
         <div class="flex justify-between items-center">
@@ -78,7 +82,6 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="publishProgram()">Publish</button>
         </div>
     </div>
 
@@ -244,54 +247,6 @@
                 const exerciseId = row.querySelector('input[name="exercise_id"]').value;
                 saveExercise(row, exerciseId, dayIndex, index + 1);
             });
-        }
-
-        function publishProgram() {
-            const programData = {
-                name: document.getElementById('name').value,
-                description: document.getElementById('description').value,
-                days: []
-            };
-
-            for (let i = 1; i <= dayCount; i++) {
-                const dayData = { day: i, exercises: [] };
-                const rows = document.querySelectorAll(`#exercise-list-${i} tr`);
-
-                rows.forEach(row => {
-                    const exerciseId = row.querySelector('input[name="exercise_id"]').value;
-                    const rep = row.querySelector('input[name="rep"]').value || 0;
-                    const breakTime = row.querySelector('input[name="break_time"]').value || 0;
-                    const weight = row.querySelector('input[name="weight"]').value || 0;
-
-                    dayData.exercises.push({
-                        exercise_id: exerciseId,
-                        rep: rep,
-                        break_time: breakTime,
-                        weight: weight
-                    });
-                });
-
-                programData.days.push(dayData);
-            }
-
-            fetch(`/programs/${programId}/save`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify(programData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.error('Error:', data.error);
-                    } else {
-                        alert('Program saved!');
-                        console.log('Program saved:', data);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
         }
 
         document.addEventListener('DOMContentLoaded', () => {

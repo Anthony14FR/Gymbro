@@ -21,9 +21,6 @@ class ProgramController extends Controller
         return view('programs.index', compact('myPrograms', 'communityPrograms', 'gymbroPrograms'));
     }
 
-
-
-
     public function show($id)
     {
         $program = Program::findOrFail($id);
@@ -45,8 +42,12 @@ class ProgramController extends Controller
         $program = Program::with(['exercises' => function($query) {
             $query->withPivot('id', 'rep', 'break', 'weight', 'order', 'day');
         }])->findOrFail($id);
-        $days = $program->exercises->sortBy('pivot.order')->groupBy('pivot.day');
 
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
+        $days = $program->exercises->sortBy('pivot.order')->groupBy('pivot.day');
         $exerciseCounts = [];
         foreach ($days as $day => $exercises) {
             $exerciseCounts[$day] = count($exercises);
@@ -54,8 +55,6 @@ class ProgramController extends Controller
 
         return view('programs.edit', compact('muscles', 'program', 'days', 'exerciseCounts'));
     }
-
-
 
     public function store(Request $request)
     {
@@ -70,6 +69,10 @@ class ProgramController extends Controller
 
     public function update(Request $request, Program $program)
     {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         try {
             $program->update([
                 'name' => $request->name,
@@ -84,6 +87,12 @@ class ProgramController extends Controller
 
     public function updateExercise(Request $request, $programId, $exerciseProgramId)
     {
+        $program = Program::findOrFail($programId);
+
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         try {
             DB::table('exercises_programs')
                 ->where('id', $exerciseProgramId)
@@ -102,6 +111,10 @@ class ProgramController extends Controller
 
     public function addExercise(Request $request, Program $program)
     {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         try {
             $order = $program->exercises()->wherePivot('day', $request->day)->count() + 1;
             $program->exercises()->attach($request->exercise_id, [
@@ -126,10 +139,14 @@ class ProgramController extends Controller
         }
     }
 
-
-
     public function removeExercise($programId, $exerciseProgramId)
     {
+        $program = Program::findOrFail($programId);
+
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         try {
             DB::table('exercises_programs')->where('id', $exerciseProgramId)->delete();
 
@@ -139,11 +156,12 @@ class ProgramController extends Controller
         }
     }
 
-
-
-
     public function saveProgram(Request $request, Program $program)
     {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         try {
             $program->update([
                 'name' => $request->name,
@@ -172,6 +190,10 @@ class ProgramController extends Controller
 
     public function toggleStatus(Request $request, Program $program)
     {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         try {
             $program->update(['status' => $request->status]);
 
@@ -183,6 +205,10 @@ class ProgramController extends Controller
 
     public function destroy(Program $program)
     {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
         $program->delete();
 
         return redirect()->route('programs.index')

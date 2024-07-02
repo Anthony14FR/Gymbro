@@ -8,6 +8,7 @@ use App\Models\Muscle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class ProgramController extends Controller
 {
@@ -172,5 +173,17 @@ class ProgramController extends Controller
 
         return redirect()->route('programs.index')
             ->with('success', 'Program deleted successfully.');
+    }
+
+    public function exportPdf($id)
+    {
+        $program = Program::with(['exercises' => function($query) {
+            $query->withPivot('id', 'rep', 'break', 'weight', 'order', 'day');
+        }])->findOrFail($id);
+
+        $days = $program->exercises->sortBy('pivot.order')->groupBy('pivot.day');
+        $pdfName = $program->name . '.pdf';
+        $pdf = PDF::loadView('programs.pdf', compact('program', 'days'));
+        return $pdf->download($pdfName);
     }
 }

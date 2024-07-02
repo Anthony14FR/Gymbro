@@ -4,17 +4,20 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Traits\HasRoles;
 
 class DatabaseSeeder extends Seeder
 {
+    use HasRoles;
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        User::create([
+        $admin = User::create([
             'username' => 'admin',
             'email' => 'admin@orus.com',
             'email_verified_at' => now(),
@@ -22,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        User::create([
+        $user = User::create([
             'username' => 'user',
             'email' => 'user@orus.com',
             'email_verified_at' => now(),
@@ -34,8 +37,10 @@ class DatabaseSeeder extends Seeder
             MuscleSeeder::class,
             ExerciseSeeder::class,
             ProgramSeeder::class,
+            RoleSeeder::class,
         ]);
 
-
+        $admin->assignRole('admin');
+        $admin->update(['role' => 'admin']);
     }
 }

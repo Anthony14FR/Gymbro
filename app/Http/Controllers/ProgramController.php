@@ -13,9 +13,12 @@ class ProgramController extends Controller
 {
     public function index()
     {
-        $programs = Program::where('user_id', Auth::id())->get();
-        return view('programs.index', compact('programs'));
+        $programs = Program::where('user_id', Auth::id())->with(['exercises', 'exercises.muscles'])->get();
+        $muscles = Muscle::all();
+        return view('programs.index', compact('programs', 'muscles'));
     }
+
+
 
     public function show($id)
     {

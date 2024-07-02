@@ -6,6 +6,7 @@
             <h1 class="text-5xl font-extrabold text-blue-600 mb-4 md:mb-0">{{ $program->name }}</h1>
             <div class="flex space-x-4">
                 <a href="{{ route('programs.edit', $program->id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ route('programs.exportPdf', $program->id) }}" class="btn btn-secondary">Export PDF</a>
                 <form action="{{ route('programs.destroy', $program) }}" method="POST" class="inline-block">
                     @csrf
                     @method('DELETE')

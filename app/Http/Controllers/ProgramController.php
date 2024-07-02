@@ -13,10 +13,14 @@ class ProgramController extends Controller
 {
     public function index()
     {
-        $programs = Program::where('user_id', Auth::id())->with(['exercises', 'exercises.muscles'])->get();
-        $muscles = Muscle::all();
-        return view('programs.index', compact('programs', 'muscles'));
+        $user_id = Auth::id();
+        $myPrograms = Program::where('user_id', $user_id)->with(['exercises', 'exercises.muscles'])->get();
+        $communityPrograms = Program::where('status', 1)->where('user_id', '!=', $user_id)->with(['exercises', 'exercises.muscles'])->get();
+        $gymbroPrograms = Program::where('status', 1)->where('user_id', 1)->with(['exercises', 'exercises.muscles'])->get();
+
+        return view('programs.index', compact('myPrograms', 'communityPrograms', 'gymbroPrograms'));
     }
+
 
 
 
@@ -159,6 +163,17 @@ class ProgramController extends Controller
                     ]);
                 }
             }
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function toggleStatus(Request $request, Program $program)
+    {
+        try {
+            $program->update(['status' => $request->status]);
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {

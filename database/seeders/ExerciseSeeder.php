@@ -377,6 +377,19 @@ class ExerciseSeeder extends Seeder
                 'image' => '',
                 'muscles' => ['Rear Deltoid'],
             ],
+            // Repos
+            [
+                'name' => 'Repos',
+                'lang' => 'fr',
+                'image' => '',
+                'muscles' => [],
+            ],
+            [
+                'name' => 'Rest',
+                'lang' => 'en',
+                'image' => '',
+                'muscles' => [],
+            ],
         ];
 
         foreach ($exercises as $exerciseData) {

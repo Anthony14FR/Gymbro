@@ -25,6 +25,9 @@ class ProgramController extends Controller
     public function show($id)
     {
         $program = Program::findOrFail($id);
+        if ($program->user_id !== Auth::id() && $program->status !== 1) {
+            abort(404, 'Unauthorized action.');
+        }
         return view('programs.show', compact('program'));
     }
 
@@ -40,7 +43,7 @@ class ProgramController extends Controller
         }
 
         $muscles = Muscle::with('exercises')->get();
-        $program = Program::with(['exercises' => function($query) {
+        $program = Program::with(['exercises' => function ($query) {
             $query->withPivot('id', 'rep', 'break', 'weight', 'order', 'day');
         }])->findOrFail($id);
 
@@ -218,9 +221,13 @@ class ProgramController extends Controller
 
     public function exportPdf($id)
     {
-        $program = Program::with(['exercises' => function($query) {
+        $program = Program::with(['exercises' => function ($query) {
             $query->withPivot('id', 'rep', 'break', 'weight', 'order', 'day');
         }])->findOrFail($id);
+
+        if ($program->user_id !== Auth::id() && $program->status !== 1) {
+            abort(404, 'Unauthorized action.');
+        }
 
         $days = $program->exercises->sortBy('pivot.order')->groupBy('pivot.day');
         $pdfName = $program->name . '.pdf';

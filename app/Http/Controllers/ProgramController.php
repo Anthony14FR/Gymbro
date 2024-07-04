@@ -235,23 +235,4 @@ class ProgramController extends Controller
         $pdf = PDF::loadView('programs.pdf', compact('program', 'days'));
         return $pdf->download($pdfName);
     }
-
-    public function exportCsv(){
-        $filename = 'programs.csv';
-        $programs = Program::all();
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('ID', 'Name', 'Description', 'User ID', 'Status', 'Created At', 'Updated At'));
-
-        foreach($programs as $program){
-            fputcsv($handle, array($program->id, $program->name, $program->description, $program->user_id, $program->status, $program->created_at, $program->updated_at));
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-
-        return response()->download($filename, 'programs.csv', $headers);
-    }
 }

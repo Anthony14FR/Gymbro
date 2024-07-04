@@ -34,6 +34,7 @@
                         <h3 class="text-xl font-bold mb-2">Exercises</h3>
                         @foreach ($exercises as $exercise)
                                 <div class="flex items-center justify-between p-2 bg-white rounded-md shadow-sm">
+                                    <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}" class="w-16 h-16 rounded-full mr-2">
                                     <span>{{ $exercise->name }}</span>
                                     <button type="button" class="btn btn-circle btn-outline"
                                             onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')">+</button>

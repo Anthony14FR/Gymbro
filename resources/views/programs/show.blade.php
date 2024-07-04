@@ -7,6 +7,7 @@
             <div class="flex space-x-4">
                 <a href="{{ route('programs.edit', $program->id) }}" class="btn btn-primary">Edit</a>
                 <a href="{{ route('programs.exportPdf', $program->id) }}" class="btn btn-secondary">Export PDF</a>
+                <a href="{{ route('programs.exportCsv', $program->id) }}" class="btn btn-secondary">Export CSV</a>
                 <form action="{{ route('programs.destroy', $program) }}" method="POST" class="inline-block">
                     @csrf
                     @method('DELETE')

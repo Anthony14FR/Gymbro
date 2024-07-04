@@ -30,7 +30,8 @@
                     @foreach ($myPrograms as $program)
                         <div class="card bg-base-100 shadow-xl">
                             <div class="card-body">
-                                <h2 class="card-title text-2xl">{{ $program->name }}</h2>
+                                <img src="{{ asset($program->image) }}" alt="{{ $program->name }}" class="w-full h-64 object-cover mb-4">
+                                <h2 class="card-title">{{ $program->name }}</h2>
                                 <p>{{ Str::limit($program->description, 100) }}</p>
                                 <p class="text-sm text-gray-600">Créé le : {{ $program->created_at->format('d M Y') }}</p>
                                 <p class="text-sm text-gray-600">Dernière Mise à Jour : {{ $program->updated_at->format('d M Y') }}</p>

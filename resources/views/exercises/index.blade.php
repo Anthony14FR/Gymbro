@@ -18,7 +18,7 @@
                 @foreach ($muscle->exercises as $exercise)
                     <li class="bg-white p-4 rounded-lg shadow mb-2">
                         <div class="flex items-center">
-                            <img src="{{ $exercise->image }}" alt="{{ $exercise->name }}" class="w-16 h-16 rounded-full mr-4">
+                            <img src="{{ $exercise->image }}" alt="{{ $exercise->name }}" class="w-32 h-32 mb-4">
                             <div>
                                 <h3 class="text-xl font-bold">{{ $exercise->name }}</h3>
                                 <a href="{{ $exercise->image }}" class="text-blue-500 hover:underline" target="_blank">Watch Video</a>

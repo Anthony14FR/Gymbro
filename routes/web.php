@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\UserController;
 
 
 
@@ -44,5 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('programs', ProgramController::class)->except(['edit', 'update', 'store']);
 });
 
+// Users
+Route::middleware('auth')->group(function () {
+    Route::resource('users', UserController::class);
+});
 
 require __DIR__ . '/auth.php';

@@ -57,7 +57,8 @@ class ProgramController extends Controller
             $exerciseCounts[$day] = count($exercises);
         }
 
-        return view('programs.edit', compact('muscles', 'program', 'days', 'exerciseCounts'));
+        $exercises = Exercise::Where('lang', 'fr')->get();
+        return view('programs.edit', compact('muscles', 'program', 'days', 'exerciseCounts', 'exercises'));
     }
 
     public function store(Request $request)

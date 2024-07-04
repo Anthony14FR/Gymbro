@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/programs/{program}/toggle-status', [ProgramController::class, 'toggleStatus']);
     Route::get('/programs/{id}/export-pdf', [ProgramController::class, 'exportPdf'])->name('programs.exportPdf');
     Route::resource('programs', ProgramController::class)->except(['edit', 'update', 'store']);
+    Route::post('/programs/{program}/image', [ProgramController::class, 'saveImage'])->name('programs.saveImage');
 });
 
 

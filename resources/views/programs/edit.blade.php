@@ -32,14 +32,12 @@
                 <div class="flex">
                     <div class="w-1/3 p-4 bg-gray-100 rounded-md space-y-2">
                         <h3 class="text-xl font-bold mb-2">Exercises</h3>
-                        @foreach ($muscles as $muscle)
-                            @foreach ($muscle->exercises as $exercise)
+                        @foreach ($exercises as $exercise)
                                 <div class="flex items-center justify-between p-2 bg-white rounded-md shadow-sm">
                                     <span>{{ $exercise->name }}</span>
                                     <button type="button" class="btn btn-circle btn-outline"
                                             onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')">+</button>
                                 </div>
-                            @endforeach
                         @endforeach
                     </div>
                     <div class="w-2/3 p-4 bg-gray-100 rounded-md ml-4 space-y-4">

@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3 bg-base-300 rounded-xl shadow-lg outline outline-accent/20">
             <h1 class="text-4xl font-bold">Programmes</h1>
-            <a href="{{ route('programs.edit') }}" class="btn btn-primary">Créer un Programme</a>
+            <a href="{{ route('programs.edit') }}" class="btn btn-accent"><i class="fa-solid fa-circle-plus"></i> Créer un Programme</a>
         </div>
 
-        <div class="tabs mb-6">
-            <a class="tab tab-bordered tab-lg tab-active" id="my-programs-tab">Mes programmes</a>
-            <a class="tab tab-bordered tab-lg" id="community-programs-tab">Programmes de la communauté</a>
-            <a class="tab tab-bordered tab-lg" id="gymbro-programs-tab">Programmes Gymbro</a>
+        <div class="tabs my-10 flex md:flex-row flex-col items-start md:space-y-0 space-y-5 md:space-x-10">
+            <button class="tab tab-bordered tab-lg tab-active border-0 btn btn-accent md:w-auto w-full" id="my-programs-tab"><i class="fa-solid fa-dumbbell"></i> Mes programmes</button>
+            <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="community-programs-tab"><i class="fa-solid fa-users"></i> Programmes de la communauté</button>
+            <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="gymbro-programs-tab">Programmes Gymbro</button>
         </div>
 
         <div id="my-programs" class="program-list">
@@ -30,7 +30,7 @@
                     @foreach ($myPrograms as $program)
                         <div class="card bg-base-100 shadow-xl">
                             <div class="card-body">
-                                <h2 class="card-title">{{ $program->name }}</h2>
+                                <h2 class="card-title text-2xl">{{ $program->name }}</h2>
                                 <p>{{ Str::limit($program->description, 100) }}</p>
                                 <p class="text-sm text-gray-600">Créé le : {{ $program->created_at->format('d M Y') }}</p>
                                 <p class="text-sm text-gray-600">Dernière Mise à Jour : {{ $program->updated_at->format('d M Y') }}</p>
@@ -120,16 +120,20 @@
     </div>
 
     <script>
-        document.getElementById('my-programs-tab').addEventListener('click', function() {
-            showTab('my-programs');
-        });
+        const myPrograms = document.getElementById('my-programs-tab');
+        const communityPrograms = document.getElementById('community-programs-tab');
+        const gymbroPrograms = document.getElementById('gymbro-programs-tab');
 
-        document.getElementById('community-programs-tab').addEventListener('click', function() {
-            showTab('community-programs');
-        });
+        const programsBtn = [myPrograms, communityPrograms, gymbroPrograms]
 
-        document.getElementById('gymbro-programs-tab').addEventListener('click', function() {
-            showTab('gymbro-programs');
+        programsBtn.forEach(btn => {
+            btn.addEventListener('click', function() {
+                showTab(btn.id.replace('-tab', ''));
+                programsBtn.forEach(btn => {
+                    btn.classList.remove('btn-accent');
+                });
+                btn.classList.add('btn-accent');
+            });
         });
 
         function showTab(tabId) {

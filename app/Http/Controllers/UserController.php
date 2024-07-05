@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Validation\Rule;
+use App\Models\Program;
+use Illuminate\Support\Facades\DB;
+
+class UserController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // Fetch all users stp 
+        $users = User::paginate(1);
+
+        return view('users.index', compact('users'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|min:2|max:50|string',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:8|max:200',
+        ]);
+
+        $password = $request->password;
+        $password_confirmation = $request->password_confirmation;
+
+        if ($password === $password_confirmation) {
+            $hashedPassword = bcrypt($password);
+            $request->merge(['password' => $hashedPassword]);
+            $user = User::create($request->all());
+            return redirect()->route('users.index')->with('success', 'User created successfully');
+        } else {
+            return redirect()->route('users.index')->with('warning', 'Passwords do not match');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $user = User::findOrFail($id);
+        $programs = Program::where('user_id', $id)->get();
+        $daysCount = DB::table('exercises_programs')
+            ->count(DB::raw('DISTINCT day'));
+
+        return view('users.show', compact('user', 'programs', 'daysCount'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $requestId = $request->user_id;
+
+        $user = User::findOrFail($requestId);
+        $user->update($request->validate([
+            'username' => 'required|min:2|max:50|string',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+        ]));
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->id === auth()->id()) {
+            return redirect()->route('users.index')->with('warning', 'You cannot delete yourself ! There is only one you <3');
+        }
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+    }
+}

@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\UserController;
 
 
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/email/verify-new-email/{token}', [EmailVerificationController::class, 'verifyNewEmail'])->name('verify.new.email');
 
@@ -45,5 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/programs/{program}/image', [ProgramController::class, 'saveImage'])->name('programs.saveImage');
 });
 
+// Users
+Route::middleware('auth')->group(function () {
+    Route::resource('users', UserController::class);
+});
 
 require __DIR__ . '/auth.php';

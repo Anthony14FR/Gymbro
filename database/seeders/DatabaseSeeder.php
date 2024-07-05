@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        $user = User::create([
+        User::create([
             'username' => 'user',
             'email' => 'user@orus.com',
             'email_verified_at' => now(),

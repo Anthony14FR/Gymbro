@@ -8,14 +8,16 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-
 class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
+
     public function run(): void
     {
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
         $admin = Role::create(['name' => 'admin']);
         $premium = Role::create(['name' => 'premium']);
         $user = Role::create(['name' => 'user']);
@@ -42,10 +44,5 @@ class RoleSeeder extends Seeder
         $user->givePermissionTo([
             $read,
         ]);
-
-        $users = User::all();
-        foreach ($users as $user) {
-            $user->assignRole($user);
-        }
     }
 }

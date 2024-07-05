@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/programs/edit/{id?}', [ProgramController::class, 'edit'])->name('programs.edit');
     Route::post('/programs', [ProgramController::class, 'store'])->name('programs.store');
+    Route::put('/programs/{program}', [ProgramController::class, 'update'])->name('programs.update');
     Route::put('/programs/{program}/exercises/{exerciseProgram}', [ProgramController::class, 'updateExercise'])->name('programs.updateExercise');
     Route::post('/programs/{program}/exercises', [ProgramController::class, 'addExercise']);
     Route::delete('/programs/{program}/exercises/{exerciseProgram}', [ProgramController::class, 'removeExercise'])->name('programs.removeExercise');

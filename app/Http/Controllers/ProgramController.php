@@ -161,6 +161,27 @@ class ProgramController extends Controller
         }
     }
 
+    public function saveImage(Request $request, Program $program)
+    {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
+        $validatedData = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        $imageName = $program->id . '.' . $request->image->extension();
+        if (!is_dir(public_path('images/programs/'.Auth::id()))) {
+            mkdir(public_path('images/programs/'.Auth::id()));
+        }
+        $request->image->move(public_path('images/programs/'.Auth::id()), $imageName);
+        $userId = Auth::id();
+        $program->update(['image' => 'images/programs/'.$userId.'/'.$imageName]);
+        $imagePath = $program->image;
+        return response()->json(['success' => true, 'image' => $imagePath]);
+    }
+
     public function saveProgram(Request $request, Program $program)
     {
         if ($program->user_id !== Auth::id()) {

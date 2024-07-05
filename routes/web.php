@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
 
 // Exercises
 Route::middleware('auth')->group(function () {
-    Route::get('/exercises', [ExerciseController::class, 'index']);
+    Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
 });
 
 // Programs

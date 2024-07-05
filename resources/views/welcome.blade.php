@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('home-content')
     <div class="bg-base-200">
         <!-- Section Hero -->
         <section class="bg-cover bg-center h-screen text-primary-content" style="background-image: url({{ asset('images/bck.webp') }})">

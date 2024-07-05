@@ -25,6 +25,17 @@
                 <input name="description" id="description" value="{{ $program->description ?? '' }}"
                     class="input rounded-none input-bordered w-full" required>
             </div>
+        <div class="mb-4 flex items-center space-x-4">
+            <img src="{{ asset($program->image) }}" alt="{{ $program->name }}" class="w-32 h-32 rounded shadow-lg mb-2" id="programImage">
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text font-semibold">Pick a file</span>
+                    <span class="label-text-alt">(2MB max)</span>
+                </div>
+                <input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs" onchange="saveImage()">
+                <span class="label-text-alt">.png, .jpg, .jpeg .gif .wepb .svg</span>
+            </label>
+        </div>
         </div>
         <label class="swap">
             <input type="checkbox" name="status" id="status" class="hidden" {{ $program->status == 1 ? 'checked' : '' }}
@@ -363,6 +374,31 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
+        }
+
+        function saveImage() {
+            const fileInput = document.querySelector('.file-input');
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+
+            fetch(`/programs/${programId}/image`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        console.log('Image uploaded:', data);
+                        document.getElementById('programImage').src = `{{ asset('') }}${data.image}`;
+                    }
+                })
+                .catch(error => alert('Erreur: Image invalide'));
         }
     </script>
 @endsection

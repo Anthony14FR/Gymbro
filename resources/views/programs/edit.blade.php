@@ -25,17 +25,19 @@
                 <input name="description" id="description" value="{{ $program->description ?? '' }}"
                     class="input rounded-none input-bordered w-full" required>
             </div>
-        <div class="mb-4 flex items-center space-x-4">
-            <img src="{{ asset($program->image) }}" alt="{{ $program->name }}" class="w-32 h-32 rounded shadow-lg mb-2" id="programImage">
+        </div>
+        <div class="mb-4 flex items-center space-x-4 justify-center">
+            <img src="{{ asset($program->image) }}" alt="{{ $program->name }}"
+                 class="w-32 h-32 rounded shadow-lg mb-2" id="programImage">
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text font-semibold">Pick a file</span>
                     <span class="label-text-alt">(2MB max)</span>
                 </div>
-                <input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs" onchange="saveImage()">
+                <input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                       onchange="saveImage()">
                 <span class="label-text-alt">.png, .jpg, .jpeg .gif .wepb .svg</span>
             </label>
-        </div>
         </div>
         <label class="swap">
             <input type="checkbox" name="status" id="status" class="hidden" {{ $program->status == 1 ? 'checked' : '' }}

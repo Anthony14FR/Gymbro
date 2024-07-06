@@ -1,55 +1,58 @@
 @extends('layouts.app')
 
 @section('home-content')
-    <div class="bg-base-200">
+    <div class="bg-base-100 -mt-[67px]">
         <!-- Section Hero -->
-        <section class="bg-cover bg-center h-screen text-primary-content" style="background-image: url({{ asset('images/bck.webp') }})">
-            <div class="flex items-center justify-center h-full bg-opacity-50 bg-base-900">
-                <div class="text-center text-white">
-                    <h1 class="text-5xl font-bold">Bienvenue sur Gymbro</h1>
-                    <p class="mt-4 text-xl">Ton partenaire pour une vie plus saine.</p>
-                    <a href="{{ route('register') }}" class="mt-8 px-4 py-2 btn btn-accent rounded-full">Rejoins-nous</a>
+        <section class="bg-cover bg-center h-screen text-primary-content"
+            style="background-image: url({{ asset('images/home-banner.jpg') }})">
+            <div class="flex flex-col h-full container mx-auto justify-center">
+                <div class="text-white w-full md:max-w-3xl p-5 md:text-left text-center">
+                    <h1 class="md:text-8xl sm:text-7xl text-6xl font-bold leading-tight">
+                        BE <span class="text-accent bebas-neue-bold">SPIRITED</span> FEARLESS AN
+                        EVERYDAY ATHLETE
+                    </h1>
+                    <p class="text-white/50 md:text-lg mt-5 md:max-w-2xl max-w-lg">
+                        A certified running coach and personal trainer for over a decade, I’ve
+                        helped thousands of runners through 1-1 personalized coaching and fitness Club, I’ve helped
+                        thousands of runners through 1-1 personalized coaching and fitness Club.
+                    </p>
+                    <button id="get-started-button"
+                        class="mt-8 px-6 py-3 text-white mr-7 rounded-none btn-md outline outline-2 outline-accent outline-offset-2 transition ease-in-out duration-200">
+                        Get Started <i class="fa-solid fa-chevron-right ml-2 transition ease-in-out duration-200"></i>
+                    </button>
+                    <button id="view-plan-button"
+                        class="bg-accent mt-8 px-6 py-3 text-white rounded-none btn-md outline outline-2 outline-accent outline-offset-2 transition ease-in-out duration-200">
+                        View Plan <i class="fa-solid fa-chevron-right ml-2 transition ease-in-out duration-200"></i>
+                    </button>
+                    <div class="w-48 h-1 rounded-full bg-accent text-white mt-8 shadow-md">&ensp;</div>
                 </div>
             </div>
         </section>
 
-        <!-- Section Fonctionnalités -->
-        <section id="features" class="py-16 bg-base-100">
-            <div class="container mx-auto">
-                <h2 class="text-3xl font-bold text-center">Fonctionnalités</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                    <div class="flex flex-col items-center text-center p-6 bg-base-200 rounded-lg shadow-md">
-                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
-                        </svg>
-                        <h3 class="mt-4 text-xl font-semibold">Programmes personnalisés</h3>
-                        <p class="mt-2">Crée des plans d'entraînement sur mesure adaptés à tes besoins.</p>
-                    </div>
-                    <div class="flex flex-col items-center text-center p-6 bg-base-200 rounded-lg shadow-md">
-                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
-                        </svg>
-                        <h3 class="mt-4 text-xl font-semibold">Accèdes aux programmes de la communauté</h3>
-                        <p class="mt-2">Découvre et partage des plans d'entraînement avec d'autres membres.</p>
-                    </div>
-                    <div class="flex flex-col items-center text-center p-6 bg-base-200 rounded-lg shadow-md">
-                        <svg class="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
-                        </svg>
-                        <h3 class="mt-4 text-xl font-semibold">Des programmes Gymbro réalisés par des professionnels</h3>
-                        <p class="mt-2">Découvre des plans d'entraînement conçus par des coachs professionnels.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section Appel à l'action -->
-        <section class="py-8 bg-primary text-primary-content">
-            <div class="container mx-auto text-center">
-                <h2 class="text-3xl font-bold">Prêt à commencer ?</h2>
-                <p class="mt-4 text-xl">Rejoins Gymbro aujourd'hui et fais le premier pas vers une vie plus saine.</p>
-                <a href="/register" class="mt-8 px-4 py-2 btn btn-accent rounded-full">Inscris-toi maintenant</a>
-            </div>
-        </section>
     </div>
+
+    <script>
+        const getStartedButton = document.getElementById('get-started-button');
+        getStartedButton.addEventListener('mouseover', (e) => {
+            e.target.children[0].classList.add('transform', 'translate-x-2');
+
+            e.target.addEventListener('mouseout', (e) => {
+                e.target.children[0].classList.remove('transform', 'translate-x-2');
+            });
+
+            e.preventDefault();
+        });
+
+
+        const viewPlanButton = document.getElementById('view-plan-button');
+        viewPlanButton.addEventListener('mouseover', (e) => {
+            e.target.children[0].classList.add('transform', 'translate-x-2');
+
+            e.target.addEventListener('mouseout', (e) => {
+                e.target.children[0].classList.remove('transform', 'translate-x-2');
+            });
+
+            e.preventDefault();
+        });
+    </script>
 @endsection

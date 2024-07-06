@@ -7,14 +7,14 @@
             {!! Breadcrumbs::render() !!}
         </div>
     </div>
-    <form id="programForm" class="space-y-4 w-full p-5 bg-base-300 edit-programs-form space-y-5">
+    <form id="programForm" class="space-y-8 w-full p-5 bg-base-300 edit-programs-form space-y-5">
         @csrf
         @if ($program->exists)
             @method('PUT')
         @else
             @method('POST')
         @endif
-        <div class="flex md:flex-row flex-col md:space-x-10 w-full items-center space-y-2">
+        <div class="flex md:flex-row flex-col md:space-x-10 w-full items-center">
             <div class="w-full">
                 <label for="name" class="block text-lg font-medium">Nom</label>
                 <input type="text" name="name" id="name" class="input rounded-none input-bordered w-full"
@@ -26,7 +26,7 @@
                     class="input rounded-none input-bordered w-full" required>
             </div>
         </div>
-        <div class="mb-4 flex items-center space-x-4 justify-center">
+        <div class="flex items-center space-x-4">
             <img src="{{ asset($program->image) }}" alt="{{ $program->name }}"
                  class="w-32 h-32 rounded shadow-lg mb-2" id="programImage">
             <label class="form-control w-full max-w-xs">
@@ -48,11 +48,7 @@
                     class="ml-2 fa-solid fa-lock-open"></i></div>
         </label>
     </form>
-    <div id="programArea" class="mt-16 overflow-x-hidden {{ $program->exists ? '' : 'hidden' }}">
-        <div class="flex flex-col">
-            <h3 class="text-xl font-bold mb-2">Exercises</h3>
-            <input type="text" id="search" class="input input-bordered w-56" placeholder="Search exercises">
-        </div>
+    <div id="programArea" class="mb-16 overflow-x-hidden {{ $program->exists ? '' : 'hidden' }}">
         <div class="flex justify-between items-center bg-base-300 p-6 rounded-xl mt-8 mb-5">
             <div class="flex overflow-x-scroll gap-6">
                 @foreach ($exercises as $exercise)
@@ -73,16 +69,16 @@
         </div>
 
         <div class="flex flex-col mt-8">
-            <div class="p-4 bg-base-200 rounded-md ml-4 space-y-4">
+            <div class="p-4 bg-base-200 rounded-md space-y-4">
                 <div class="flex justify-between">
                     <h3 class="text-xl font-bold mb-2"></h3>
-                    <button type="button" class="btn btn-outline" onclick="addDay()">Add Day</button>
                 </div>
                 <div id="day-container" class="space-y-2">
                     @foreach ($days as $dayIndex => $exercises)
                         <div class="space-y-2 day-div" style="display: {{ $dayIndex == 1 ? 'block' : 'none' }}">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold mb-2">Day {{ $dayIndex }}</h3>
+                            <div class="flex justify-between items-center mb-8">
+                                <h3 class="text-4xl font-bold mb-2">Day {{ $dayIndex }}</h3>
+                                <button type="button" class="btn btn-outline" onclick="addDay()">Add Day</button>
                                 <input type="radio" name="selected_day" value="{{ $dayIndex }}"
                                     class="form-radio hidden" {{ $dayIndex == 1 ? 'checked' : '' }}>
                             </div>
@@ -292,8 +288,8 @@
             dayDiv.style.display = 'none';
             dayDiv.innerHTML = `
         <div class="flex justify-between items-center">
-            <h3 class="text-xl font-bold mb-2">Day ${dayCount}</h3>
-            <input type="radio" name="selected_day" value="${dayCount}" class="form-radio">
+            <h3 class="text-4xl font-bold mb-2">Day ${dayCount}</h3>
+            <input type="radio" name="selected_day" value="${dayCount}" class="form-radio hidden">
         </div>
         <table class="table-auto w-full">
             <thead>

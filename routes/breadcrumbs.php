@@ -41,3 +41,10 @@ Breadcrumbs::for('programs.exportPdf', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('programs.index');
     $trail->push('Export Program to PDF', route('programs.exportPdf', $id));
 });
+
+
+// Show programs
+Breadcrumbs::for('programs.show', function (BreadcrumbTrail $trail, $id) {
+    $trail->parent('programs.index');
+    $trail->push('Show Program', route('programs.show', $id));
+});

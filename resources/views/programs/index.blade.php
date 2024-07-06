@@ -4,7 +4,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
             <div class="breadcrumbs text-sm">
-                <h1 class="text-2xl font-bold">Programmes</h1>
+                <h1 class="text-4xl font-normal">Programmes</h1>
                 {!! Breadcrumbs::render() !!}
             </div>
             <a href="{{ route('programs.edit') }}" class="btn btn-accent"><i class="fa-solid fa-circle-plus"></i> Créer un
@@ -61,7 +61,7 @@
                                     <div class="">
                                         <div class="flex items-center space-x-3">
                                             <i class="fa-solid fa-caret-right"></i>
-                                            <h2 class="card-title">{{ $program->name }}</h2>
+                                            <span class="text-xl font-normal">{{ $program->name }}</span>
                                         </div>
 
                                         <p class=""><i class="fa-solid fa-star mt-6"></i>
@@ -103,10 +103,6 @@
             @if ($communityPrograms->isEmpty())
                 <div class="alert alert-warning shadow-lg">
                     <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 16h-1v-4h-1m0-4h.01M12 8v4m0 4v4m8-8h.01M2 12h.01M4.22 19.78l.01-.01M20.49 20.49l-.01-.01M4.22 4.22l.01-.01M20.49 3.51l-.01.01M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z"></path>
-                        </svg>
                         <span>Aucun programme trouvé.</span>
                     </div>
                 </div>

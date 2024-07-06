@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex justify-between items-center md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
         <div class="breadcrumbs text-sm">
-            <h1 class="text-2xl font-bold">{{ $program->exists ? 'Edit Program' : 'Create Program' }}</h1>
+            <h1 class="text-4xl font-normal">{{ $program->exists ? 'Edit Program' : 'Create Program' }}</h1>
             {!! Breadcrumbs::render() !!}
         </div>
     </div>
@@ -27,15 +27,15 @@
             </div>
         </div>
         <div class="flex items-center space-x-4">
-            <img src="{{ asset($program->image) }}" alt="{{ $program->name }}"
-                 class="w-32 h-32 rounded shadow-lg mb-2" id="programImage">
+            <img src="{{ asset($program->image) }}" alt="{{ $program->name }}" class="w-32 h-32 rounded shadow-lg mb-2"
+                id="programImage">
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text font-semibold">Pick a file</span>
                     <span class="label-text-alt">(2MB max)</span>
                 </div>
                 <input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs"
-                       onchange="saveImage()">
+                    onchange="saveImage()">
                 <span class="label-text-alt">.png, .jpg, .jpeg .gif .wepb .svg</span>
             </label>
         </div>
@@ -110,8 +110,8 @@
                                                     value="{{ $exercise->pivot->break }}"
                                                     onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
                                             </td>
-                                            <td class="px-4 py-2"><input type="number" name="weight" placeholder="Weight"
-                                                    class="input input-bordered w-full"
+                                            <td class="px-4 py-2"><input type="number" name="weight"
+                                                    placeholder="Weight" class="input input-bordered w-full"
                                                     value="{{ $exercise->pivot->weight }}"
                                                     onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
                                             </td>
@@ -381,12 +381,12 @@
             formData.append('image', file);
 
             fetch(`/programs/${programId}/image`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: formData
-            })
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: formData
+                })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -399,4 +399,11 @@
                 .catch(error => alert('Erreur: Image invalide'));
         }
     </script>
+    @if (!$program->exists || $days->isEmpty())
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                addDay();
+            });
+        </script>
+    @endif
 @endsection

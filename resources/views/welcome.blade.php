@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('home-content')
-    <div class="bg-base-100 -mt-[67px]">
+    <div class="bg-base-100 -mt-[72px]">
         <!-- Section Hero -->
         <section class="bg-cover bg-center h-screen text-primary-content"
             style="background-image: url({{ asset('images/home-banner.jpg') }})">

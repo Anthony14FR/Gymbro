@@ -42,7 +42,6 @@
                 @yield('home-content')
             </main>
         @endif
-
     </div>
 </body>
 

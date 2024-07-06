@@ -130,7 +130,7 @@
                                     <div class="">
                                         <div class="flex items-center space-x-3">
                                             <i class="fa-solid fa-caret-right"></i>
-                                            <h2 class="card-title">{{ $program->name }}</h2>
+                                            <span class="text-xl font-normal">{{ $program->name }}</span>
                                         </div>
         
                                         <p class=""><i class="fa-solid fa-star mt-6"></i>{{ Str::limit($program->description, 100) }}</p>
@@ -185,7 +185,7 @@
                                     <div class="">
                                         <div class="flex items-center space-x-3">
                                             <i class="fa-solid fa-caret-right"></i>
-                                            <h2 class="card-title">{{ $program->name }}</h2>
+                                            <span class="text-xl font-normal">{{ $program->name }}</span>
                                         </div>
         
                                         <p class=""><i class="fa-solid fa-star mt-6"></i>{{ Str::limit($program->description, 100) }}</p>

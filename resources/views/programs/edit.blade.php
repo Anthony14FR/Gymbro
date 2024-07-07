@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex justify-between items-center md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
+    <div class="flex justify-between md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
         <div class="breadcrumbs text-sm">
-            <h1 class="text-4xl font-normal">{{ $program->exists ? 'Edit Program' : 'Create Program' }}</h1>
+            <h1 class="text-4xl font-normal">{{ $program->exists ? 'Edit Program' : 'Create Program' }} <i class="fa-solid fa-pen ml-2 fa-xs"></i></h1>
             {!! Breadcrumbs::render() !!}
         </div>
     </div>
@@ -42,88 +42,123 @@
         <label class="swap">
             <input type="checkbox" name="status" id="status" class="hidden" {{ $program->status == 1 ? 'checked' : '' }}
                 onchange="toggleStatus()">
-            <div class="swap-on flex bg-neutral rounded p-3 items-center">Private <i class="ml-2 fa-solid fa-lock"></i>
+            <div class="swap-on flex rounded bg-accent/20 p-3 items-center">Public <i
+                    class="ml-2 fa-solid fa-lock-open"></i>
             </div>
-            <div class="swap-off flex bg-accent/20 rounded p-3 items-center">Public <i
-                    class="ml-2 fa-solid fa-lock-open"></i></div>
+            <div class="swap-off flex bg-neutral rounded p-3 items-center">Private <i class="ml-2 fa-solid fa-lock"></i>
+            </div>
         </label>
     </form>
-    <div id="programArea" class="mb-16 overflow-x-hidden {{ $program->exists ? '' : 'hidden' }}">
-        <div class="flex justify-between items-center bg-base-300 p-6 rounded-xl mt-8 mb-5">
-            <div class="flex overflow-x-scroll gap-6">
+    <div class="drawer lg:hidden flex z-40">
+        <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-side">
+            <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+                <span class="font-semibold text-3xl">Exercice <i class="fa-solid fa-dumbbell ml-2"></i></span>
+                <input type="text" id="search" class="input input-bordered w-full mt-2 mb-4"
+                    placeholder="Search exercise" oninput="filterExercises()">
                 @foreach ($exercises as $exercise)
-                    <div
-                        class="flex mb-5 flex-row justify-between items-center p-4 space-x-5 bg-base-200 rounded-xl shadow-sm">
-                        <div class="avatar">
-                            <div class="ring-accent ring-offset-base-100 my-5 w-16 rounded-full ring ring-offset-2">
-                                <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
-                                    class="rounded-full mr-2">
+                    <li>
+                        <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
+                            class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
+                            <div class="avatar">
+                                <div class="ring-accent ring-offset-base-100 w-8 rounded-full ring ring-offset-2">
+                                    <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
+                                        class="rounded-full mr-2">
+                                </div>
                             </div>
+                            <span class="ml-6 text-white">{{ $exercise->name }}</span>
                         </div>
-                        <span class="w-36">{{ $exercise->name }}</span>
-                        <button type="button" class="btn btn-circle btn-outline"
-                            onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')">+</button>
-                    </div>
+                    </li>
                 @endforeach
+            </ul>
+        </div>
+    </div>
+
+    <div id="programArea" class="mb-16 overflow-x-hidden flex gap-8 {{ $program->exists ? '' : 'hidden' }}">
+        <div class="lg:flex hidden justify-between bg-base-300 rounded-xl mt-8 lg:w-3/12">
+            <div class="flex flex-col w-full">
+                <div class="p-4">
+                    <span class="font-semibold">Exercice <i class="fa-solid fa-dumbbell ml-2"></i></span>
+                    <input type="text" id="search" class="input input-bordered w-full mt-2 mb-4"
+                        placeholder="Search exercise" oninput="filterExercises()">
+                </div>
+                <div class="h-[650px] overflow-y-scroll p-4">
+                    @foreach ($exercises as $exercise)
+                        <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
+                            class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
+                            <div class="avatar">
+                                <div class="ring-accent ring-offset-base-100 my-2 w-8 rounded-full ring ring-offset-2">
+                                    <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
+                                        class="rounded-full mr-2">
+                                </div>
+                            </div>
+                            <span class="ml-6 text-white">{{ $exercise->name }}</span>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
-        <div class="flex flex-col mt-8">
-            <div class="p-4 bg-base-200 rounded-md space-y-4">
-                <div class="flex justify-between">
-                    <h3 class="text-xl font-bold mb-2"></h3>
-                </div>
-                <div id="day-container" class="space-y-2">
+        <div class="flex flex-col mt-8 w-full lg:w-9/12">
+            <div class="p-4 flex flex-col justify-between bg-base-200 rounded-md space-y-4">
+                <div id="day-container" class="space-y-2 p-4">
                     @foreach ($days as $dayIndex => $exercises)
                         <div class="space-y-2 day-div" style="display: {{ $dayIndex == 1 ? 'block' : 'none' }}">
                             <div class="flex justify-between items-center mb-8">
-                                <h3 class="text-4xl font-bold mb-2">Day {{ $dayIndex }}</h3>
-                                <button type="button" class="btn btn-outline" onclick="addDay()">Add Day</button>
+                                <div class="text-4xl font-bold mb-2 ml-3 flex items-center z-1">
+                                    <span class="mr-4">Day {{ $dayIndex }}</span>
+                                    <label for="my-drawer" class="btn btn-accent drawer-button lg:hidden">Exercice <i
+                                            class="fa-solid fa-fire-flame-simple"></i></label>
+                                </div>
+                                <button type="button" class="btn btn-outline mb-4" onclick="addDay()">Add Day</button>
                                 <input type="radio" name="selected_day" value="{{ $dayIndex }}"
                                     class="form-radio hidden" {{ $dayIndex == 1 ? 'checked' : '' }}>
                             </div>
-                            <table class="table-auto w-full">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Exercise</th>
-                                        <th>Repetitions</th>
-                                        <th>Break (s)</th>
-                                        <th>Weight (kg)</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="exercise-list-{{ $dayIndex }}" class="">
-                                    @foreach ($exercises as $index => $exercise)
-                                        <tr class="">
-                                            <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
-                                            <td class="px-4 py-2">{{ $exercise->name }}</td>
-                                            <input type="hidden" name="exercise_program_id"
-                                                value="{{ $exercise->pivot->id }}">
-                                            <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">
-                                            <td class="px-4 py-2"><input type="number" name="rep" placeholder="Rep"
-                                                    class="input input-bordered w-full" value="{{ $exercise->pivot->rep }}"
-                                                    onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
-                                            </td>
-                                            <td class="px-4 py-2"><input type="number" name="break_time"
-                                                    placeholder="Break" class="input input-bordered w-full"
-                                                    value="{{ $exercise->pivot->break }}"
-                                                    onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
-                                            </td>
-                                            <td class="px-4 py-2"><input type="number" name="weight"
-                                                    placeholder="Weight" class="input input-bordered w-full"
-                                                    value="{{ $exercise->pivot->weight }}"
-                                                    onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
-                                            </td>
-                                            <td class="px-4 py-2 text-center"><button type="button"
-                                                    class="btn btn-circle btn-outline"
-                                                    onclick="removeExercise(this, '{{ $exercise->pivot->id }}')">X</button>
-                                            </td>
+                            <div class="overflow-y-scroll h-[550px]">
+                                <table class="table-auto w-full">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Exercise</th>
+                                            <th>Repetitions</th>
+                                            <th>Break (s)</th>
+                                            <th>Weight (kg)</th>
+                                            <th>Action</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-
-                            </table>
+                                    </thead>
+                                    <tbody id="exercise-list-{{ $dayIndex }}">
+                                        @foreach ($exercises as $index => $exercise)
+                                            <tr>
+                                                <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
+                                                <td class="px-4 py-2">{{ $exercise->name }}</td>
+                                                <input type="hidden" name="exercise_program_id"
+                                                    value="{{ $exercise->pivot->id }}">
+                                                <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">
+                                                <td class="px-4 py-2"><input type="number" name="rep"
+                                                        placeholder="Rep" class="input input-bordered w-full"
+                                                        value="{{ $exercise->pivot->rep }}"
+                                                        onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
+                                                </td>
+                                                <td class="px-4 py-2"><input type="number" name="break_time"
+                                                        placeholder="Break" class="input input-bordered w-full"
+                                                        value="{{ $exercise->pivot->break }}"
+                                                        onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
+                                                </td>
+                                                <td class="px-4 py-2"><input type="number" name="weight"
+                                                        placeholder="Weight" class="input input-bordered w-full"
+                                                        value="{{ $exercise->pivot->weight }}"
+                                                        onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
+                                                </td>
+                                                <td class="px-4 py-2 text-center"><button type="button"
+                                                        class="btn btn-circle btn-outline"
+                                                        onclick="removeExercise(this, '{{ $exercise->pivot->id }}')">X</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -132,7 +167,7 @@
                         <ul class="pagination flex overflow-x-scroll py-5">
                             @for ($i = 1; $i <= count($days); $i++)
                                 <li class="mx-1">
-                                    <button type="button" class="btn btn-outline"
+                                    <button type="button" class="btn btn-neutral"
                                         onclick="showDay({{ $i }})">Day {{ $i }}</button>
                                 </li>
                             @endfor
@@ -216,7 +251,6 @@
             }
         }
 
-
         function saveExercise(element, exerciseId, dayIndex, order) {
             const row = element.closest('tr');
             const rep = row.querySelector('input[name="rep"]').value || 0;
@@ -287,31 +321,35 @@
             dayDiv.classList.add('space-y-2', 'day-div');
             dayDiv.style.display = 'none';
             dayDiv.innerHTML = `
-        <div class="flex justify-between items-center">
-            <h3 class="text-4xl font-bold mb-2">Day ${dayCount}</h3>
+        <div class="flex justify-between items-center mb-8">
+            <div class="text-4xl font-bold mb-2 ml-3 flex items-center z-1">
+                <span class="mr-4">Day ${dayCount}</span>
+                <label for="my-drawer" class="btn btn-accent drawer-button lg:hidden">Exercice <i class="fa-solid fa-fire-flame-simple"></i></label>
+            </div>
+            <button type="button" class="btn btn-outline mb-4" onclick="addDay()">Add Day</button>
             <input type="radio" name="selected_day" value="${dayCount}" class="form-radio hidden">
         </div>
-        <table class="table-auto w-full">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Exercise</th>
-                    <th>Repetitions</th>
-                    <th>Break (s)</th>
-                    <th>Weight (kg)</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="exercise-list-${dayCount}" class="">
-                <!-- Placeholder for dynamically added exercises -->
-            </tbody>
-        </table>
+        <div class="overflow-y-scroll h-[550px]">
+            <table class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Exercise</th>
+                        <th>Repetitions</th>
+                        <th>Break (s)</th>
+                        <th>Weight (kg)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="exercise-list-${dayCount}">
+                </tbody>
+            </table>
+        </div>
     `;
             document.getElementById('day-container').appendChild(dayDiv);
             updatePagination();
+            showDay(dayCount);
         }
-
-
 
         function showDay(dayIndex) {
             document.querySelectorAll('.day-div').forEach((dayDiv, index) => {
@@ -325,13 +363,12 @@
 
             document.querySelectorAll('.pagination button').forEach((button, index) => {
                 if (index + 1 === dayIndex) {
-                    button.classList.add('bg-accent', 'text-white');
+                    button.classList.add('bg-black/30', 'text-white');
                 } else {
-                    button.classList.remove('bg-accent');
+                    button.classList.remove('bg-black/30');
                 }
             });
         }
-
 
         function updatePagination() {
             const pagination = document.querySelector('.pagination');
@@ -339,7 +376,7 @@
             for (let i = 1; i <= dayCount; i++) {
                 const li = document.createElement('li');
                 li.classList.add('mx-1');
-                li.innerHTML = `<button type="button" class="btn btn-outline" onclick="showDay(${i})">Day ${i}</button>`;
+                li.innerHTML = `<button type="button" class="btn btn-neutral" onclick="showDay(${i})">Day ${i}</button>`;
                 pagination.appendChild(li);
             }
         }
@@ -397,6 +434,19 @@
                     }
                 })
                 .catch(error => alert('Erreur: Image invalide'));
+        }
+
+        function filterExercises() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const exerciseItems = document.querySelectorAll('.exercise-item');
+            exerciseItems.forEach(item => {
+                const exerciseName = item.querySelector('span').innerText.toLowerCase();
+                if (exerciseName.includes(searchInput)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
     </script>
     @if (!$program->exists || $days->isEmpty())

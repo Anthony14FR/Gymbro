@@ -5,15 +5,20 @@
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <div class="flex justify-between items-center md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
                 <div class="breadcrumbs text-sm">
-                    <h1 class="text-5xl font-extrabold mb-4 md:mb-0">{{ $program->name }}</h1>
+                    <h1 class="text-5xl font-extrabold mb-4 md:mb-0"><i class="fa-solid fa-dumbbell mr-2 text-accent"></i> {{ $program->name }}</h1>
                     {!! Breadcrumbs::render() !!}
                 </div>
             </div>
             <div class="flex space-x-4">
                 <a href="{{ route('programs.edit', $program->id) }}" class="btn btn-sm">Edit <i
                         class="fa-solid fa-pen-to-square"></i></a>
+                @role("premium")
                 <a href="{{ route('programs.exportPdf', $program->id) }}" class="btn btn-sm">Export PDF <i
                         class="fa-solid fa-download"></i></a>
+                @endrole
+                @role("user")
+                <a href="{{ route('subscriptions.index') }}" class="btn btn-sm bg-black/20 hover:bg-black/20 text-white/10">Export PDF <i class="fa-solid fa-lock text-yellow-500"></i></a>
+                @endrole
                 <form action="{{ route('programs.destroy', $program) }}" method="POST" class="inline-block">
                     @csrf
                     @method('DELETE')

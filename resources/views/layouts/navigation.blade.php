@@ -22,9 +22,9 @@
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button" class="btn btn-accent m-1 text-white">Menu <i
                             class="fa-solid fa-bars"></i></div>
-                    <ul tabindex="0" class="dropdown-content menu bg-accent text-white rounded-box z-[1] w-52 p-2 shadow">
-                        <li><a href="{{ route('programs.index') }}" class="hover:underline">Programs</a></li>
-                        <li><a href="{{ route('dashboard') }}" class="hover:underline">Dashboard</a></li>
+                    <ul tabindex="0" class="dropdown-content menu bg-base-200 text-white rounded-box z-[1] w-52 p-2 shadow">
+                        <li><a href="{{ route('programs.index') }}" class="">Programs</a></li>
+                        <li><a href="{{ route('dashboard') }}" class="">Dashboard</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf

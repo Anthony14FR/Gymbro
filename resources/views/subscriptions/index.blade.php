@@ -25,9 +25,9 @@
                     <p class="text-white font-bold text-2xl mt-2 mb-5">Features <i
                             class="fa-brands fa-sketch text-accent ml-2"></i></p>
                     <ul class="text-white/70">
-                        <li><i class="fa-solid fa-check text-gray-500 mr-2"></i> Access to all programs of the platform
+                        <li><i class="fa-solid fa-check text-gray-500 mr-2"></i> Unlimited programs creation</li>
                         </li>
-                        <li><i class="fa-solid fa-check text-gray-500 mr-2"></i> Access to all programs of the community
+                        <li><i class="fa-solid fa-check text-gray-500 mr-2"></i> Access to all programs of the community & Gymbro</li>
                         </li>
                         <li><i class="fa-solid fa-check text-gray-500 mr-2"></i> Export your programs in PDF</li>
                     </ul>

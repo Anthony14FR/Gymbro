@@ -56,12 +56,11 @@ Route::middleware('auth')->group(function () {
 
 // Subscriptions
 Route::middleware('auth')->group(function () {
-    Route::get('/subscriptions', function () {
-        return view('subscriptions.index');
-    })->name('subscriptions.index');
+    Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
     Route::post('/subscriptions', [SubscriptionController::class, 'create'])->name('subscriptions.create');
     Route::get('/subscriptions/success', [SubscriptionController::class, 'success'])->name('subscriptions.success');
     Route::get('/subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+    Route::post('/subscriptions/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscriptions.unsubscribe');
 });
 
 require __DIR__ . '/auth.php';

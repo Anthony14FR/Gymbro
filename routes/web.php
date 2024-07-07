@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/subscriptions', [SubscriptionController::class, 'create'])->name('subscriptions.create');
     Route::get('/subscriptions/success', [SubscriptionController::class, 'success'])->name('subscriptions.success');
     Route::get('/subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+    Route::post('/subscriptions/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscriptions.unsubscribe');
 });
 
 require __DIR__ . '/auth.php';

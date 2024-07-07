@@ -79,4 +79,36 @@ class SubscriptionController extends Controller
     {
         return redirect()->route('subscriptions.index')->with('error', 'Il semble qu\'il y ait eu un problème avec votre paiement. Veuillez réessayer.');
     }
+
+    public function unsubscribe(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $user = auth()->user();
+        $subscription = Subscription::where('user_id', $user->id)->first();
+
+        if (!$subscription) {
+            return redirect()->route('profile.edit')->with('error', 'No active subscription found.');
+        }
+
+        try {
+            $stripeSubscription = StripeSubscription::retrieve($subscription->stripe_subscription_id);
+
+            if ($stripeSubscription->status === 'canceled' || $stripeSubscription->cancel_at_period_end) {
+                return redirect()->route('profile.edit')->with('error', 'Subscription is already canceled.');
+            }
+
+            StripeSubscription::update(
+                $subscription->stripe_subscription_id,
+                ['cancel_at_period_end' => true]
+            );
+
+            $user->removeRole('premium');
+            $user->update(['role' => 'user']);
+
+            return redirect()->route('profile.edit')->with('success', 'Your subscription will be cancelled at the end of the current billing period.');
+        } catch (\Exception $e) {
+            return redirect()->route('profile.edit')->with('error', 'Error cancelling your subscription: ' . $e->getMessage());
+        }
+    }
 }

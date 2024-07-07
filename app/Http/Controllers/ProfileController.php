@@ -15,8 +15,14 @@ class ProfileController extends Controller
 {
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $subscription = $user->subscription;
+        $endDate = $subscription->ends_at;
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'subscription' => $subscription,
+            'endDate' => $endDate,
         ]);
     }
 

@@ -1,8 +1,8 @@
 <div class="bg-[#131417] shadow-md z-40 relative border-b-4 border-gray-500/20">
     <nav class="navbar flex justify-between container mx-auto">
         <div class="">
-            <a href="{{ route('dashboard') }}" class="text-xl flex items-center gap-5">
-                <img src="{{ asset('images/logo.svg') }}" alt="Gymbro" class="w-8 h-auto" />
+            <div href="{{ route('subscriptions.index') }}" class="text-xl flex items-center gap-5">
+            <img src="{{ asset('images/logo.svg') }}" alt="Gymbro" class="w-8 h-auto" />
                 <span class="text-xl font-bold text-white">GYMBRO</span>
                 @role('admin')
                     <span class="text-xs bg-yellow-300 font-bold text-black/70 px-2 py-1 rounded-full">Admin</span>
@@ -11,11 +11,13 @@
                     <span class="text-xs bg-yellow-300 font-bold text-black/70 px-2 py-1 rounded-full">Premium</span>
                 @endrole
                 @role('user')
+                 <a href="{{ route('subscriptions.index') }}" class="text-xl flex items-center gap-5">
                     <div class="bg-yellow-300 font-bold text-black/70 flex px-2 py-1 rounded-full ml-6 cursor-default">
                         <span class="text-xs cursor-default">Pas encore abonné ? Clique <a class="underline ml-1 text-xs cursor-pointer" href="{{ route('subscriptions.index') }}">ici<a></span>
                     </div>
+                 </a>
                 @endrole
-            </a>
+            </div>
         </div>
         <div class="">
             @auth

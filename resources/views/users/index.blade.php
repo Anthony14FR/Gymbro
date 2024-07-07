@@ -21,8 +21,10 @@
         </div>
     @endif
     <div class="overflow-x-auto space-y-10">
-        <div class="flex justify-end mb-4">
-            <button class="btn btn-primary" onclick="openCreateModal()">Create User</button>
+        <div class="flex justify-between mb-4 mt-10">
+            <span class="text-3xl">Users Dashboard
+            </span>
+            <button class="btn btn-neutral" onclick="openCreateModal()">Create User <i class="fa-solid fa-plus"></i></button>
         </div>
         <table class="table">
             <thead>
@@ -44,10 +46,12 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->email_verified_at == null ? 'No' : 'Yes' }}</td>
                         <td>
-                            <button class="btn btn-sm" onclick="openEditModal({{ $user->id }}, '{{ $user->username }}', '{{ $user->email }}')">Edit</button>
+                            <button class="btn btn-sm"
+                                onclick="openEditModal({{ $user->id }}, '{{ $user->username }}', '{{ $user->email }}')">Edit</button>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-danger" onclick="openDeleteModal({{ $user->id }}, '{{ $user->username }}')">Delete</button>
+                            <button class="btn btn-sm btn-danger"
+                                onclick="openDeleteModal({{ $user->id }}, '{{ $user->username }}')">Delete</button>
                         </td>
                         <td>
                             <a href="{{ route('users.show', ['user' => $user->id]) }}" class="btn btn-sm btn-info">Show</a>
@@ -81,11 +85,13 @@
                 </div>
                 <div class="py-4">
                     <label for="create_password_confirmation">Repeat Password</label>
-                    <input type="password" id="create_password_confirmation" name="password_confirmation" class="input input-bordered w-full">
+                    <input type="password" id="create_password_confirmation" name="password_confirmation"
+                        class="input input-bordered w-full">
                 </div>
                 <div class="modal-action">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <button type="button" class="btn" onclick="document.getElementById('create_modal').close()">Close</button>
+                    <button type="button" class="btn"
+                        onclick="document.getElementById('create_modal').close()">Close</button>
                 </div>
             </form>
         </div>
@@ -109,7 +115,8 @@
                 </div>
                 <div class="modal-action">
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn" onclick="document.getElementById('edit_modal').close()">Close</button>
+                    <button type="button" class="btn"
+                        onclick="document.getElementById('edit_modal').close()">Close</button>
                 </div>
             </form>
         </div>
@@ -127,7 +134,8 @@
                     <input type="hidden" id="delete_user_id" name="user_id">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
-                <button type="button" class="btn" onclick="document.getElementById('delete_modal').close()">Cancel</button>
+                <button type="button" class="btn"
+                    onclick="document.getElementById('delete_modal').close()">Cancel</button>
             </div>
         </div>
     </dialog>
@@ -143,13 +151,14 @@
             document.getElementById('edit_email').value = email;
             document.getElementById('edit_modal').showModal();
         }
-    
+
         function openDeleteModal(userId, username) {
             document.getElementById('delete_user_id').value = userId;
             document.getElementById('delete_user_form').action = "/users/" + userId;
-            document.getElementById('delete_user_message').innerText = "Are you sure you want to delete the user: " + username + "?";
+            document.getElementById('delete_user_message').innerText = "Are you sure you want to delete the user: " +
+                username + "?";
             document.getElementById('delete_modal').showModal();
         }
     </script>
-    
+
 @endsection

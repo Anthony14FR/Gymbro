@@ -17,7 +17,8 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $subscription = $user->subscription;
-        $endDate = $subscription->ends_at;
+
+        $endDate = $subscription ? $subscription->ends_at : null;
 
         return view('profile.edit', [
             'user' => $request->user(),

@@ -15,6 +15,9 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->hasRole('premium')) {
+            return redirect()->route('home')->with('error', 'You are already subscribed to our service.');
+        }
         return view('subscriptions.index');
     }
 

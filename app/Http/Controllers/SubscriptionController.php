@@ -7,6 +7,7 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
+use Carbon\Carbon;
 
 class SubscriptionController extends Controller
 {
@@ -67,7 +68,7 @@ class SubscriptionController extends Controller
                 'stripe_id' => $session->customer,
                 'stripe_subscription_id' => $session->subscription,
                 'stripe_plan' => $plan_id,
-                'ends_at' => $session->expires_at,
+                'ends_at' => Carbon::createFromTimestamp($session->expires_at),
             ]);
             $user->assignRole('premium');
             $user->update(['role' => 'premium']);

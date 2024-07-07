@@ -14,21 +14,23 @@
         <div class="tabs mt-8 mb-12 flex md:flex-row flex-col items-start md:space-y-0 space-y-5 md:space-x-10">
             <button class="tab tab-bordered tab-lg tab-active border-0 btn btn-accent md:w-auto w-full"
                 id="my-programs-tab"><i class="fa-solid fa-dumbbell"></i> Mes programmes</button>
-            @role('premium')
+            @if (Auth::check() && Auth::user()->hasRole('premium'))
                 <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="community-programs-tab"><i
                         class="fa-solid fa-users"></i> Programmes de la communauté</button>
                 <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="gymbro-programs-tab">
                     <i class="fa-solid fa-medal"></i><span class="inline-block">Programmes Gymbro</span>
                 </button>
-            @endrole
-
-            @role('user')
-                <a href="{{route('subscriptions.index')}}" class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full hover:bg-black/20 bg-black/20 text-white/10"><i
-                        class="fa-solid fa-users"></i> Programmes de la communauté <i class="fa-solid fa-lock text-yellow-500 ml-2"></i></a>
-                <a href="{{route('subscriptions.index')}}" class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full hover:bg-black/20 bg-black/20 text-white/10">
-                    <i class="fa-solid fa-medal"></i><span class="inline-block">Programmes Gymbro <i class="fa-solid fa-lock text-yellow-500 ml-2"></i></span>
+            @elseif (Auth::check() && Auth::user()->hasRole('user'))
+                <a href="{{ route('subscriptions.index') }}"
+                    class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full hover:bg-black/20 bg-black/20 text-white/10"><i
+                        class="fa-solid fa-users"></i> Programmes de la communauté <i
+                        class="fa-solid fa-lock text-yellow-500 ml-2"></i></a>
+                <a href="{{ route('subscriptions.index') }}"
+                    class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full hover:bg-black/20 bg-black/20 text-white/10">
+                    <i class="fa-solid fa-medal"></i><span class="inline-block">Programmes Gymbro <i
+                            class="fa-solid fa-lock text-yellow-500 ml-2"></i></span>
                 </a>
-            @endrole
+            @endif
 
         </div>
 

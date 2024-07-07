@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('home-content')
-    <div class="bg-base-100 -mt-[72px]">
+    @if (session('success'))
+        <dialog id="error_modal" class="modal -mt-80 p-0 animate__animated animate__slideInDown" open>
+            <div class="modal-box bg-green-500 max-w-4xl items-center justify-between shadow-none p-4 flex flex-row">
+                <p class="text-white"><i class="fa-solid fa-circle-exclamation mr-2"></i>{{ session('success') }}</p>
+                <button class="btn btn-sm bg-white text-black border-0 hover:bg-white/80"
+                    onclick="closeModal('error_modal')">Fermer</button>
+            </div>
+        </dialog>
+    @endif
+    <div class="bg-base-100 -mt-[76px]">
         <!-- Section Hero -->
         <section class="bg-cover bg-center h-screen text-primary-content"
             style="background-image: url({{ asset('images/home-banner.jpg') }})">
@@ -54,5 +63,9 @@
 
             e.preventDefault();
         });
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).close();
+        }
     </script>
 @endsection

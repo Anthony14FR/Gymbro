@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/c5f1bff552.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -34,12 +35,16 @@
         <!-- Page Content -->
 
         @if (View::hasSection('content'))
-            <main class="container mx-auto">
+            <main class="container mx-auto relative animate__animated animate__fadeIn">
                 @yield('content')
             </main>
         @elseif(View::hasSection('home-content'))
-            <main>
+            <main class="relative animate__animated animate__fadeIn">
                 @yield('home-content')
+            </main>
+        @elseif(View::hasSection('subscriptions-content'))
+            <main class="relative animate__animated animate__fadeIn">
+                @yield('subscriptions-content')
             </main>
         @endif
     </div>

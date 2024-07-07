@@ -25,13 +25,22 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        User::create([
+        $user = User::create([
             'username' => 'user',
             'email' => 'user@orus.com',
             'email_verified_at' => now(),
             'password' => Hash::make('user'),
             'remember_token' => Str::random(10),
         ]);
+
+        $premium = User::create([
+            'username' => 'premium',
+            'email' => 'premium@orus.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('premium'),
+            'remember_token' => Str::random(10),
+        ]);
+            
 
         $this->call([
             MuscleSeeder::class,
@@ -42,5 +51,9 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole('admin');
         $admin->update(['role' => 'admin']);
+        $user->assignRole('user');
+        $user->update(['role' => 'user']);
+        $premium->assignRole('premium');
+        $premium->update(['role' => 'premium']);
     }
 }

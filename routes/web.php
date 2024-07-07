@@ -6,6 +6,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubscriptionController;
 
 
 
@@ -20,7 +21,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Profile
-Route::middleware('auth' , )->group(function () {
+Route::middleware('auth', )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -50,6 +51,17 @@ Route::middleware('auth')->group(function () {
 // Users
 Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
+});
+
+
+// Subscriptions
+Route::middleware('auth')->group(function () {
+    Route::get('/subscriptions', function () {
+        return view('subscriptions.index');
+    })->name('subscriptions.index');
+    Route::post('/subscriptions', [SubscriptionController::class, 'create'])->name('subscriptions.create');
+    Route::get('/subscriptions/success', [SubscriptionController::class, 'success'])->name('subscriptions.success');
+    Route::get('/subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
 });
 
 require __DIR__ . '/auth.php';

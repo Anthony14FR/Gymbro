@@ -8,27 +8,21 @@ Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('home'));
 });
 
-// Dashboard
-Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Dashboard', route('dashboard'));
-});
-
 // Profile
 Breadcrumbs::for('profile.edit', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Edit Profile', route('profile.edit'));
 });
 
 // Exercises
 Breadcrumbs::for('exercises.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Exercises', url('/exercises'));
 });
 
 // Programs
 Breadcrumbs::for('programs.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Programs', route('programs.index'));
 });
 

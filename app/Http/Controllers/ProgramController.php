@@ -7,8 +7,8 @@ use App\Models\Exercise;
 use App\Models\Muscle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use App\Models\ExercisesPrograms;
 
 class ProgramController extends Controller
 {
@@ -99,14 +99,13 @@ class ProgramController extends Controller
         }
 
         try {
-            DB::table('exercises_programs')
-                ->where('id', $exerciseProgramId)
-                ->update([
-                    'order' => $request->order,
-                    'rep' => $request->rep,
-                    'break' => $request->break_time,
-                    'weight' => $request->weight,
-                ]);
+            $exerciseProgram = ExercisesPrograms::findOrFail($exerciseProgramId);
+            $exerciseProgram->update([
+                'order' => $request->order,
+                'rep' => $request->rep,
+                'break' => $request->break_time,
+                'weight' => $request->weight,
+            ]);
 
             return response()->json(['success' => true, 'id' => $exerciseProgramId]);
         } catch (\Exception $e) {
@@ -121,24 +120,23 @@ class ProgramController extends Controller
         }
 
         try {
-            $order = $program->exercises()->wherePivot('day', $request->day)->count() + 1;
-            $program->exercises()->attach($request->exercise_id, [
+            $order = ExercisesPrograms::where('program_id', $program->id)
+                    ->where('day', $request->day)
+                    ->count() + 1;
+
+            $data = [
+                'program_id' => $program->id,
+                'exercise_id' => $request->exercise_id,
                 'day' => $request->day,
                 'order' => $order,
                 'rep' => $request->rep,
                 'break' => $request->break_time,
                 'weight' => $request->weight,
-            ]);
+            ];
 
-            $exerciseProgramId = DB::table('exercises_programs')
-                ->where('exercise_id', $request->exercise_id)
-                ->where('program_id', $program->id)
-                ->where('day', $request->day)
-                ->where('order', $order)
-                ->latest('id')
-                ->value('id');
+            $exerciseProgram = ExercisesPrograms::create($data);
 
-            return response()->json(['success' => true, 'id' => $exerciseProgramId]);
+            return response()->json(['success' => true, 'id' => $exerciseProgram->id]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -153,7 +151,41 @@ class ProgramController extends Controller
         }
 
         try {
-            DB::table('exercises_programs')->where('id', $exerciseProgramId)->delete();
+            ExercisesPrograms::findOrFail($exerciseProgramId)->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function saveProgram(Request $request, Program $program)
+    {
+        if ($program->user_id !== Auth::id()) {
+            abort(404, 'Unauthorized action.');
+        }
+
+        try {
+            $program->update([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+
+            ExercisesPrograms::where('program_id', $program->id)->delete();
+
+            foreach ($request->days as $day) {
+                foreach ($day['exercises'] as $exercise) {
+                    ExercisesPrograms::create([
+                        'program_id' => $program->id,
+                        'exercise_id' => $exercise['exercise_id'],
+                        'day' => $day['day'],
+                        'order' => $exercise['order'],
+                        'rep' => $exercise['rep'],
+                        'break' => $exercise['break_time'],
+                        'weight' => $exercise['weight'],
+                    ]);
+                }
+            }
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -172,46 +204,17 @@ class ProgramController extends Controller
         ]);
 
         $imageName = $program->id . '.' . $request->image->extension();
-        if (!is_dir(public_path('images/programs/'.Auth::id()))) {
-            mkdir(public_path('images/programs/'.Auth::id()));
+        if (!is_dir(public_path('images/programs/'))) {
+            mkdir(public_path('images/programs/'));
         }
-        $request->image->move(public_path('images/programs/'.Auth::id()), $imageName);
+        if (!is_dir(public_path('images/programs/' . Auth::id()))) {
+            mkdir(public_path('images/programs/' . Auth::id()));
+        }
+        $request->image->move(public_path('images/programs/' . Auth::id()), $imageName);
         $userId = Auth::id();
-        $program->update(['image' => 'images/programs/'.$userId.'/'.$imageName]);
+        $program->update(['image' => 'images/programs/' . $userId . '/' . $imageName]);
         $imagePath = $program->image;
         return response()->json(['success' => true, 'image' => $imagePath]);
-    }
-
-    public function saveProgram(Request $request, Program $program)
-    {
-        if ($program->user_id !== Auth::id()) {
-            abort(404, 'Unauthorized action.');
-        }
-
-        try {
-            $program->update([
-                'name' => $request->name,
-                'description' => $request->description,
-            ]);
-
-            $program->exercises()->detach();
-
-            foreach ($request->days as $day) {
-                foreach ($day['exercises'] as $exercise) {
-                    $program->exercises()->attach($exercise['exercise_id'], [
-                        'day' => $day['day'],
-                        'order' => $exercise['order'],
-                        'rep' => $exercise['rep'],
-                        'break' => $exercise['break_time'],
-                        'weight' => $exercise['weight'],
-                    ]);
-                }
-            }
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
     }
 
     public function toggleStatus(Request $request, Program $program)

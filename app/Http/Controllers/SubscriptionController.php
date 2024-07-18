@@ -69,6 +69,7 @@ class SubscriptionController extends Controller
                 'stripe_subscription_id' => $session->subscription,
                 'stripe_plan' => $plan_id,
                 'ends_at' => Carbon::createFromTimestamp($session->expires_at),
+                'isCancelled' => false,
             ]);
             $user->assignRole('premium');
             $user->update(['role' => 'premium']);
@@ -89,30 +90,30 @@ class SubscriptionController extends Controller
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $user = auth()->user();
-        $subscription = Subscription::where('user_id', $user->id)->first();
+        $subscription = $user->subscription;
 
         if (!$subscription) {
-            return redirect()->route('profile.edit')->with('error', 'No active subscription found.');
+            return redirect()->route('profile.edit')->with('error', 'Aucun abonnement actif trouvé.');
         }
 
         try {
             $stripeSubscription = StripeSubscription::retrieve($subscription->stripe_subscription_id);
 
-            if ($stripeSubscription->status === 'canceled' || $stripeSubscription->cancel_at_period_end) {
-                return redirect()->route('profile.edit')->with('error', 'Subscription is already canceled.');
+            if ($stripeSubscription->status === 'canceled') {
+                return redirect()->route('profile.edit')->with('error', 'L\'abonnement est déjà annulé.');
             }
 
-            StripeSubscription::update(
-                $subscription->stripe_subscription_id,
-                ['cancel_at_period_end' => true]
-            );
+            $stripeSubscription->cancel_at_period_end = true;
+            $stripeSubscription->save();
 
-            $user->removeRole('premium');
-            $user->update(['role' => 'user']);
+            $subscription->update([
+                'ends_at' => Carbon::createFromTimestamp($stripeSubscription->current_period_end),
+                'isCancelled' => true,
+            ]);
 
-            return redirect()->route('profile.edit')->with('success', 'Your subscription will be cancelled at the end of the current billing period.');
+            return redirect()->route('profile.edit')->with('success', 'Votre abonnement sera annulé à la fin de la période de facturation en cours.');
         } catch (\Exception $e) {
-            return redirect()->route('profile.edit')->with('error', 'Error cancelling your subscription: ' . $e->getMessage());
+            return redirect()->route('profile.edit')->with('error', 'Erreur lors de l\'annulation de votre abonnement : ' . $e->getMessage());
         }
     }
 }

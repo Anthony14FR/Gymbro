@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Validation\Rule;
 use App\Models\Program;
 use Illuminate\Support\Facades\DB;
+use App\Models\Subscription;
 
 class UserController extends Controller
 {
@@ -15,10 +16,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Fetch all users stp 
-        $users = User::paginate(1);
+        $users = User::paginate(2);
+        $totalUsers = User::count();
+        $verifiedUsers = User::whereNotNull('email_verified_at')->count();
+        $newUsers = User::where('created_at', '>=', now()->subDays(30))->count();
+        $subscribedUsers = Subscription::count();
+        $totalPrograms = Program::count();
+        $publicPrograms = Program::where('status', true)->count();
 
-        return view('users.index', compact('users'));
+        return view('users.index', compact('users', 'totalUsers', 'verifiedUsers', 'newUsers', 'subscribedUsers', 'totalPrograms', 'publicPrograms'));
     }
 
     /**

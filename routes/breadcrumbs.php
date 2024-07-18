@@ -42,3 +42,9 @@ Breadcrumbs::for('programs.show', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('programs.index');
     $trail->push('Show Program', route('programs.show', $id));
 });
+
+// Manage Users
+Breadcrumbs::for('users.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Manage Users', route('users.index'));
+});

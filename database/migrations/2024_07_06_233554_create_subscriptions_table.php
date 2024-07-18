@@ -14,6 +14,7 @@ class CreateSubscriptionsTable extends Migration
             $table->string('stripe_id');
             $table->string('stripe_subscription_id');
             $table->string('stripe_plan');
+            $table->boolean('isCancelled')->default(false);
             $table->timestamp('ends_at')->nullable();
             $table->timestamps();
 

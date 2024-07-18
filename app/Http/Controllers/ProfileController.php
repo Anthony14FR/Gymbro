@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VerifyEmailChange;
+use Carbon\Carbon;
+
 
 class ProfileController extends Controller
 {
@@ -18,7 +20,10 @@ class ProfileController extends Controller
         $user = $request->user();
         $subscription = $user->subscription;
 
-        $endDate = $subscription ? $subscription->ends_at : null;
+        $endDate = null;
+        if ($subscription && $subscription->ends_at) {
+            $endDate = Carbon::parse($subscription->ends_at);
+        }
 
         return view('profile.edit', [
             'user' => $request->user(),

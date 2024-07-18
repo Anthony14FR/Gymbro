@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Subscription extends Model
 {
@@ -15,6 +16,7 @@ class Subscription extends Model
         'stripe_subscription_id',
         'stripe_plan',
         'ends_at',
+        'isCancelled',
     ];
 
     protected $dates = [
@@ -28,6 +30,11 @@ class Subscription extends Model
 
     public function isActive()
     {
-        return is_null($this->ends_at);
+        return $this->isCancelled == false;
+    }
+
+    public function isCancelled()
+    {
+        return $this->isCancelled == true;
     }
 }

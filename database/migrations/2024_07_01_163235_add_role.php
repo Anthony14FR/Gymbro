@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['admin', 'premium', 'user'])->default('user');
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->enum('role', ['admin', 'premium', 'user'])->default('user');
+            }
         });
     }
 

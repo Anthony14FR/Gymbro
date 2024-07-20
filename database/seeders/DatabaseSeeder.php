@@ -51,8 +51,11 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole('admin');
         $admin->update(['role' => 'admin']);
+        $admin->assignRole('premium');
+
         $user->assignRole('user');
         $user->update(['role' => 'user']);
+
         $premium->assignRole('premium');
         $premium->update(['role' => 'premium']);
     }

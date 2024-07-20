@@ -307,11 +307,31 @@
                 emailFields.appendChild(newField);
             });
 
-            // Event delegation to handle removal of email fields
             document.getElementById('email-fields').addEventListener('click', function(event) {
                 if (event.target.classList.contains('remove-email-field') || event.target.closest('.remove-email-field')) {
                     event.target.closest('.email-field').remove();
                 }
+
+            document.getElementById('invite_users_form').addEventListener('submit', function(event) {
+                var emailInputs = document.querySelectorAll('input[name="mail_to[]"]');
+                var emails = [];
+                var duplicates = false;
+
+                emailInputs.forEach(function(input) {
+                    if (emails.includes(input.value)) {
+                        duplicates = true;
+                        input.classList.add('border-red-500'); // Add red border to duplicate input
+                    } else {
+                        emails.push(input.value);
+                        input.classList.remove('border-red-500');
+                    }
+                });
+
+                if (duplicates) {
+                    event.preventDefault();
+                    alert('Please remove duplicate emails.');
+                }
+            });
             });
         });
 

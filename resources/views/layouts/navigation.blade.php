@@ -2,9 +2,8 @@
     <nav class="navbar flex justify-between container mx-auto">
         <div class="">
             <div href="{{ route('subscriptions.index') }}" class="text-xl flex items-center gap-5">
-                <a class="flex" href="/"><img src="{{ asset('images/logo.svg') }}" alt="Gymbro" class="w-8 h-auto" />
-                    <span class="ml-4 text-xl font-bold text-white">GYMBRO</span>
-                </a>
+               <img src="{{ asset('images/logo.svg') }}" alt="Gymbro" class="w-8 h-auto" />
+                <span class="ml-4 text-xl font-bold text-white">GYMBRO</span>
                 @if (Auth::check())
                     @if (Auth::check() && Auth::user()->hasRole('admin'))
                         <span class="text-xs bg-yellow-300 font-bold text-black/70 px-2 py-1 rounded-full">Admin</span>

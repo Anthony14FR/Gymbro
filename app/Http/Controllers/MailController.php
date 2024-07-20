@@ -17,7 +17,7 @@ class MailController extends Controller
             'mail_to.*' => 'required|email',
         ]);
 
-        $mailTos = $request->mail_to;
+        $mailTos = array_unique($request->mail_to);
 
         foreach ($mailTos as $mailTo) {
             SendMail::dispatch($mailTo);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailVerificationController;
@@ -61,6 +62,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/subscriptions/success', [SubscriptionController::class, 'success'])->name('subscriptions.success');
     Route::get('/subscriptions/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
     Route::post('/subscriptions/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscriptions.unsubscribe');
+});
+
+//Emails
+Route::middleware('auth')->group(function (){
+    Route::post('send-mail', [MailController::class, 'sendMail'])->name('send.mail');
 });
 
 require __DIR__ . '/auth.php';

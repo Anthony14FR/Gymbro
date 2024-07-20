@@ -47,7 +47,9 @@
                         @endif
 
                         <div class="space-y-3">
-                            @if (auth()->user()->hasRole('premium'))
+                            @if(auth()->user()->hasRole('admin'))
+                                <p class="text-green-600 dark:text-green-400">{{ __('Vous êtes un administrateur et avez un accès complet à l\'application.') }}</p>
+                            @elseif (auth()->user()->hasRole('premium'))
                                 @if ($subscription)
                                     @if ($subscription->isCancelled())
                                         <p class="text-yellow-600 dark:text-yellow-400">
@@ -88,13 +90,9 @@
                                     <p class="text-gray-600 dark:text-gray-400">{{ __('Le statut de votre abonnement n\'est pas clair. Veuillez contacter le support.') }} </p>
                                 @endif
                             @else
-                                @if(auth()->user()->hasRole('admin'))
-                                    <p class="text-green-600 dark:text-green-400">{{ __('Vous êtes un administrateur et avez un accès complet à l\'application.') }}</p>
-                                @else
                                     <p class="text-gray-600 dark:text-gray-400">{{ __('Vous n\'avez pas d\'abonnement actif.') }}</p>
                                     <a href="{{ route('subscriptions.index') }}"
                                        class="btn btn-primary mt-4">{{ __('S\'abonner maintenant') }}</a>
-                                @endif
                             @endif
                         </div>
                     </div>

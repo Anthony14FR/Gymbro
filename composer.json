@@ -9,7 +9,9 @@
         "barryvdh/laravel-dompdf": "*",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "laravel/framework": "^11.9",
+        "laravel/horizon": "^5.25",
         "laravel/tinker": "^2.9",
+        "predis/predis": "^2.2",
         "spatie/laravel-permission": "^6.9",
         "stripe/stripe-php": "^15.1"
     },

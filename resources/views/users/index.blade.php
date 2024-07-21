@@ -311,16 +311,17 @@
                 if (event.target.classList.contains('remove-email-field') || event.target.closest('.remove-email-field')) {
                     event.target.closest('.email-field').remove();
                 }
+            });
 
-            document.getElementById('invite_users_form').addEventListener('submit', function(event) {
-                var emailInputs = document.querySelectorAll('input[name="mail_to[]"]');
-                var emails = [];
-                var duplicates = false;
+           document.getElementById('invite_users_form').addEventListener('submit', function(event) {
+                let emailInputs = document.querySelectorAll('input[name="mail_to[]"]');
+                let emails = [];
+                let duplicates = false;
 
                 emailInputs.forEach(function(input) {
                     if (emails.includes(input.value)) {
                         duplicates = true;
-                        input.classList.add('border-red-500'); // Add red border to duplicate input
+                        input.classList.add('border-red-500');
                     } else {
                         emails.push(input.value);
                         input.classList.remove('border-red-500');
@@ -331,7 +332,6 @@
                     event.preventDefault();
                     alert('Please remove duplicate emails.');
                 }
-            });
             });
         });
 

@@ -22,7 +22,12 @@ install: ## initialise the development environment
 	$(SAIL) npm run dev
 up: ## start containers in the background & start npm run watch
 	$(SAIL) up -d && \
+	make reset && \
+	make clear && \
 	$(SAIL) npm run dev
+
+down: ## stop containers
+	$(SAIL) down
 
 ## —— Artisan ——————————————————————————————————————————————————————————————————
 clear: ## cache invalidation (route, cache, config, view)

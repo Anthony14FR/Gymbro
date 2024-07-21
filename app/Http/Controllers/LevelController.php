@@ -7,14 +7,26 @@ use Illuminate\Http\Request;
 
 class LevelController extends Controller
 {
-    public function incrementLevel(User $user)
-    {
-        $user->increment('level');
-        return response()->json(['message' => 'Niveau augmenté avec succès', 'new_level' => $user->level]);
-    }
 
     public function getUserLevel(User $user)
     {
-        return response()->json(['level' => $user->level]);
+        return $user->level;
+    }
+
+    public function getUserExperience(User $user)
+    {
+        return $user->experience;
+    }
+
+    public function setUserLevel(User $user, $level)
+    {
+        $user->level = $level;
+        $user->save();
+    }
+
+    public function setUserExperience(User $user, $experience)
+    {
+        $user->experience = $experience;
+        $user->save();
     }
 }

@@ -96,21 +96,22 @@
                             @endif
                         </div>
                     </div>
-                    <div class="p-4 sm:p-8 bg-white dark:bg-base-200 border border-2 border-white/10 shadow sm:rounded-lg">
-                        <div class="max-w-xl space-y-5">
+                </div>
+                <div class="p-4 sm:p-8 bg-white dark:bg-base-200 border border-2 border-white/10 shadow sm:rounded-lg">
+                    <div class="max-w-xl space-y-5">
                             <span class="text-2xl font-medium text-gray-900 dark:text-gray-100">
                                 {{ __('Progression') }}
                             </span>
-                            <div class="space-y-3">
-                                <p>Niveau : {{ $level }}</p>
-                                <p>Expérience : {{ $experience }} / 100</p>
-                                <p>Prochain niveau dans : {{ $nextLevelExperience }} points</p>
-                                <p>Rang actuel : {{ $rank }}</p>
-                                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $experience }}%"></div>
-                                </div>
+                        <div class="space-y-3">
+                            <p class="flex items-center"><i class="fas fa-chart-line mr-8"></i> Niveau : {{ $level }}</p>
+                            <p class="flex items-center"><i class="fas fa-star mr-8"></i> Expérience : {{ $experience }} / 100</p>
+                            <p class="flex items-center"><i class="fas fa-arrow-up mr-8 w-4"></i> Prochain niveau dans : {{ $nextLevelExperience }} points</p>
+                            <p class="flex items-center"><i class="fas fa-trophy mr-8"></i> Rang actuel : {{ $rank }}</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $experience }}%"></div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

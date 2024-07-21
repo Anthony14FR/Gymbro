@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <title>{{ $program->name }}</title>
@@ -133,49 +133,49 @@
 </div>
 
 <div class="program-info">
-    <img src="{{ public_path($program->image) }}" alt="{{ $program->name }}" class="program-image">
-    <p><strong>Description :</strong> {{ $program->description }}</p>
-    <p><strong>Créé le :</strong> {{ $program->created_at->locale('fr')->isoFormat('LL') }}</p>
-    <p><strong>Dernière mise à jour :</strong> {{ $program->updated_at->locale('fr')->isoFormat('LL') }}</p>
-    <p><strong>Nombre de jours :</strong> {{ $days->count() }}</p>
+    <img src="{{ public_path($program->image) }}" alt="{{ __('pdf.image') }}" class="program-image">
+    <p><strong>{{ __('pdf.description') }} :</strong> {{ $program->description }}</p>
+    <p><strong>{{ __('pdf.created_at') }} :</strong> {{ $program->created_at->locale(app()->getLocale())->isoFormat('LL') }}</p>
+    <p><strong>{{ __('pdf.updated_at') }} :</strong> {{ $program->updated_at->locale(app()->getLocale())->isoFormat('LL') }}</p>
+    <p><strong>{{ __('pdf.number_of_days') }} :</strong> {{ $days->count() }}</p>
 
     <div class="program-summary">
-        <h3>Résumé du programme</h3>
+        <h3>{{ __('pdf.program_summary') }}</h3>
         <ul>
             @foreach ($days as $day => $exercises)
                 <li>
-                    <strong>Jour {{ $day }} :</strong>
-                    {{ $exercises->count() }} exercices
-                    ({{ $exercises->sum('pivot.rep') }} répétitions totales,
-                    {{ $exercises->sum('pivot.break') }} secondes de pause totales)
+                    <strong>{{ __('pdf.day') }} {{ $day }} :</strong>
+                    {{ $exercises->count() }} {{ __('pdf.exercises') }}
+                    ({{ $exercises->sum('pivot.rep') }} {{ __('pdf.total_reps') }},
+                    {{ $exercises->sum('pivot.break') }} {{ __('pdf.total_breaks') }} {{ __('pdf.seconds') }})
                 </li>
             @endforeach
         </ul>
     </div>
 
     <div class="program-summary">
-        <h3>Conseils pour réussir</h3>
+        <h3>{{ __('pdf.tips_for_success') }}</h3>
         <ul>
-            <li>Échauffez-vous correctement avant chaque séance</li>
-            <li>Restez hydraté tout au long de l'entraînement</li>
-            <li>Concentrez-vous sur la bonne exécution des mouvements</li>
-            <li>Respectez les temps de pause entre les exercices</li>
-            <li>N'hésitez pas à ajuster les poids si nécessaire</li>
+            <li>{{ __('pdf.tip_warm_up') }}</li>
+            <li>{{ __('pdf.tip_stay_hydrated') }}</li>
+            <li>{{ __('pdf.tip_focus_form') }}</li>
+            <li>{{ __('pdf.tip_respect_breaks') }}</li>
+            <li>{{ __('pdf.tip_adjust_weights') }}</li>
         </ul>
     </div>
 </div>
 
 @foreach ($days as $day => $exercises)
     <div class="day-card">
-        <h2>Jour {{ $day }}</h2>
+        <h2>{{ __('pdf.day') }} {{ $day }}</h2>
         <table>
             <thead>
             <tr>
                 <th>#</th>
-                <th>Exercice</th>
-                <th>Répétitions</th>
-                <th>Pause (s)</th>
-                <th>Poids (kg)</th>
+                <th>{{ __('pdf.exercise') }}</th>
+                <th>{{ __('pdf.repetitions') }}</th>
+                <th>{{ __('pdf.break') }} ({{ __('pdf.seconds') }})</th>
+                <th>{{ __('pdf.weight') }} ({{ __('pdf.kg') }})</th>
             </tr>
             </thead>
             <tbody>

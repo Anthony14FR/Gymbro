@@ -43,12 +43,11 @@
                 </div>
             </div>
         @endif
-
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8 bg-base-200 p-4 rounded-lg shadow">
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="stat-title text-xs font-semibold uppercase">{{ __('Total Utilisateurs') }}</div>
+                        <div class="stat-title text-xs font-semibold uppercase">{{ __('users.total_users') }}</div>
                         <div class="stat-value text-3xl font-bold">{{ number_format($totalUsers) }}</div>
                     </div>
                     <i class="fas fa-users text-2xl text-primary"></i>
@@ -58,7 +57,7 @@
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="stat-title text-xs font-semibold uppercase">{{ __('Utilisateurs Vérifiés') }}</div>
+                        <div class="stat-title text-xs font-semibold uppercase">{{ __('users.verified_users') }}</div>
                         <div class="stat-value text-3xl font-bold">{{ number_format($verifiedUsers) }}</div>
                     </div>
                     <i class="fas fa-user-check text-2xl text-success"></i>
@@ -68,9 +67,9 @@
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="stat-title text-xs font-semibold uppercase">{{ __('Nouveaux Utilisateurs') }}</div>
+                        <div class="stat-title text-xs font-semibold uppercase">{{ __('users.new_users') }}</div>
                         <div class="stat-value text-3xl font-bold">{{ number_format($newUsers) }}</div>
-                        <div class="stat-desc text-xs">{{ __('30 derniers jours') }}</div>
+                        <div class="stat-desc text-xs">{{ __('users.last_30_days') }}</div>
                     </div>
                     <i class="fas fa-user-plus text-2xl text-info"></i>
                 </div>
@@ -79,7 +78,7 @@
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="stat-title text-xs font-semibold uppercase">{{ __('Utilisateurs Abonnés') }}</div>
+                        <div class="stat-title text-xs font-semibold uppercase">{{ __('users.subscribed_users') }}</div>
                         <div class="stat-value text-3xl font-bold">{{ number_format($subscribedUsers) }}</div>
                     </div>
                     <i class="fas fa-star text-2xl text-warning"></i>
@@ -89,7 +88,7 @@
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="stat-title text-xs font-semibold uppercase">{{ __('Total Programmes') }}</div>
+                        <div class="stat-title text-xs font-semibold uppercase">{{ __('users.total_programs') }}</div>
                         <div class="stat-value text-3xl font-bold">{{ number_format($totalPrograms) }}</div>
                     </div>
                     <i class="fas fa-dumbbell text-2xl text-secondary"></i>
@@ -99,7 +98,7 @@
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="stat-title text-xs font-semibold uppercase">{{ __('Programmes Publics') }}</div>
+                        <div class="stat-title text-xs font-semibold uppercase">{{ __('users.public_programs') }}</div>
                         <div class="stat-value text-3xl font-bold">{{ number_format($publicPrograms) }}</div>
                     </div>
                     <i class="fas fa-globe text-2xl text-accent"></i>
@@ -107,14 +106,8 @@
             </div>
         </div>
 
-        <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden">
-            <div class="flex flex-col p-6 bg-base-200 border-b border-base-300">
-                <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
-                    <h1 class="text-3xl font-bold text-base-content mb-2 sm:mb-0">
-                        {{ __('Gestion des utilisateurs') }}
-                        <i class="fa-solid fa-users fa-xs ml-2 text-accent"></i>
                     </h1>
-                    <div>
+                      <div>
                         <button class="btn btn-sm btn-primary mr-2" onclick="openInviteModal()">
                             {{ __('Inviter des utilisateurs') }}
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -128,6 +121,20 @@
                             </svg>
                         </button>
                     </div>
+                    </button>
+        <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden">
+            <div class="flex flex-col p-6 bg-base-200 border-b border-base-300">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                    <h1 class="text-3xl font-bold text-base-content mb-2 sm:mb-0">
+                        {{ __('users.user_management') }}
+                        <i class="fa-solid fa-users fa-xs ml-2 text-accent"></i>
+                    </h1>
+                    <button class="btn btn-sm btn-primary" onclick="openCreateModal()">
+                        {{ __('users.create_user') }}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="breadcrumbs text-sm">
                     {!! Breadcrumbs::render() !!}
@@ -139,11 +146,11 @@
                     <thead>
                     <tr>
                         <th class="bg-base-200">#</th>
-                        <th class="bg-base-200">{{ __('Nom d\'utilisateur') }}</th>
-                        <th class="bg-base-200">{{ __('Email') }}</th>
-                        <th class="bg-base-200">{{ __('Vérifié') }}</th>
-                        <th class="bg-base-200">{{ __('Abonné') }}</th>
-                        <th class="bg-base-200">{{ __('Actions') }}</th>
+                        <th class="bg-base-200">{{ __('users.username') }}</th>
+                        <th class="bg-base-200">{{ __('users.email') }}</th>
+                        <th class="bg-base-200">{{ __('users.verified') }}</th>
+                        <th class="bg-base-200">{{ __('users.subscribed') }}</th>
+                        <th class="bg-base-200">{{ __('users.actions') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -154,26 +161,26 @@
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->email_verified_at)
-                                    <span class="badge badge-success">{{ __('Oui') }} <i class="fa-solid fa-check ml-1"></i></span>
+                                    <span class="badge badge-success">{{ __('users.yes') }} <i class="fa-solid fa-check ml-1"></i></span>
                                 @else
-                                    <span class="badge badge-error">{{ __('Non') }} <i class="fa-solid fa-times ml-1"></i></span>
+                                    <span class="badge badge-error">{{ __('users.no') }} <i class="fa-solid fa-times ml-1"></i></span>
                                 @endif
                             </td>
                             <td>
                                 @if($user->hasRole('premium'))
-                                    <span class="badge badge-success">{{ __('Oui') }} <i class="fa-solid fa-check ml-1"></i></span>
+                                    <span class="badge badge-success">{{ __('users.yes') }} <i class="fa-solid fa-check ml-1"></i></span>
                                 @else
-                                    <span class="badge badge-error">{{ __('Non') }} <i class="fa-solid fa-times ml-1"></i></span>
+                                    <span class="badge badge-error">{{ __('users.no') }} <i class="fa-solid fa-times ml-1"></i></span>
                                 @endif
                             </td>
                             <td>
                                 <div class="flex flex-col gap-2 sm:flex-row sm:gap-1 justify-center">
                                     <button class="btn btn-xs sm:btn-sm btn-outline btn-primary"
-                                            onclick="openEditModal({{ $user->id }}, '{{ $user->username }}', '{{ $user->email }}')">{{ __('Modifier') }} <i class="fa-solid fa-pencil ml-1"></i></button>
+                                            onclick="openEditModal({{ $user->id }}, '{{ $user->username }}', '{{ $user->email }}')">{{ __('users.edit') }} <i class="fa-solid fa-pencil ml-1"></i></button>
                                     <button class="btn btn-xs sm:btn-sm btn-outline btn-secondary"
-                                            onclick="openDeleteModal({{ $user->id }}, '{{ $user->username }}')">{{ __('Supprimer') }} <i class="fa-solid fa-trash ml-1"></i></button>
+                                            onclick="openDeleteModal({{ $user->id }}, '{{ $user->username }}')">{{ __('users.delete') }} <i class="fa-solid fa-trash ml-1"></i></button>
                                     <a href="{{ route('users.show', ['user' => $user->id]) }}"
-                                       class="btn btn-xs sm:btn-sm btn-outline btn-accent">{{ __('Afficher') }} <i class="fa-solid fa-eye ml-1"></i></a>
+                                       class="btn btn-xs sm:btn-sm btn-outline btn-accent">{{ __('users.view') }} <i class="fa-solid fa-eye ml-1"></i></a>
                                 </div>
                             </td>
                         </tr>
@@ -191,40 +198,40 @@
     <!-- Create Modal -->
     <dialog id="create_modal" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4">{{ __('Créer un utilisateur') }}</h3>
+            <h3 class="font-bold text-lg mb-4">{{ __('users.create_user') }}</h3>
             <form id="create_user_form" method="POST" action="{{ route('users.store') }}" class="space-y-4">
                 @csrf
                 <div class="form-control">
                     <label class="label" for="create_username">
-                        <span class="label-text">{{ __('Nom d\'utilisateur') }}</span>
+                        <span class="label-text">{{ __('users.username') }}</span>
                     </label>
                     <input type="text" id="create_username" name="username" class="input input-bordered w-full"
                            required>
                 </div>
                 <div class="form-control">
                     <label class="label" for="create_email">
-                        <span class="label-text">{{ __('Email') }}</span>
+                        <span class="label-text">{{ __('users.email') }}</span>
                     </label>
                     <input type="email" id="create_email" name="email" class="input input-bordered w-full" required>
                 </div>
                 <div class="form-control">
                     <label class="label" for="create_password">
-                        <span class="label-text">{{ __('Mot de passe') }}</span>
+                        <span class="label-text">{{ __('users.password') }}</span>
                     </label>
                     <input type="password" id="create_password" name="password" class="input input-bordered w-full"
                            required>
                 </div>
                 <div class="form-control">
                     <label class="label" for="create_password_confirmation">
-                        <span class="label-text">{{ __('Confirmer le mot de passe') }}</span>
+                        <span class="label-text">{{ __('users.confirm_password') }}</span>
                     </label>
                     <input type="password" id="create_password_confirmation" name="password_confirmation"
                            class="input input-bordered w-full" required>
                 </div>
                 <div class="modal-action">
-                    <button type="submit" class="btn btn-primary">{{ __('Créer') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('users.create') }}</button>
                     <button type="button" class="btn"
-                            onclick="document.getElementById('create_modal').close()">{{ __('Fermer') }}</button>
+                            onclick="document.getElementById('create_modal').close()">{{ __('users.close') }}</button>
                 </div>
             </form>
         </div>
@@ -233,35 +240,48 @@
     <!-- Invite Modal -->
     <dialog id="invite_modal" class="modal modal-bottom sm:modal-middle h-auto w-auto">
         <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4">{{ __('Inviter des utilisateurs') }}</h3>
-            <form id="invite_users_form" method="POST" action="{{ route('send.mail') }}" class="space-y-4">
+            <h3 class="font-bold text-lg mb-4">{{ __('users.edit_user') }}</h3>
+            <form id="edit_user_form" method="POST" action="{{ route('users.update', ['user' => 0]) }}"
+                  class="space-y-4">
                 @csrf
-                <div id="email-fields" class="space-y-4 max-h-64 overflow-y-auto">
-                    <div class="email-field flex items-center">
-                        <div class="w-full">
-                            <label class="label" for="mail_to">
-                                <span class="label-text">{{ __('Email') }}</span>
-                            </label>
-                            <input type="email" name="mail_to[]" class="input input-bordered" required>
-                            <button type="button" class="btn btn-error ml-2 remove-email-field">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
+                @method('PUT')
+                <input type="hidden" id="edit_user_id" name="user_id">
+                <div class="form-control">
+                    <label class="label" for="edit_username">
+                        <span class="label-text">{{ __('users.username') }}</span>
+                    </label>
+                    <input type="text" id="edit_username" name="username" class="input input-bordered w-full" required>
                 </div>
-                <div class="flex justify-between items-center">
-                    <div class="modal-action">
-                        <button type="button" id="add-email-field" class="btn btn-secondary">
-                            {{ __('Add email') }}
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                        <button type="submit" class="btn btn-primary">{{ __('Send') }}
-                            <i class="fa-regular fa-paper-plane"></i></button>
-                        <button type="button" class="btn"
-                                onclick="document.getElementById('invite_modal').close()">{{ __('Fermer') }}</button>
-                    </div>
+                <div class="form-control">
+                    <label class="label" for="edit_email">
+                        <span class="label-text">{{ __('users.email') }}</span>
+                    </label>
+                    <input type="email" id="edit_email" name="email" class="input input-bordered w-full" required>
+                </div>
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary">{{ __('users.save') }}</button>
+                    <button type="button" class="btn"
+                            onclick="document.getElementById('edit_modal').close()">{{ __('users.close') }}</button>
                 </div>
             </form>
+        </div>
+    </dialog>
+
+    <!-- Delete Modal -->
+    <dialog id="delete_modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">{{ __('users.delete_user') }}</h3>
+            <p id="delete_user_message" class="py-4"></p>
+            <div class="modal-action">
+                <form id="delete_user_form" method="POST" action="{{ route('users.destroy', ['user' => 0]) }}">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" id="delete_user_id" name="user_id">
+                    <button type="submit" class="btn btn-error">{{ __('users.delete') }}</button>
+                </form>
+                <button type="button" class="btn"
+                        onclick="document.getElementById('delete_modal').close()">{{ __('users.close') }}</button>
+            </div>
         </div>
     </dialog>
 
@@ -284,7 +304,7 @@
         function openDeleteModal(userId, username) {
             document.getElementById('delete_user_id').value = userId;
             document.getElementById('delete_user_form').action = "/users/" + userId;
-            document.getElementById('delete_user_message').innerText = "{{ __('Êtes-vous sûr de vouloir supprimer l\'utilisateur :') }} " + username + "?";
+            document.getElementById('delete_user_message').innerText = "{{ __('users.are_you_sure') }}".replace(':username', username);
             document.getElementById('delete_modal').showModal();
         }
 

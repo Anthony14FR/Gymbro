@@ -120,11 +120,11 @@
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                             </svg>
                         </button>
-                        <button class="btn btn-sm btn-primary" onclick="openCleanProgramsModal()">
-                            {{ __('Nettoyer les programmes') }}
                             <i class="fa-solid fa-trash ml-2"></i>
                         </button>
                     </div>
+                            {{ __('users.clean_programs') }}
+                        <button class="btn btn-sm btn-primary" onclick="openCleanProgramsModal()">
                 </div>
                 <div class="breadcrumbs text-sm">
                     {!! Breadcrumbs::render() !!}
@@ -168,7 +168,7 @@
                                 @if($user->hasRole('admin'))
                                     <span class="badge badge-success">{{ __('Oui') }} <i class="fa-solid fa-check ml-1"></i></span>
                                 @else
-                                    <span class="badge badge-error">{{ __('Non') }} <i class="fa-solid fa-times ml-1"></i></span>
+                                    <span class="badge badge-error">{{ __('users.no') }} <i class="fa-solid fa-times ml-1"></i></span>
                                 @endif
                             </td>
                             <td>
@@ -291,13 +291,13 @@
                 <input type="hidden" id="edit_user_id" name="user_id">
                 <div class="form-control">
                     <label class="label" for="edit_username">
-                        <span class="label-text">{{ __('Nom d\'utilisateur') }}</span>
+                        <span class="label-text">{{ __('users.username') }}</span>
                     </label>
                     <input type="text" id="edit_username" name="username" class="input input-bordered w-full" required>
                 </div>
                 <div class="form-control">
                     <label class="label" for="edit_email">
-                        <span class="label-text">{{ __('Email') }}</span>
+                        <span class="label-text">{{ __('users.email') }}</span>
                     </label>
                     <input type="email" id="edit_email" name="email" class="input input-bordered w-full" required>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RankEnum;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,6 +17,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'email',
         'password',
+        'level',
+        'experience'
     ];
 
     protected $hidden = [
@@ -30,6 +33,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function subscription()
     {
         return $this->hasOne(Subscription::class);
+    }
+
+    public function getRankAttribute()
+    {
+        return RankEnum::fromLevel($this->level);
+    }
+
+    public function getNextLevelExperienceAttribute()
+    {
+        return 100 - $this->experience;
     }
 }
 

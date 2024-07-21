@@ -26,9 +26,13 @@ class ProfileController extends Controller
         }
 
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
             'subscription' => $subscription,
             'endDate' => $endDate,
+            'level' => $user->level,
+            'experience' => $user->experience,
+            'nextLevelExperience' => $user->nextLevelExperience,
+            'rank' => $user->rank,
         ]);
     }
 

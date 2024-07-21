@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailVerificationController;
 
@@ -19,8 +21,8 @@ Route::get('/', function () {
 // Email verification
 Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify-new-email/{token}', [EmailVerificationController::class, 'verifyNewEmail'])->name('verify.new.email');
+    Route::post('/change-language', [LanguageController::class, 'changeLanguage'])->name('change.language');
 });
-
 // Profile
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

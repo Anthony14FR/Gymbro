@@ -1,18 +1,18 @@
 <section class="space-y-6">
     <header class="space-y-5">
         <span class="text-2xl font-medium text-base-content">
-            {{ __('Supprimer le compte') }} <i class="fa-solid fa-trash ml-2"></i>
+            {{ __('profile.delete_account') }} <i class="fa-solid fa-trash ml-2"></i>
         </span>
 
         <p class="mt-1 text-sm text-base-content/70">
-            {{ __('Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.') }}
+            {{ __('profile.delete_account_description') }}
         </p>
     </header>
 
     <x-danger-button
             x-data=""
             x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Supprimer le compte') }}</x-danger-button>
+    >{{ __('profile.delete_account') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -20,22 +20,22 @@
             @method('delete')
 
             <h2 class="text-lg font-medium text-base-content">
-                {{ __('Êtes-vous sûr de vouloir supprimer votre compte ?') }}
+                {{ __('profile.confirm_delete_title') }}
             </h2>
 
             <p class="mt-1 text-sm text-base-content/70">
-                {{ __('Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez entrer votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.') }}
+                {{ __('profile.confirm_delete_description') }}
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Mot de passe') }}" class="sr-only" />
+                <x-input-label for="password" value="{{ __('profile.password') }}" class="sr-only" />
 
                 <x-text-input
                         id="password"
                         name="password"
                         type="password"
                         class="mt-1 block w-3/4 bg-base-200 text-base-content border-base-300"
-                        placeholder="{{ __('Mot de passe') }}"
+                        placeholder="{{ __('profile.password') }}"
                 />
 
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
@@ -43,11 +43,11 @@
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')" class="btn btn-ghost">
-                    {{ __('Annuler') }}
+                    {{ __('profile.cancel') }}
                 </x-secondary-button>
 
                 <x-danger-button class="ms-3 btn btn-error">
-                    {{ __('Supprimer le compte') }}
+                    {{ __('profile.delete_account') }}
                 </x-danger-button>
             </div>
         </form>

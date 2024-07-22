@@ -10,6 +10,7 @@ return [
     'verification_link_sent' => 'A new verification link has been sent to your email address.',
     'save' => 'Save',
     'saved' => 'Saved.',
+    'title' => 'Profile',
 
     'update_password' => 'Update Password',
     'password_instruction' => 'Ensure your account is using a long, random password to stay secure.',

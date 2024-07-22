@@ -59,7 +59,7 @@
                        placeholder="{{ __('programs.search_exercise') }}" oninput="filterExercises()">
                 @foreach ($exercises as $exercise)
                     <li>
-                        <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
+                        <div onclick="addExercise('{{ $exercise->id }}', '{{ __($exercise->name) }}')"
                              class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
                             <div class="avatar">
                                 <div class="ring-accent ring-offset-base-100 w-8 rounded-full ring ring-offset-2">
@@ -85,7 +85,7 @@
                 </div>
                 <div class="h-[650px] overflow-y-scroll p-4">
                     @foreach ($exercises as $exercise)
-                        <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
+                        <div onclick="addExercise('{{ $exercise->id }}', '{{ __($exercise->name) }}')"
                              class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
                             <div class="avatar">
                                 <div class="ring-accent ring-offset-base-100 my-2 w-8 rounded-full ring ring-offset-2">
@@ -131,7 +131,7 @@
                                     @foreach ($exercises as $index => $exercise)
                                         <tr>
                                             <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
-                                            <td class="px-4 py-2">{{ $exercise->name }}</td>
+                                            <td class="px-4 py-2">{{ __($exercise->name) }}</td>
                                             <input type="hidden" name="exercise_program_id"
                                                    value="{{ $exercise->pivot->id }}">
                                             <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">

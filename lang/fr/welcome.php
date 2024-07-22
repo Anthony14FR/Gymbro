@@ -2,10 +2,11 @@
 
 return [
     'close' => 'Fermer',
-    'hero_title_part1' => 'SOYEZ',
-    'hero_title_part2' => 'ÉNERGIQUE,',
-    'hero_title_part3' => 'SANS PEUR, UN ATHLÈTE AU QUOTIDIEN',
-    'hero_description' => 'Entraîneur de course certifié et entraîneur personnel depuis plus d\'une décennie, j\'ai aidé des milliers de coureurs grâce à un coaching personnalisé 1-1 et au Fitness Club.',
-    'get_started' => 'Commencer',
+    'hero_title_part1' => 'Repoussez',
+    'hero_title_part2' => 'les Limites,',
+    'hero_title_part3' => 'Dépassez vos objectifs',
+    'hero_description' => 'Entraînez vous avec des programmes réalisés par notre équipe de coach, ou par notre communauté de sportifs.',
+    'get_started' => 'Rejoindre la communauté',
     'view_plan' => 'Voir le plan',
 ];
+

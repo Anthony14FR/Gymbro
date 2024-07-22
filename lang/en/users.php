@@ -41,4 +41,7 @@ return [
     'clean_programs_check' => 'Do you really want to clean empty or considered empty programs?',
     'clean' => 'Clean',
     'invite_users' => 'Invite Users',
+    'add_email' => 'Add Email',
+    'send' => 'Send',
 ];
+

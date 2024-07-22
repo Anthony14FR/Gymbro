@@ -42,4 +42,6 @@ return [
     'clean' => 'Nettoyer',
 
     'invite_users' => 'Inviter des utilisateurs',
+    'add_email' => 'Ajouter un email',
+    'send' => 'Envoyer',
 ];

@@ -37,4 +37,10 @@ return [
     'confirm_delete_description' => 'Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez entrer votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.',
     'password' => 'Mot de passe',
     'cancel' => 'Annuler',
+
+    'level' => 'Niveau',
+    'experience' => 'Expérience',
+    'next_level' => 'Prochain niveau dans',
+    'current_rank' => 'Rang actuel',
+    'points' => 'Points',
 ];

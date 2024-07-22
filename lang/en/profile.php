@@ -37,4 +37,10 @@ return [
     'confirm_delete_description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
     'password' => 'Password',
     'cancel' => 'Cancel',
+
+    'level' => 'Level',
+    'experience' => 'Experience',
+    'next_level' => 'Next level in',
+    'current_rank' => 'Actual Rank',
+    'points' => 'Points',
 ];

@@ -41,4 +41,5 @@ return [
     'clean_programs_check' => 'Voulez-vous vraiment nettoyer les programmes vides ou considérés comme vide ?',
     'clean' => 'Nettoyer',
 
+    'invite_users' => 'Inviter des utilisateurs',
 ];

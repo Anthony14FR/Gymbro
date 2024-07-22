@@ -40,4 +40,5 @@ return [
     'clean_programs' => 'Clean Programs',
     'clean_programs_check' => 'Do you really want to clean empty or considered empty programs?',
     'clean' => 'Clean',
+    'invite_users' => 'Invite Users',
 ];

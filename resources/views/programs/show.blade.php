@@ -79,7 +79,7 @@
                                         <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
                                              class="w-20 h-16 md:w-32 md:h-24 object-fill">
                                     </td>
-                                    <td class="px-1 md:px-2">{{ $exercise->name }}</td>
+                                    <td class="px-1 md:px-2">{{ __($exercise->name) }}</td>
                                     <td class="px-1 md:px-2">{{ $exercise->pivot->rep }}</td>
                                     <td class="px-1 md:px-2">{{ $exercise->pivot->break }} {{ __('programs.seconds') }}</td>
                                     <td class="px-1 md:px-2">{{ $exercise->pivot->weight }} {{ __('programs.kg') }}</td>

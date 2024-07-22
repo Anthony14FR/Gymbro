@@ -4,7 +4,7 @@ return [
     'logo_alt' => 'Gymbro',
     'brand' => 'GYMBRO',
     'admin' => 'Admin',
-    'dashboard' => 'Tableau de bord',
+    'dashboard' => 'Administration',
     'premium' => 'Premium',
     'not_subscribed' => 'Pas encore abonné ? Cliquez',
     'click_here' => 'ici',

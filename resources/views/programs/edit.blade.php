@@ -18,11 +18,11 @@
             <div class="w-full">
                 <label for="name" class="block text-lg font-medium">Nom</label>
                 <input type="text" name="name" id="name" class="input rounded-none input-bordered w-full"
-                    value="{{ $program->name ?? '' }}" required>
+                    value="{{ '' ?? $program->name }}" placeholder=". . ." required>
             </div>
             <div class="w-full">
                 <label for="description" class="block text-lg font-medium">Description</label>
-                <input name="description" id="description" value="{{ $program->description ?? '' }}"
+                <input name="description" id="description" value="{{ '' ?? $program->description }}" placeholder=". . ."
                     class="input rounded-none input-bordered w-full" required>
             </div>
         </div>

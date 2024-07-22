@@ -24,7 +24,6 @@ services:
         depends_on:
             - mysql
             - redis
-            - meilisearch
             - mailpit
             - selenium
     mysql:
@@ -66,25 +65,6 @@ services:
                 - ping
             retries: 3
             timeout: 5s
-    meilisearch:
-        image: 'getmeili/meilisearch:latest'
-        ports:
-            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
-        environment:
-            MEILI_NO_ANALYTICS: '${MEILISEARCH_NO_ANALYTICS:-false}'
-        volumes:
-            - 'sail-meilisearch:/meili_data'
-        networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - wget
-                - '--no-verbose'
-                - '--spider'
-                - 'http://127.0.0.1:7700/health'
-            retries: 3
-            timeout: 5s
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:
@@ -98,6 +78,30 @@ services:
             - 'host.docker.internal:host-gateway'
         volumes:
             - '/dev/shm:/dev/shm'
+        networks:
+            - sail
+    worker:
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.3
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.3/app
+        command: [ "/bin/bash", "/var/www/html/start-worker.sh" ]
+        depends_on:
+            - mysql
+            - redis
+        environment:
+            WWWUSER: '${WWWUSER}'
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
         networks:
             - sail
 networks:

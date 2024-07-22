@@ -13,9 +13,11 @@
                 <a href="{{ route('programs.edit', $program->id) }}" class="btn btn-sm">{{ __('Modifier') }} <i class="fa-solid fa-pen-to-square ml-2"></i></a>
                 @role("premium")
                 <a href="{{ route('programs.exportPdf', $program->id) }}" class="btn btn-sm">{{ __('Exporter en PDF') }} <i class="fa-solid fa-download ml-2"></i></a>
+                <a href="{{ route('programs.exportCsv', $program->id) }}" class="btn btn-sm">{{ __('Exporter en CSV') }} <i class="fa-solid fa-file-csv ml-2"></i></a>
                 @endrole
                 @role("user")
                 <a href="{{ route('subscriptions.index') }}" class="btn btn-sm bg-black/20 hover:bg-black/20 text-white/10">{{ __('Exporter en PDF') }} <i class="fa-solid fa-lock text-yellow-500 ml-2"></i></a>
+                <a href="{{ route('subscriptions.index') }}" class="btn btn-sm bg-black/20 hover:bg-black/20 text-white/10">{{ __('Exporter en CSV') }} <i class="fa-solid fa-lock text-yellow-500 ml-2"></i></a>
                 @endrole
                 <form action="{{ route('programs.destroy', $program) }}" method="POST" class="inline-block">
                     @csrf

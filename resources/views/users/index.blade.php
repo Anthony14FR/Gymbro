@@ -43,6 +43,7 @@
                 </div>
             </div>
         @endif
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8 bg-base-200 p-4 rounded-lg shadow">
             <div class="stat bg-base-100 shadow rounded-lg p-4">
                 <div class="flex items-center justify-between">
@@ -106,22 +107,6 @@
             </div>
         </div>
 
-                    </h1>
-                      <div>
-                        <button class="btn btn-sm btn-primary mr-2" onclick="openInviteModal()">
-                            {{ __('Inviter des utilisateurs') }}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                        <button class="btn btn-sm btn-primary" onclick="openCreateModal()">
-                            {{ __('Créer un utilisateur') }}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </div>
-                    </button>
         <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden">
             <div class="flex flex-col p-6 bg-base-200 border-b border-base-300">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
@@ -129,12 +114,20 @@
                         {{ __('users.user_management') }}
                         <i class="fa-solid fa-users fa-xs ml-2 text-accent"></i>
                     </h1>
-                    <button class="btn btn-sm btn-primary" onclick="openCreateModal()">
-                        {{ __('users.create_user') }}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
-                        </svg>
-                    </button>
+                    <div>
+                        <button class="btn btn-sm btn-primary mr-2" onclick="openInviteModal()">
+                            {{ __('users.invite_users') }}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="openCreateModal()">
+                            {{ __('users.create_user') }}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="breadcrumbs text-sm">
                     {!! Breadcrumbs::render() !!}
@@ -240,48 +233,35 @@
     <!-- Invite Modal -->
     <dialog id="invite_modal" class="modal modal-bottom sm:modal-middle h-auto w-auto">
         <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4">{{ __('users.edit_user') }}</h3>
-            <form id="edit_user_form" method="POST" action="{{ route('users.update', ['user' => 0]) }}"
-                  class="space-y-4">
+            <h3 class="font-bold text-lg mb-4">{{ __('users.invite_users') }}</h3>
+            <form id="invite_users_form" method="POST" action="{{ route('send.mail') }}" class="space-y-4">
                 @csrf
-                @method('PUT')
-                <input type="hidden" id="edit_user_id" name="user_id">
-                <div class="form-control">
-                    <label class="label" for="edit_username">
-                        <span class="label-text">{{ __('users.username') }}</span>
-                    </label>
-                    <input type="text" id="edit_username" name="username" class="input input-bordered w-full" required>
+                <div id="email-fields" class="space-y-4 max-h-64 overflow-y-auto">
+                    <div class="email-field flex items-center">
+                        <div class="w-full">
+                            <label class="label" for="mail_to">
+                                <span class="label-text">{{ __('users.email') }}</span>
+                            </label>
+                            <input type="email" name="mail_to[]" class="input input-bordered" required>
+                            <button type="button" class="btn btn-error ml-2 remove-email-field">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-control">
-                    <label class="label" for="edit_email">
-                        <span class="label-text">{{ __('users.email') }}</span>
-                    </label>
-                    <input type="email" id="edit_email" name="email" class="input input-bordered w-full" required>
-                </div>
-                <div class="modal-action">
-                    <button type="submit" class="btn btn-primary">{{ __('users.save') }}</button>
-                    <button type="button" class="btn"
-                            onclick="document.getElementById('edit_modal').close()">{{ __('users.close') }}</button>
+                <div class="flex justify-between items-center">
+                    <div class="modal-action">
+                        <button type="button" id="add-email-field" class="btn btn-secondary">
+                            {{ __('users.add_email') }}
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary">{{ __('users.send') }}
+                            <i class="fa-regular fa-paper-plane"></i></button>
+                        <button type="button" class="btn"
+                                onclick="document.getElementById('invite_modal').close()">{{ __('users.close') }}</button>
+                    </div>
                 </div>
             </form>
-        </div>
-    </dialog>
-
-    <!-- Delete Modal -->
-    <dialog id="delete_modal" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4">{{ __('users.delete_user') }}</h3>
-            <p id="delete_user_message" class="py-4"></p>
-            <div class="modal-action">
-                <form id="delete_user_form" method="POST" action="{{ route('users.destroy', ['user' => 0]) }}">
-                    @csrf
-                    @method('DELETE')
-                    <input type="hidden" id="delete_user_id" name="user_id">
-                    <button type="submit" class="btn btn-error">{{ __('users.delete') }}</button>
-                </form>
-                <button type="button" class="btn"
-                        onclick="document.getElementById('delete_modal').close()">{{ __('users.close') }}</button>
-            </div>
         </div>
     </dialog>
 
@@ -304,7 +284,7 @@
         function openDeleteModal(userId, username) {
             document.getElementById('delete_user_id').value = userId;
             document.getElementById('delete_user_form').action = "/users/" + userId;
-            document.getElementById('delete_user_message').innerText = "{{ __('users.are_you_sure') }}".replace(':username', username);
+            document.getElementById('delete_user_message').innerText = "{{ __('are_you_sure', ['username' => ':username']) }}".replace(':username', username);
             document.getElementById('delete_modal').showModal();
         }
 
@@ -316,7 +296,7 @@
                 newField.innerHTML = `
                     <div class="w-full">
                             <label class="label" for="mail_to">
-                                <span class="label-text">{{ __('Email') }}</span>
+                                <span class="label-text">{{ __('users.email') }}</span>
                             </label>
                             <input type="email" name="mail_to[]" class="input input-bordered" required>
                             <button type="button" class="btn btn-error ml-2 remove-email-field">
@@ -333,7 +313,7 @@
                 }
             });
 
-           document.getElementById('invite_users_form').addEventListener('submit', function(event) {
+            document.getElementById('invite_users_form').addEventListener('submit', function(event) {
                 let emailInputs = document.querySelectorAll('input[name="mail_to[]"]');
                 let emails = [];
                 let duplicates = false;

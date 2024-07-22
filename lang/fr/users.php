@@ -32,4 +32,5 @@ return [
     'private' => 'Privé',
     'created_at' => 'Créé le',
     'updated_at' => 'Mis à jour le',
+    'invite_users' => 'Inviter des utilisateurs',
 ];

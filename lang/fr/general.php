@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'title' => 'Tableau de bord',
+    'title' => 'Adminsitration',
     'logged_in_message' => 'Vous êtes connecté !',
 ];

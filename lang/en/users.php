@@ -33,4 +33,7 @@ return [
     'created_at' => 'Created at',
     'updated_at' => 'Updated at',
     'invite_users' => 'Invite Users',
+    'add_email' => 'Add Email',
+    'send' => 'Send',
 ];
+

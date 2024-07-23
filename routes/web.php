@@ -17,10 +17,6 @@ Route::get('/', function () {
 
 Route::get('/email/verify-new-email/{token}', [EmailVerificationController::class, 'verifyNewEmail'])->name('verify.new.email');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 // Profile
 Route::middleware('auth', )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

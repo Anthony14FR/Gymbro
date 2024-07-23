@@ -20,19 +20,19 @@
                         BE <span class="text-accent bebas-neue-bold">SPIRITED</span> FEARLESS AN
                         EVERYDAY ATHLETE
                     </h1>
-                    <p class="text-white/50 md:text-lg mt-5 md:max-w-2xl max-w-lg">
+                    <p class="text-white/50 md:text-lg mt-5 md:max-w-2xl max-w-lg mb-8">
                         A certified running coach and personal trainer for over a decade, I’ve
                         helped thousands of runners through 1-1 personalized coaching and fitness Club, I’ve helped
                         thousands of runners through 1-1 personalized coaching and fitness Club.
                     </p>
-                    <button id="get-started-button"
+                    <a id="get-started-button" href="{{ route('register') }}"
                         class="mt-8 px-6 py-3 text-white mr-7 rounded-none btn-md outline outline-2 outline-accent outline-offset-2 transition ease-in-out duration-200">
                         Get Started <i class="fa-solid fa-chevron-right ml-2 transition ease-in-out duration-200"></i>
-                    </button>
-                    <button id="view-plan-button"
+                    </a>
+                    <a id="view-plan-button" href="{{ route('subscriptions.index') }}"
                         class="bg-accent mt-8 px-6 py-3 text-white rounded-none btn-md outline outline-2 outline-accent outline-offset-2 transition ease-in-out duration-200">
                         View Plan <i class="fa-solid fa-chevron-right ml-2 transition ease-in-out duration-200"></i>
-                    </button>
+                    </a>
                     <div class="w-48 h-1 rounded-full bg-accent text-white mt-8 shadow-md">&ensp;</div>
                 </div>
             </div>

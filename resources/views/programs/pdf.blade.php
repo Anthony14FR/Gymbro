@@ -139,20 +139,7 @@
     <p><strong>Dernière mise à jour :</strong> {{ $program->updated_at->locale('fr')->isoFormat('LL') }}</p>
     <p><strong>Nombre de jours :</strong> {{ $days->count() }}</p>
 
-    <div class="program-summary">
-        <h3>Résumé du programme</h3>
-        <ul>
-            @foreach ($days as $day => $exercises)
-                <li>
-                    <strong>Jour {{ $day }} :</strong>
-                    {{ $exercises->count() }} exercices
-                    ({{ $exercises->sum('pivot.rep') }} répétitions totales,
-                    {{ $exercises->sum('pivot.break') }} secondes de pause totales)
-                </li>
-            @endforeach
-        </ul>
-    </div>
-
+    <br>
     <div class="program-summary">
         <h3>Conseils pour réussir</h3>
         <ul>

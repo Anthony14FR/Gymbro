@@ -45,9 +45,12 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="btn btn-primary">
+            <a class="ml-16 btn btn-neutral btn-sm" href="{{ route('login') }}">
+                {{ __('Log in') }}
+            </a>
+            <button class="btn btn-accent btn-sm lg:ml-0 ml-2">
                 {{ __('Register') }}
-            </x-primary-button>
+            </button>
         </div>
     </form>
 </x-guest-layout>

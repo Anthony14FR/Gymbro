@@ -4,12 +4,8 @@
     <div class="container mx-auto px-4 py-8">
         @if ($errors->any())
             <div class="alert alert-error shadow-lg mb-8">
+                <i class="fas fa-exclamation-triangle"></i>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -22,10 +18,7 @@
         @if ($success = Session::get('success'))
             <div class="alert alert-success shadow-lg mb-8">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
-                         viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+                    <i class="fas fa-check-circle"></i>
                     <span>{{ $success }}</span>
                 </div>
             </div>
@@ -141,8 +134,9 @@
                         <th class="bg-base-200">#</th>
                         <th class="bg-base-200">{{ __('Nom d\'utilisateur') }}</th>
                         <th class="bg-base-200">{{ __('Email') }}</th>
-                        <th class="bg-base-200">{{ __('Vérifié') }}</th>
-                        <th class="bg-base-200">{{ __('Abonné') }}</th>
+                        <th class="bg-base-200"><i class="fa-solid fa-check"></i> {{ __('Vérifié')}}</th>
+                        <th class="bg-base-200"><i class="fa-solid fa-star"></i> {{ __('Abonné')}}</th>
+                        <th class="bg-base-200"><i class="fa-solid fa-crown"></i> {{ __('Administrateur')}}</th>
                         <th class="bg-base-200">{{ __('Actions') }}</th>
                     </tr>
                     </thead>
@@ -167,6 +161,13 @@
                                 @endif
                             </td>
                             <td>
+                                @if($user->hasRole('admin'))
+                                    <span class="badge badge-success">{{ __('Oui') }} <i class="fa-solid fa-check ml-1"></i></span>
+                                @else
+                                    <span class="badge badge-error">{{ __('Non') }} <i class="fa-solid fa-times ml-1"></i></span>
+                                @endif
+                            </td>
+                            <td>
                                 <div class="flex flex-col gap-2 sm:flex-row sm:gap-1 justify-center">
                                     <button class="btn btn-xs sm:btn-sm btn-outline btn-primary"
                                             onclick="openEditModal({{ $user->id }}, '{{ $user->username }}', '{{ $user->email }}')">{{ __('Modifier') }} <i class="fa-solid fa-pencil ml-1"></i></button>
@@ -174,6 +175,16 @@
                                             onclick="openDeleteModal({{ $user->id }}, '{{ $user->username }}')">{{ __('Supprimer') }} <i class="fa-solid fa-trash ml-1"></i></button>
                                     <a href="{{ route('users.show', ['user' => $user->id]) }}"
                                        class="btn btn-xs sm:btn-sm btn-outline btn-accent">{{ __('Afficher') }} <i class="fa-solid fa-eye ml-1"></i></a>
+                                    <button class="btn btn-xs sm:btn-sm btn-outline {{ $user->hasRole('admin') ? 'btn-error' : 'btn-warning' }}"
+                                            onclick="openEditRoleModal({{ $user->id }}, '{{ $user->username }}', {{ $user->hasRole('admin') ? 'true' : 'false' }})">
+                                        @if($user->hasRole('admin'))
+                                            {{ __('Rétrograder') }}
+                                            <i class="fa-solid fa-user-minus ml-1"></i>
+                                        @else
+                                            {{ __('Promouvoir') }}
+                                            <i class="fa-solid fa-crown ml-1"></i>
+                                        @endif
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -265,6 +276,70 @@
         </div>
     </dialog>
 
+    <!-- Edit Modal -->
+    <dialog id="edit_modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">{{ __('Modifier l\'utilisateur') }}</h3>
+            <form id="edit_user_form" method="POST" action="{{ route('users.update' , ['user' => $user->id]) }}"
+                  class="space-y-4">
+                @csrf
+                @method('PUT')
+                <input type="hidden" id="edit_user_id" name="user_id">
+                <div class="form-control">
+                    <label class="label" for="edit_username">
+                        <span class="label-text">{{ __('Nom d\'utilisateur') }}</span>
+                    </label>
+                    <input type="text" id="edit_username" name="username" class="input input-bordered w-full" required>
+                </div>
+                <div class="form-control">
+                    <label class="label" for="edit_email">
+                        <span class="label-text">{{ __('Email') }}</span>
+                    </label>
+                    <input type="email" id="edit_email" name="email" class="input input-bordered w-full" required>
+                </div>
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary">{{ __('Modifier') }}</button>
+                    <button type="button" class="btn" onclick="document.getElementById('edit_modal').close()">{{ __('Fermer') }}</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Delete Modal -->
+    <dialog id="delete_modal" class="modal modal-center">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">{{ __('Supprimer l\'utilisateur') }}</h3>
+            <form id="delete_user_form" method="POST" action="">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" id="delete_user_id" name="user_id">
+                <p id="delete_user_message" class="text-base-content"></p>
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-error">{{ __('Supprimer') }}</button>
+                    <button type="button" class="btn"
+                            onclick="document.getElementById('delete_modal').close()">{{ __('Fermer') }}</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Edit Role Modal -->
+    <dialog id="edit_role_modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">{{ __('Modifier le rôle de l\'utilisateur') }}</h3>
+            <form id="edit_role_form" method="POST" action="" class="space-y-4">
+                @csrf
+                @method('PUT')
+                <input type="hidden" id="edit_role_user_id" name="user_id">
+                <p id="edit_role_message" class="text-base-content"></p>
+                <div class="modal-action">
+                    <button type="submit" id="edit_role_submit" class="btn btn-warning"></button>
+                    <button type="button" class="btn" onclick="document.getElementById('edit_role_modal').close()">{{ __('Annuler') }}</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
     <script>
         function openCreateModal() {
             document.getElementById('create_modal').showModal();
@@ -284,8 +359,35 @@
         function openDeleteModal(userId, username) {
             document.getElementById('delete_user_id').value = userId;
             document.getElementById('delete_user_form').action = "/users/" + userId;
-            document.getElementById('delete_user_message').innerText = "{{ __('Êtes-vous sûr de vouloir supprimer l\'utilisateur :') }} " + username + "?";
+            document.getElementById('delete_user_message').innerText = "{{ __('Êtes-vous sûr de vouloir supprimer :') }} " + username + "?";
             document.getElementById('delete_modal').showModal();
+        }
+
+        function openEditRoleModal(userId, username) {
+            const form = document.getElementById('edit_role_form');
+            const message = document.getElementById('edit_role_message');
+            const submitButton = document.getElementById('edit_role_submit');
+            const currentUserId = {{ auth()->id() }};
+
+            form.action = `/users/${userId}/role`;
+            document.getElementById('edit_role_user_id').value = userId;
+
+            const isAdmin = {{ $user->hasRole('admin') ? 'true' : 'false' }};
+
+            if (userId == 1 || (userId == currentUserId && isAdmin)) {
+                message.textContent = "Vous ne pouvez pas modifier le rôle de cet utilisateur.";
+                submitButton.style.display = 'none';
+            } else if (isAdmin) {
+                message.textContent = `Voulez-vous rétrograder ${username} du rôle d'administrateur ?`;
+                submitButton.textContent = 'Rétrograder';
+                submitButton.style.display = 'inline-block';
+            } else {
+                message.textContent = `Voulez-vous promouvoir ${username} au rôle d'administrateur ?`;
+                submitButton.textContent = 'Promouvoir';
+                submitButton.style.display = 'inline-block';
+            }
+
+            document.getElementById('edit_role_modal').showModal();
         }
 
         document.addEventListener('DOMContentLoaded', function() {

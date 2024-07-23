@@ -5,27 +5,35 @@ namespace App\Http\Middleware;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    use HasRoles;
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $role): Response
     {
-        $user = User::auth();
-        $role = User::role('admin');
-        if ($user instanceof User && $role) {
-            $message = 'Your account has been suspended for '.Carbon::now()->diffInHours(Auth::user()->banned_at).'h . Please contact administrator.';
-            Auth::logout();
-
-            return redirect()->route('login')->with('message', $message);
+        if (!Auth::check()) {
+            return redirect('login');
         }
+
+        $user = Auth::user();
+
+        if($role == 'not-premium' && $user->hasRole('premium')) {
+            abort(404);
+        } elseif ($role == 'not-premium' && !$user->hasRole('premium')) {
+            return $next($request);
+        }
+
+        if (!$user->hasRole($role)) {
+            abort(404);
+        }
+
         return $next($request);
     }
 }

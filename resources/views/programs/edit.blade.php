@@ -18,12 +18,12 @@
             <div class="w-full">
                 <label for="name" class="block text-lg font-medium">Nom</label>
                 <input type="text" name="name" id="name" class="input rounded-none input-bordered w-full"
-                    value="{{ '' ?? $program->name }}" placeholder=". . ." required>
+                    value="{{ $program->name }}" required>
             </div>
             <div class="w-full">
                 <label for="description" class="block text-lg font-medium">Description</label>
-                <input name="description" id="description" value="{{ '' ?? $program->description }}" placeholder=". . ."
-                    class="input rounded-none input-bordered w-full" required>
+                <input name="description" id="description" value="{{ $program->description }}"
+                    class="input rounded-none input-bordered w-full">
             </div>
         </div>
         <div class="flex items-center space-x-4">
@@ -39,15 +39,18 @@
                 <span class="label-text-alt">.png, .jpg, .jpeg .gif .wepb .svg</span>
             </label>
         </div>
-        <label class="swap">
-            <input type="checkbox" name="status" id="status" class="hidden" {{ $program->status == 1 ? 'checked' : '' }}
+        <div class="flex justify-between items-center">
+            <label class="swap">
+                <input type="checkbox" name="status" id="status" class="hidden" {{ $program->status == 1 ? 'checked' : '' }}
                 onchange="toggleStatus()">
-            <div class="swap-on flex rounded bg-accent/20 p-3 items-center">Public <i
-                    class="ml-2 fa-solid fa-lock-open"></i>
-            </div>
-            <div class="swap-off flex bg-neutral rounded p-3 items-center">Private <i class="ml-2 fa-solid fa-lock"></i>
-            </div>
-        </label>
+                <div class="swap-on flex rounded bg-accent/20 p-3 items-center">Public <i
+                            class="ml-2 fa-solid fa-lock-open"></i>
+                </div>
+                <div class="swap-off flex bg-neutral rounded p-3 items-center">Private <i class="ml-2 fa-solid fa-lock"></i>
+                </div>
+            </label>
+            <button class="btn btn-primary" type="button" onclick="saveProgram()">Sauvegarder</button>
+        </div>
     </form>
     <div class="drawer lg:hidden flex z-40">
         <input id="my-drawer" type="checkbox" class="drawer-toggle" />
@@ -448,6 +451,16 @@
                 }
             });
         }
+
+        function saveProgram() {
+            updateProgramDetails();
+            document.querySelector('button[type="button"]').disabled = true;
+            setTimeout(() => {
+                document.getElementById('programForm').submit();
+                window.location.href = '/programs';
+            }, 1000);
+        }
+
     </script>
     @if (!$program->exists || $days->isEmpty())
         <script>

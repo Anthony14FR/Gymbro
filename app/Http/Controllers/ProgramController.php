@@ -16,11 +16,16 @@ class ProgramController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $myPrograms = Program::where('user_id', $user_id)->with(['exercises', 'exercises.muscles'])->get();
-        $communityPrograms = Program::where('status', 1)->where('user_id', '!=', $user_id)->with(['exercises', 'exercises.muscles'])->get();
-        $gymbroPrograms = Program::where('status', 1)->where('user_id', 1)->with(['exercises', 'exercises.muscles'])->get();
-
-        return view('programs.index', compact('myPrograms', 'communityPrograms', 'gymbroPrograms'));
+        if(Auth::user()->hasRole('premium')) {
+            $myPrograms = Program::where('user_id', $user_id)->with(['exercises', 'exercises.muscles'])->paginate(9);
+            $communityPrograms = Program::where('status', 1)->where('user_id', '!=', $user_id)->with(['exercises', 'exercises.muscles'])->paginate(9);
+            $gymbroPrograms = Program::where('user_id', 1)->with(['exercises', 'exercises.muscles'])->paginate(9);
+            return view('programs.index', compact('myPrograms', 'communityPrograms', 'gymbroPrograms'));
+        } else {
+            $myPrograms = Program::where('user_id', $user_id)->with(['exercises', 'exercises.muscles'])->paginate(3);
+            $gymbroPrograms = Program::where('status', 1)->where('user_id', 1)->with(['exercises', 'exercises.muscles'])->paginate(3);
+            return view('programs.index', compact('myPrograms', 'gymbroPrograms'));
+        }
     }
 
     public function show($id)

@@ -45,9 +45,9 @@ class UserController extends Controller
             $hashedPassword = bcrypt($password);
             $request->merge(['password' => $hashedPassword]);
             $user = User::create($request->all());
-            return redirect()->route('users.index')->with('success', 'User created successfully');
+            return redirect()->route('users.index')->with('success', 'L\'utilisateur ' . $user->username . ' a été créé avec succès');
         } else {
-            return redirect()->route('users.index')->with('warning', 'Passwords do not match');
+            return redirect()->route('users.index')->with('warning', 'Les mots de passe ne correspondent pas');
         }
     }
 
@@ -72,12 +72,13 @@ class UserController extends Controller
         $requestId = $request->user_id;
 
         $user = User::findOrFail($requestId);
-        $user->update($request->validate([
+        $user->fill($request->validate([
             'username' => 'required|min:2|max:50|string',
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
         ]));
+        $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->route('users.index')->with('success', "L'utilisateur " . $user->username . " a été mis à jour avec succès");
     }
 
     /**
@@ -91,6 +92,23 @@ class UserController extends Controller
         }
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('users.index')->with('success', "L'utilisateur " . $user->username . " a été supprimé avec succès");
+    }
+
+    public function updateRole(Request $request, User $user)
+    {
+        if ($user->id === 1 || ($user->id === auth()->id() && $user->hasRole('admin'))) {
+            return back()->with('error', 'Vous ne pouvez pas modifier le rôle de cet utilisateur.');
+        }
+
+        if ($user->hasRole('admin')) {
+            $user->removeRole('admin');
+            $message = 'L\'utilisateur a été rétrogradé avec succès.';
+        } else {
+            $user->assignRole('admin');
+            $message = 'L\'utilisateur a été promu administrateur avec succès.';
+        }
+
+        return back()->with('success', $message);
     }
 }

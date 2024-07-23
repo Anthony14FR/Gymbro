@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function (){
 // Users CRUD
 Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
+    Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
 });
 
 require __DIR__ . '/auth.php';

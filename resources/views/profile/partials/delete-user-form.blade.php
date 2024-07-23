@@ -1,10 +1,10 @@
 <section class="space-y-6">
     <header class="space-y-5">
-        <span class="text-2xl font-medium text-gray-900 dark:text-gray-100">
+        <span class="text-2xl font-medium text-base-content">
             {{ __('Supprimer le compte') }} <i class="fa-solid fa-trash ml-2"></i>
         </span>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-sm text-base-content/70">
             {{ __('Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.') }}
         </p>
     </header>
@@ -19,11 +19,11 @@
             @csrf
             @method('delete')
 
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="text-lg font-medium text-base-content">
                 {{ __('Êtes-vous sûr de vouloir supprimer votre compte ?') }}
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-1 text-sm text-base-content/70">
                 {{ __('Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez entrer votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.') }}
             </p>
 
@@ -34,7 +34,7 @@
                         id="password"
                         name="password"
                         type="password"
-                        class="mt-1 block w-3/4"
+                        class="mt-1 block w-3/4 bg-base-200 text-base-content border-base-300"
                         placeholder="{{ __('Mot de passe') }}"
                 />
 
@@ -42,11 +42,11 @@
             </div>
 
             <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
+                <x-secondary-button x-on:click="$dispatch('close')" class="btn btn-ghost">
                     {{ __('Annuler') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3">
+                <x-danger-button class="ms-3 btn btn-error">
                     {{ __('Supprimer le compte') }}
                 </x-danger-button>
             </div>

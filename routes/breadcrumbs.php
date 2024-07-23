@@ -26,16 +26,11 @@ Breadcrumbs::for('programs.index', function (BreadcrumbTrail $trail) {
     $trail->push('Programs', route('programs.index'));
 });
 
+// Create/edit programs
 Breadcrumbs::for('programs.edit', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('programs.index');
     $trail->push('Edit Program', route('programs.edit', $id));
 });
-
-Breadcrumbs::for('programs.exportPdf', function (BreadcrumbTrail $trail, $id) {
-    $trail->parent('programs.index');
-    $trail->push('Export Program to PDF', route('programs.exportPdf', $id));
-});
-
 
 // Show programs
 Breadcrumbs::for('programs.show', function (BreadcrumbTrail $trail, $id) {

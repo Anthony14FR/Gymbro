@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+
+    <!-- Référencement -->
+    <meta name="description" content="Gymbro est une application pour créer des programmes d'entraînement ou accéder à des programmes d'entraînement réalisés par des coachs sportifs certifiés. Ou simplement pour suivre vos performances sportives.">
+    <meta name="keywords" content="programme, progromme de sport,programme de musculation, coaching sportif, fitness, musculation sport, santé, bien-être">
+    <meta name="author" content="Gymbro">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -17,6 +23,8 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @vite('resources/css/styles.css')
+
+
 </head>
 
 <body class="font-sans antialiased">

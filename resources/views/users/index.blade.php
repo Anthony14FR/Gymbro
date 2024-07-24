@@ -114,11 +114,15 @@
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                             </svg>
                         </button>
-                        <button class="btn btn-sm btn-primary" onclick="openCreateModal()">
+                        <button class="btn btn-sm btn-primary mr-2" onclick="openCreateModal()">
                             {{ __('Créer un utilisateur') }}
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                             </svg>
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="openCleanProgramsModal()">
+                            {{ __('Nettoyer les programmes') }}
+                            <i class="fa-solid fa-trash ml-2"></i>
                         </button>
                     </div>
                 </div>
@@ -340,6 +344,22 @@
         </div>
     </dialog>
 
+    <!-- Clean Programs Modal -->
+    <dialog id="clean_programs_modal" class="modal modal-center">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">{{ __('Nettoyer les programmes') }}</h3>
+            <form id="clean_programs_form" method="POST" action="{{ route('users.cleanPrograms') }}">
+                @csrf
+                <p class="text-base-content">{{ __('Voulez-vous vraiment nettoyer les programmes vides ou considérés comme vide ?') }}</p>
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-error">{{ __('Nettoyer') }}</button>
+                    <button type="button" class="btn"
+                            onclick="document.getElementById('clean_programs_modal').close()">{{ __('Annuler') }}</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
     <script>
         function openCreateModal() {
             document.getElementById('create_modal').showModal();
@@ -361,6 +381,10 @@
             document.getElementById('delete_user_form').action = "/users/" + userId;
             document.getElementById('delete_user_message').innerText = "{{ __('Êtes-vous sûr de vouloir supprimer :') }} " + username + "?";
             document.getElementById('delete_modal').showModal();
+        }
+
+        function openCleanProgramsModal() {
+            document.getElementById('clean_programs_modal').showModal();
         }
 
         function openEditRoleModal(userId, username) {

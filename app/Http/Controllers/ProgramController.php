@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\ExercisesPrograms;
+use Illuminate\Support\Facades\Artisan;
 
 class ProgramController extends Controller
 {
@@ -320,5 +321,12 @@ class ProgramController extends Controller
         };
     
         return Response::stream($callback, 200, $headers);
+    }
+
+    public function cleanPrograms()
+    {
+        Artisan::call('programs:clean');
+        return redirect()->route('users.index')
+            ->with('success', 'Les programmes inutilisés ont été supprimés.');
     }
 }

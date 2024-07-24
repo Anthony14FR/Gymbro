@@ -83,6 +83,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
         // Send mail
         Route::post('send-mail', [MailController::class, 'sendMail'])->name('send.mail');
+        // Clean Programs
+        Route::post('clean-programs', [ProgramController::class, 'cleanPrograms'])->name('users.cleanPrograms');
     });
 });
 

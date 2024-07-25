@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Program;
 use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -60,8 +61,9 @@ class UserController extends Controller
         $programs = Program::where('user_id', $id)->get();
         $daysCount = DB::table('exercises_programs')
             ->count(DB::raw('DISTINCT day'));
+        $isSubscribed = $user->hasRole('premium');
 
-        return view('users.show', compact('user', 'programs', 'daysCount'));
+        return view('users.show', compact('user', 'programs', 'daysCount', 'isSubscribed'));
     }
 
     /**

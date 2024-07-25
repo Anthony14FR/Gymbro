@@ -68,7 +68,7 @@ class SubscriptionController extends Controller
                 'stripe_id' => $session->customer,
                 'stripe_subscription_id' => $session->subscription,
                 'stripe_plan' => $plan_id,
-                'ends_at' => Carbon::now()->addYear(),
+                'ends_at' => Carbon::createFromTimestamp($session->expires_at),
                 'isCancelled' => false,
             ]);
             $user->assignRole('premium');

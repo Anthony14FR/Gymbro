@@ -4,32 +4,28 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
             <div class="breadcrumbs text-sm">
-                <h1 class="text-4xl font-normal">Programmes <i class="fa-solid fa-list fa-xs ml-2 text-accent"></i></h1>
+                <h1 class="text-4xl font-normal">{{ __('programs.title') }} <i class="fa-solid fa-list fa-xs ml-2 text-accent"></i></h1>
                 {!! Breadcrumbs::render() !!}
             </div>
-            <a href="{{ route('programs.edit') }}" class="btn btn-accent"><i class="fa-solid fa-circle-plus"></i> Créer
-                un
-                Programme</a>
+            <a href="{{ route('programs.edit') }}" class="btn btn-accent"><i class="fa-solid fa-circle-plus"></i> {{ __('programs.create_program') }}</a>
         </div>
 
         <div class="tabs mt-8 mb-12 flex md:flex-row flex-col items-start md:space-y-0 space-y-5 md:space-x-10">
             <button class="tab tab-bordered tab-lg tab-active border-0 btn btn-accent md:w-auto w-full"
-                    id="my-programs-tab"><i class="fa-solid fa-dumbbell"></i> Mes programmes
-            </button>
+                    id="my-programs-tab"><i class="fa-solid fa-dumbbell"></i> {{ __('programs.my_programs') }}</button>
             @if (Auth::check() && Auth::user()->hasRole('premium'))
                 <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="community-programs-tab"><i
-                            class="fa-solid fa-users"></i> Programmes de la communauté
-                </button>
+                            class="fa-solid fa-users"></i> {{ __('programs.community_programs') }}</button>
                 <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="gymbro-programs-tab">
-                    <i class="fa-solid fa-medal"></i><span class="inline-block">Programmes Gymbro</span>
+                    <i class="fa-solid fa-medal"></i><span class="inline-block">{{ __('programs.gymbro_programs') }}</span>
                 </button>
             @elseif (Auth::check() && Auth::user()->hasRole('user'))
                 <a href="{{ route('subscriptions.index') }}"
                    class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full hover:bg-black/20 bg-black/20 text-white/10"><i
-                            class="fa-solid fa-users"></i> Programmes de la communauté <i
+                            class="fa-solid fa-users"></i>{{__('programs.community_programs')}}<i
                             class="fa-solid fa-lock text-yellow-500 ml-2"></i></a>
                 <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="gymbro-programs-tab">
-                    <i class="fa-solid fa-medal"></i><span class="inline-block">Programmes Gymbro</span>
+                    <i class="fa-solid fa-medal"></i><span class="inline-block">{{__('programs.gymbro_programs')}}</span>
                 </button>
             @endif
 
@@ -40,7 +36,7 @@
                 <div class="alert alert-warning shadow-lg">
                     <div class="flex items-center space-x-3">
                         <i class="fa-solid fa-dumbbell"></i>
-                        <span>Aucun programme trouvé. Veuillez en créer un !</span>
+                        <span>{{__('programs.no_program_found_create')}}</span>
                     </div>
                 </div>
             @else
@@ -50,18 +46,17 @@
                             @if ($program->status)
                                 <div
                                         class="text-sm absolute badge badge-lg badge-success text-white shadow-lg right-3 top-3">
-                                    Public
+                                    {{ __('programs.public') }}
                                 </div>
                             @else
                                 <div class="text-sm absolute badge badge-lg bg-neutral text-white shadow-lg right-3 top-3">
-                                    Privé
+                                    {{ __('programs.private') }}
                                 </div>
                             @endif
 
                             <div class="absolute text-xl top-0 left-0 bg-accent p-3 text-white rounded-br-xl shadow-md">
                                 <i
-                                        class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}
-                                J
+                                        class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}{{ __('programs.days') }}
                             </div>
 
                             <div class="card-body p-0">
@@ -78,28 +73,26 @@
                                             {{ Str::limit($program->description, 100) }}</p>
                                         <div class="card-actions justify-start mt-5">
                                             <a href="{{ route('programs.show', $program) }}"
-                                               class="btn btn-neutral btn-sm"><i class="fa-regular fa-eye"></i> Voir</a>
+                                               class="btn btn-neutral btn-sm"><i class="fa-regular fa-eye"></i> {{ __('programs.view') }}</a>
                                             <a href="{{ route('programs.edit', $program->id) }}"
                                                class="btn btn-neutral btn-sm"><i class="fa-solid fa-pen-to-square"></i>
-                                                Modifier</a>
+                                                {{ __('programs.edit') }}</a>
                                             <form action="{{ route('programs.destroy', $program) }}" method="POST"
                                                   class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-neutral btn-sm"
-                                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce programme ?')">
-                                                    <i
-                                                            class="fa-solid fa-trash"></i> Supprimer
-                                                </button>
+                                                        onclick="return confirm('{{ __('programs.confirm_delete') }}')"><i
+                                                            class="fa-solid fa-trash"></i> {{ __('programs.delete') }}</button>
                                             </form>
                                         </div>
                                         <div class="mt-5 mb-2 space-y-2">
                                             <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
-                                                        class="fa-solid fa-calendar-days mr-2"></i> Créé :
+                                                        class="fa-solid fa-calendar-days mr-2"></i> {{ __('programs.created_at') }} :
                                                 {{ $program->created_at->format('d M Y') }}
                                             </p>
                                             <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
-                                                        class="fa-solid fa-pen mr-2"></i> Mise à Jour :
+                                                        class="fa-solid fa-pen mr-2"></i> {{ __('programs.updated_at') }} :
                                                 {{ $program->updated_at->format('d M Y') }}</p>
                                         </div>
                                     </div>
@@ -121,7 +114,7 @@
                 <div class="alert alert-warning shadow-lg">
                     <div class="flex items-center space-x-3">
                         <i class="fa-solid fa-users"></i>
-                        <span>Aucun programme de la communauté n'est disponible pour le moment.</span>
+                        <span>{{__('programs.no_program_found')}}</span>
                     </div>
                 </div>
             @else
@@ -131,18 +124,17 @@
                             @if ($program->status)
                                 <div
                                         class="text-sm absolute badge badge-lg badge-success text-white shadow-lg right-3 top-3">
-                                    Public
+                                    {{ __('programs.public') }}
                                 </div>
                             @else
                                 <div class="text-sm absolute badge badge-lg bg-neutral text-white shadow-lg right-3 top-3">
-                                    Privé
+                                    {{ __('programs.private') }}
                                 </div>
                             @endif
 
                             <div class="absolute text-xl top-0 left-0 bg-accent p-3 text-white rounded-br-xl shadow-md">
                                 <i
-                                        class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}
-                                J
+                                        class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}{{ __('programs.days') }}
                             </div>
 
                             <div class="card-body p-0">
@@ -160,14 +152,14 @@
                                         </p>
                                         <div class="card-actions justify-start mt-5">
                                             <a href="{{ route('programs.show', $program) }}"
-                                               class="btn btn-neutral btn-sm"><i class="fa-regular fa-eye"></i> Voir</a>
+                                               class="btn btn-neutral btn-sm"><i class="fa-regular fa-eye"></i> {{ __('programs.view') }}</a>
                                         </div>
                                         <div class="mt-5 mb-2 space-y-2">
                                             <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
-                                                        class="fa-solid fa-calendar-days mr-2"></i> Créé :
+                                                        class="fa-solid fa-calendar-days mr-2"></i> {{ __('programs.created_at') }} :
                                                 {{ $program->created_at->format('d M Y') }}</p>
                                             <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
-                                                        class="fa-solid fa-pen mr-2"></i> Mise à Jour :
+                                                        class="fa-solid fa-pen mr-2"></i> {{ __('programs.updated_at') }} :
                                                 {{ $program->updated_at->format('d M Y') }}</p>
                                         </div>
                                     </div>
@@ -189,10 +181,9 @@
                 <div class="alert alert-warning shadow-lg">
                     <i class="fa-solid fa-dumbbell"></i>
                     <div>
-                        <span>Aucun programme Gymbro GRATUIT n'est disponible pour le moment.</span>
+                        <span>{{__('programs.no_free_programs_found')}}</span>
                         <br>
-                        <a class="btn btn-accent btn-xs" href="{{ route('programs.index') }}"><i class="fa-solid fa-users"></i>Accéder
-                            à la liste des programmes</a>
+                        <a class="btn btn-accent btn-xs" href="{{ route('programs.index') }}"><i class="fa-solid fa-users"></i>{{__('programs.access_programs_list')}}</a>
                     </div>
                 </div>
             @else
@@ -202,18 +193,16 @@
                             @if ($program->status)
                                 <div
                                         class="text-sm absolute badge badge-lg badge-success text-white shadow-lg right-3 top-3">
-                                    Public
+                                    {{ __('programs.public') }}
                                 </div>
                             @else
                                 <div class="text-sm absolute badge badge-lg bg-neutral text-white shadow-lg right-3 top-3">
-                                    Privé
+                                    {{ __('programs.private') }}
                                 </div>
                             @endif
 
                             <div class="absolute text-xl top-0 left-0 bg-accent p-3 text-white rounded-br-xl shadow-md">
-                                <i
-                                        class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}
-                                J
+                                <i class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}{{ __('programs.days') }}
                             </div>
 
                             <div class="card-body p-0">
@@ -229,18 +218,17 @@
                                         <p class=""><i
                                                     class="fa-solid fa-star mt-6"></i>{{ Str::limit($program->description, 100) }}
                                         </p>
-                                            <div class="card-actions justify-start mt-5">
-                                                <a href="{{ route('programs.show', $program) }}"
-                                                   class="btn btn-neutral btn-sm"><i class="fa-regular fa-eye"></i> Voir</a>
-                                            </div>
-                                            <div class="mt-5 mb-2 space-y-2">
-                                                <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
-                                                            class="fa-solid fa-calendar-days mr-2"></i> Créé :
-                                                    {{ $program->created_at->format('d M Y') }}</p>
-                                                <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
-                                                            class="fa-solid fa-pen mr-2"></i> Mise à Jour :
-                                                    {{ $program->updated_at->format('d M Y') }}</p>
-                                            </div>
+                                        <div class="card-actions justify-start mt-5">
+                                            <a href="{{ route('programs.show', $program) }}"
+                                               class="btn btn-neutral btn-sm"><i class="fa-regular fa-eye"></i> {{ __('programs.view') }}</a>
+                                        </div>
+                                        <div class="mt-5 mb-2 space-y-2">
+                                            <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
+                                                        class="fa-solid fa-calendar-days mr-2"></i> {{ __('programs.created_at') }} :
+                                                {{ $program->created_at->format('d M Y') }}</p>
+                                            <p class="text-sm badge badge-lg badge-ghost rounded-md"><i
+                                                        class="fa-solid fa-pen mr-2"></i> {{ __('programs.updated_at') }} :
+                                                {{ $program->updated_at->format('d M Y') }}</p>
                                         </div>
                                     </div>
                                 </div>

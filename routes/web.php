@@ -39,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Web
     Route::get('/programs/edit/{id?}', [ProgramController::class, 'edit'])->name('programs.edit');
     Route::resource('programs', ProgramController::class)->except(['edit', 'update', 'store']);
-    Route::middleware(CheckRole::class . ':admin')->group(function () {
+    Route::middleware(CheckRole::class . ':premium')->group(function () {
         Route::get('/programs/{id}/export-pdf', [ProgramController::class, 'exportPdf'])->name('programs.exportPdf');
         Route::get('/programs/{id}/export-csv', [ProgramController::class, 'exportCsv'])->name('programs.exportCsv');
     });

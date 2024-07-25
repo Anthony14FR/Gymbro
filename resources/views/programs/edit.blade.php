@@ -18,7 +18,7 @@
             <div class="w-full">
                 <label for="name" class="block text-lg font-medium">{{ __('programs.name') }}</label>
                 <input type="text" name="name" id="name" class="input rounded-none input-bordered w-full"
-                    value="{{ '$program->name }}" placeholder=". . ." required>
+                    value="{{ $program->name }}" placeholder=". . ." required>
             </div>
             <div class="w-full">
                 <label for="description" class="block text-lg font-medium">{{ __('programs.description') }}</label>

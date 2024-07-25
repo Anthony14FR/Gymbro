@@ -350,7 +350,7 @@
             <h3 class="font-bold text-lg mb-4">{{ __('users.clean_programs') }}</h3>
             <form id="clean_programs_form" method="POST" action="{{ route('users.cleanPrograms') }}">
                 @csrf
-                <p class="text-base-content">{{ __(users.clean_programs_check') }}</p>
+                <p class="text-base-content">{{ __('users.clean_programs_check') }}</p>
                 <div class="modal-action">
                     <button type="submit" class="btn btn-error">{{ __('users.clean') }}</button>
                     <button type="button" class="btn"

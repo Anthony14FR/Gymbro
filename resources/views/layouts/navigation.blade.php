@@ -1,9 +1,9 @@
 <div class="bg-[#131417] shadow-md z-40 relative border-b-4 border-gray-500/20">
     <nav class="navbar flex justify-between container mx-auto">
         <div class="">
-            <div href="{{ route('subscriptions.index') }}" class="text-xl flex items-center gap-5">
+            <div class="text-xl flex items-center gap-5">
                 <a href="{{ route('programs.index') }}" class="text-xl flex items-center gap-5">
-                    <img src="{{ asset('images/logo.svg') }}" alt={{__('navbar.logo_alt') }} class="w-8 h-auto"/>
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{__('navbar.logo_alt') }}" class="w-8 h-auto"/>
                     <span class="ml-4 text-xl font-bold text-white">{{__('navbar.brand') }}</span>
                 </a>
                 @if (Auth::check())
@@ -23,6 +23,15 @@
             </div>
         </div>
         <div class="flex items-center">
+            <form action="{{ route('change.language') }}" method="POST" class="flex items-center">
+                @csrf
+                <div class="flex items-center">
+                <select name="language" onchange="this.form.submit()" class="h-12 dark:bg-accent text-white dark:text-white rounded-md">
+                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="fr" {{ app()->getLocale() == 'fr' ? 'selected' : '' }}>Français</option>
+                </select>
+                </div>
+            </form>
             @auth
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button" class="btn btn-accent m-1 text-white">{{ __('navbar.menu') }} <i class="fa-solid fa-bars"></i></div>
@@ -37,25 +46,11 @@
                         </li>
                     </ul>
                 </div>
-                <form action="{{ route('change.language') }}" method="POST" class="ml-4">
-                    @csrf
-                    <select name="language" onchange="this.form.submit()" class="h-12 bg-accent dark:bg-accent text-white dark:text-white rounded-md">
-                        <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
-                        <option value="fr" {{ app()->getLocale() == 'fr' ? 'selected' : '' }}>Français</option>
-                    </select>
-                </form>
             @else
                 <div class="space-x-3 bg-base-300/80 p-2 flex items-center">
                     <a href="{{ route('login') }}" class="hover:underline">{{ __('navbar.login') }}</a>
                     <span>|</span>
                     <a href="{{ route('register') }}" class="hover:underline">{{ __('navbar.signup') }}</a>
-                    <form action="{{ route('change.language') }}" method="POST" class="ml-4">
-                        @csrf
-                        <select name="language" onchange="this.form.submit()" class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded">
-                            <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
-                            <option value="fr" {{ app()->getLocale() == 'fr' ? 'selected' : '' }}>Français</option>
-                        </select>
-                    </form>
                 </div>
             @endauth
         </div>

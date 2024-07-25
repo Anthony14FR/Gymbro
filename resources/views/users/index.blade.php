@@ -120,11 +120,11 @@
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                             </svg>
                         </button>
+                        <button class="btn btn-sm btn-primary" onclick="openCleanProgramsModal()">
+                            {{ __('users.clean_programs') }}
                             <i class="fa-solid fa-trash ml-2"></i>
                         </button>
                     </div>
-                            {{ __('users.clean_programs') }}
-                        <button class="btn btn-sm btn-primary" onclick="openCleanProgramsModal()">
                 </div>
                 <div class="breadcrumbs text-sm">
                     {!! Breadcrumbs::render() !!}

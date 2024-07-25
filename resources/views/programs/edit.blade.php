@@ -86,13 +86,13 @@
             <div class="flex flex-col w-full">
                 <div class="p-4">
                     <span class="font-semibold">Exercice <i class="fa-solid fa-dumbbell ml-2"></i></span>
-                    <input type="text" id="search" class="input input-bordered w-full mt-2 mb-4"
-                           placeholder="Search exercise" oninput="filterExercises()">
+                    <input type="text" id="search-desktop" class="input input-bordered w-full mt-2 mb-4"
+                           placeholder="Search exercise" oninput="filterExercisesDesktop()">
                 </div>
                 <div class="h-[650px] overflow-y-scroll p-4">
                     @foreach ($exercises as $exercise)
                         <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
-                             class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
+                             class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item-desktop">
                             <div class="avatar">
                                 <div class="ring-accent ring-offset-base-100 my-2 w-8 rounded-full ring ring-offset-2">
                                     <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
@@ -450,6 +450,19 @@
         function filterExercises() {
             const searchInput = document.getElementById('search').value.toLowerCase();
             const exerciseItems = document.querySelectorAll('.exercise-item');
+            exerciseItems.forEach(item => {
+                const exerciseName = item.querySelector('span').innerText.toLowerCase();
+                if (exerciseName.includes(searchInput)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function filterExercisesDesktop() {
+            const searchInput = document.getElementById('search-desktop').value.toLowerCase();
+            const exerciseItems = document.querySelectorAll('.exercise-item-desktop');
             exerciseItems.forEach(item => {
                 const exerciseName = item.querySelector('span').innerText.toLowerCase();
                 if (exerciseName.includes(searchInput)) {

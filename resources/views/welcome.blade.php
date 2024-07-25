@@ -29,10 +29,6 @@
                         class="mt-8 px-6 py-3 text-white mr-7 rounded-none btn-md outline outline-2 outline-accent outline-offset-2 transition ease-in-out duration-200">
                         Get Started <i class="fa-solid fa-chevron-right ml-2 transition ease-in-out duration-200"></i>
                     </a>
-                    <a id="view-plan-button" href="{{ route('subscriptions.index') }}"
-                        class="bg-accent mt-8 px-6 py-3 text-white rounded-none btn-md outline outline-2 outline-accent outline-offset-2 transition ease-in-out duration-200">
-                        View Plan <i class="fa-solid fa-chevron-right ml-2 transition ease-in-out duration-200"></i>
-                    </a>
                     <div class="w-48 h-1 rounded-full bg-accent text-white mt-8 shadow-md">&ensp;</div>
                 </div>
             </div>

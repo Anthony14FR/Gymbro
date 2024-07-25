@@ -444,7 +444,7 @@
                         document.getElementById('programImage').src = `{{ asset('') }}${data.image}`;
                     }
                 })
-                .catch(error => alert('Erreur: Image invalide'));
+                .catch(error => alert('Erreur: Image invalide\nFormat accepté: .png, .jpg, .jpeg, .gif, .webp, .svg \nTaille maximale: 2MB'));
         }
 
         function filterExercises() {

@@ -25,7 +25,7 @@
                             class="fa-solid fa-users"></i>{{__('programs.community_programs')}}<i
                             class="fa-solid fa-lock text-yellow-500 ml-2"></i></a>
                 <button class="tab tab-bordered tab-lg border-0 btn md:w-auto w-full" id="gymbro-programs-tab">
-                    <i class="fa-solid fa-medal"></i><span class="inline-block>{{__('programs.gymbro_programs')}}</span>
+                    <i class="fa-solid fa-medal"></i><span class="inline-block">{{__('programs.gymbro_programs')}}</span>
                 </button>
             @endif
 
@@ -202,8 +202,7 @@
                             @endif
 
                             <div class="absolute text-xl top-0 left-0 bg-accent p-3 text-white rounded-br-xl shadow-md">
-                                <i
-                                        class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}{{ __('programs.days') }}
+                                <i class="fa-regular fa-calendar mr-2"></i>{{ $program->exercises->groupBy('pivot.day')->count() }}{{ __('programs.days') }}
                             </div>
 
                             <div class="card-body p-0">

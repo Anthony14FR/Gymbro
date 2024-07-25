@@ -17,6 +17,5 @@ return [
     'monthly_price_per_month' => '3€/mois',
     'monthly_price_total' => '36€ par an',
     'subscription_image_alt' => 'Abonnement',
-    'yearly_button_text' => 'Continuer avec l\'abonnement annuel',
-    'monthly_button_text' => 'Continuer avec l\'abonnement mensuel',
+    'monthly_button_text' => "Continuer avec l\'abonnement mensuel",
 ];

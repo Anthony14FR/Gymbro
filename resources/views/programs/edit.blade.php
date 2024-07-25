@@ -18,12 +18,12 @@
         <div class="flex md:flex-row flex-col md:space-x-10 w-full items-center">
             <div class="w-full">
                 <label for="name" class="block text-lg font-medium">Nom</label>
-                <input type="text" name="name" id="name" class="input rounded-none input-bordered w-full"
-                       value="{{ $program->name }}" required>
+                <input type="text" name="name" id="name" placeholder=". . . ." class="input rounded-none input-bordered w-full"
+                       value="{{ $program->name }}"  required>
             </div>
             <div class="w-full">
                 <label for="description" class="block text-lg font-medium">Description</label>
-                <input name="description" id="description" value="{{ $program->description }}"
+                <input name="description" id="description" placeholder=". . . ." value="{{ $program->description }}"
                        class="input rounded-none input-bordered w-full">
             </div>
         </div>

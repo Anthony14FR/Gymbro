@@ -37,24 +37,6 @@
                     class="fa-brands fa-ethereum text-accent ml-2 mt-10"></i></p>
             <form action="{{ route('subscriptions.create') }}" method="POST" class="p-6 rounded-lg">
                 @csrf
-                <div class="flex">
-                    <div class="flex space-x-3 mb-4">
-                        <input type="radio" id="yearly" name="billing" value="yearly"
-                            class="form-radio text-accent mt-2 h-6 w-6" checked>
-                    </div>
-                    <div class="ml-5">
-                        <div class="flex flex-row items-center">
-                            <label for="yearly" class="text-white text-2xl font-medium">Annuel</label>
-                            <span class="bg-accent/20 text-white text-sm px-2 py-1 rounded ml-2">Save 15€</span>
-                        </div>
-                        <div class="flex space-x-2 mt-1">
-                            <p class="text-sm text-white/80">1.75€/mois</p>
-                            <div class="text-gray-500/60">|</div>
-                            <p class="text-sm text-gray-500/60">21€ par an</p>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="flex mt-8">
                     <div class="flex space-x-3 mb-4">
                         <input type="radio" id="monthly" name="billing" value="monthly"
@@ -82,7 +64,6 @@
     </div>
 
     <script>
-        const yearlySentence = "Continuer avec l'abonnement annuel";
         const monthlySentence = "Continuer avec l'abonnement mensuel";
         const subscribeBtn = document.getElementById('subscribeBtn');
         subscribeBtn.textContent = monthlySentence;
@@ -91,11 +72,7 @@
         const radios = document.querySelectorAll('input[type="radio"]');
         radios.forEach(radio => {
             radio.addEventListener('change', (e) => {
-                if (e.target.value === 'yearly') {
-                    subscribeBtn.textContent = yearlySentence;
-                } else {
                     subscribeBtn.textContent = monthlySentence;
-                }
             });
         });
 

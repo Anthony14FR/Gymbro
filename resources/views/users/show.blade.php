@@ -15,6 +15,10 @@
                 </div>
             </div>
         @else
+            <h1 class="text-3xl font-bold mb-8 mt-4">Tous les programmes de {{ $user->username }}</h1>
+            <div class="breadcrumbs text-sm mb-8">
+                {!! Breadcrumbs::render() !!}
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($programs as $program)
                     <div class="card relative bg-base-100 ring ring-accent/30 ring-1 rounded shadow-lg">
@@ -63,6 +67,7 @@
                         </div>
                     </div>
                 @endforeach
+                {{ $programs->links()}}
             </div>
         @endif
     </div>

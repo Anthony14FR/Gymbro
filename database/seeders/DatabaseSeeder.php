@@ -32,14 +32,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('user'),
             'remember_token' => Str::random(10),
         ]);
-
-        $premium = User::create([
-            'username' => 'premium',
-            'email' => 'premium@orus.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('premium'),
-            'remember_token' => Str::random(10),
-        ]);
             
 
         $this->call([
@@ -55,8 +47,5 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('user');
         $user->update(['role' => 'user']);
-
-        $premium->assignRole('premium');
-        $premium->update(['role' => 'premium']);
     }
 }

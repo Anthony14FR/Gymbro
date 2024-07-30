@@ -58,7 +58,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        $programs = Program::where('user_id', $id)->get();
+        $programs = Program::where('user_id', $id)->paginate(9);
         $daysCount = DB::table('exercises_programs')
             ->count(DB::raw('DISTINCT day'));
         $isSubscribed = $user->hasRole('premium');

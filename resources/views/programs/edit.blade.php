@@ -3,7 +3,8 @@
 @section('content')
     <div class="flex justify-between md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
         <div class="breadcrumbs text-sm">
-            <h1 class="text-4xl font-normal">{{ $program->exists ? 'Edit Program' : 'Create Program' }} <i class="fa-solid fa-pen ml-2 fa-xs"></i></h1>
+            <h1 class="text-4xl font-normal">{{ $program->exists ? 'Edit Program' : 'Create Program' }} <i
+                        class="fa-solid fa-pen ml-2 fa-xs"></i></h1>
             {!! Breadcrumbs::render() !!}
         </div>
     </div>
@@ -17,57 +18,59 @@
         <div class="flex md:flex-row flex-col md:space-x-10 w-full items-center">
             <div class="w-full">
                 <label for="name" class="block text-lg font-medium">Nom</label>
-                <input type="text" name="name" id="name" class="input rounded-none input-bordered w-full"
-                    value="{{ $program->name }}" required>
+                <input type="text" name="name" id="name" placeholder=". . . ." class="input rounded-none input-bordered w-full"
+                       value="{{ $program->name }}"  required>
             </div>
             <div class="w-full">
                 <label for="description" class="block text-lg font-medium">Description</label>
-                <input name="description" id="description" value="{{ $program->description }}"
-                    class="input rounded-none input-bordered w-full">
+                <input name="description" id="description" placeholder=". . . ." value="{{ $program->description }}"
+                       class="input rounded-none input-bordered w-full">
             </div>
         </div>
         <div class="flex items-center space-x-4">
             <img src="{{ asset($program->image) }}" alt="{{ $program->name }}" class="w-32 h-32 rounded shadow-lg mb-2"
-                id="programImage">
+                 id="programImage">
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text font-semibold">Pick a file</span>
                     <span class="label-text-alt">(2MB max)</span>
                 </div>
                 <input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs"
-                    onchange="saveImage()">
+                       onchange="saveImage()">
                 <span class="label-text-alt">.png, .jpg, .jpeg .gif .wepb .svg</span>
             </label>
         </div>
         <div class="flex justify-between items-center">
             <label class="swap">
-                <input type="checkbox" name="status" id="status" class="hidden" {{ $program->status == 1 ? 'checked' : '' }}
-                onchange="toggleStatus()">
+                <input type="checkbox" name="status" id="status" class="hidden"
+                       {{ $program->status == 1 ? 'checked' : '' }}
+                       onchange="toggleStatus()">
                 <div class="swap-on flex rounded bg-accent/20 p-3 items-center">Public <i
                             class="ml-2 fa-solid fa-lock-open"></i>
                 </div>
-                <div class="swap-off flex bg-neutral rounded p-3 items-center">Private <i class="ml-2 fa-solid fa-lock"></i>
+                <div class="swap-off flex bg-neutral rounded p-3 items-center">Private <i
+                            class="ml-2 fa-solid fa-lock"></i>
                 </div>
             </label>
             <button class="btn btn-primary" type="button" onclick="saveProgram()">Sauvegarder</button>
         </div>
     </form>
     <div class="drawer lg:hidden flex z-40">
-        <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+        <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
         <div class="drawer-side">
             <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                 <span class="font-semibold text-3xl">Exercice <i class="fa-solid fa-dumbbell ml-2"></i></span>
                 <input type="text" id="search" class="input input-bordered w-full mt-2 mb-4"
-                    placeholder="Search exercise" oninput="filterExercises()">
+                       placeholder="Search exercise" oninput="filterExercises()">
                 @foreach ($exercises as $exercise)
                     <li>
                         <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
-                            class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
+                             class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
                             <div class="avatar">
                                 <div class="ring-accent ring-offset-base-100 w-8 rounded-full ring ring-offset-2">
                                     <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
-                                        class="rounded-full mr-2">
+                                         class="rounded-full mr-2">
                                 </div>
                             </div>
                             <span class="ml-6 text-white">{{ $exercise->name }}</span>
@@ -83,17 +86,17 @@
             <div class="flex flex-col w-full">
                 <div class="p-4">
                     <span class="font-semibold">Exercice <i class="fa-solid fa-dumbbell ml-2"></i></span>
-                    <input type="text" id="search" class="input input-bordered w-full mt-2 mb-4"
-                        placeholder="Search exercise" oninput="filterExercises()">
+                    <input type="text" id="search-desktop" class="input input-bordered w-full mt-2 mb-4"
+                           placeholder="Search exercise" oninput="filterExercisesDesktop()">
                 </div>
                 <div class="h-[650px] overflow-y-scroll p-4">
                     @foreach ($exercises as $exercise)
                         <div onclick="addExercise('{{ $exercise->id }}', '{{ $exercise->name }}')"
-                            class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item">
+                             class="flex mb-5 flex-row active:scale-[0.9] items-center px-4 bg-base-200 rounded-xl shadow-sm w-full cursor-pointer hover:bg-accent/60 transition duration-200 ease-in-out exercise-item-desktop">
                             <div class="avatar">
                                 <div class="ring-accent ring-offset-base-100 my-2 w-8 rounded-full ring ring-offset-2">
                                     <img src="{{ asset($exercise->image) }}" alt="{{ $exercise->name }}"
-                                        class="rounded-full mr-2">
+                                         class="rounded-full mr-2">
                                 </div>
                             </div>
                             <span class="ml-6 text-white">{{ $exercise->name }}</span>
@@ -112,53 +115,58 @@
                                 <div class="text-4xl font-bold mb-2 ml-3 flex items-center z-1">
                                     <span class="mr-4">Day {{ $dayIndex }}</span>
                                     <label for="my-drawer" class="btn btn-accent drawer-button lg:hidden">Exercice <i
-                                            class="fa-solid fa-fire-flame-simple"></i></label>
+                                                class="fa-solid fa-fire-flame-simple"></i></label>
                                 </div>
                                 <button type="button" class="btn btn-outline mb-4" onclick="addDay()">Add Day</button>
                                 <input type="radio" name="selected_day" value="{{ $dayIndex }}"
-                                    class="form-radio hidden" {{ $dayIndex == 1 ? 'checked' : '' }}>
+                                       class="form-radio hidden" {{ $dayIndex == 1 ? 'checked' : '' }}>
                             </div>
                             <div class="overflow-y-scroll h-[550px]">
                                 <table class="table-auto w-full">
                                     <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Exercise</th>
-                                            <th>Repetitions</th>
-                                            <th>Break (s)</th>
-                                            <th>Weight (kg)</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Exercise</th>
+                                        <th>Repetitions</th>
+                                        <th>Break (s)</th>
+                                        <th>Weight (kg)</th>
+                                        <th>Action</th>
+                                    </tr>
                                     </thead>
                                     <tbody id="exercise-list-{{ $dayIndex }}">
-                                        @foreach ($exercises as $index => $exercise)
-                                            <tr>
-                                                <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
-                                                <td class="px-4 py-2">{{ $exercise->name }}</td>
-                                                <input type="hidden" name="exercise_program_id"
-                                                    value="{{ $exercise->pivot->id }}">
-                                                <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">
-                                                <td class="px-4 py-2"><input type="number" name="rep"
-                                                        placeholder="Rep" class="input input-bordered w-full"
-                                                        value="{{ $exercise->pivot->rep }}"
-                                                        onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
-                                                </td>
-                                                <td class="px-4 py-2"><input type="number" name="break_time"
-                                                        placeholder="Break" class="input input-bordered w-full"
-                                                        value="{{ $exercise->pivot->break }}"
-                                                        onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
-                                                </td>
-                                                <td class="px-4 py-2"><input type="number" name="weight"
-                                                        placeholder="Weight" class="input input-bordered w-full"
-                                                        value="{{ $exercise->pivot->weight }}"
-                                                        onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
-                                                </td>
-                                                <td class="px-4 py-2 text-center"><button type="button"
+                                    @foreach ($exercises as $index => $exercise)
+                                        <tr>
+                                            <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
+                                            <td class="px-4 py-2">{{ $exercise->name }}</td>
+                                            <input type="hidden" name="exercise_program_id"
+                                                   value="{{ $exercise->pivot->id }}">
+                                            <input type="hidden" name="exercise_id" value="{{ $exercise->id }}">
+                                            <td class="px-4 py-2"><input type="number" name="rep"
+                                                                         placeholder="Rep"
+                                                                         class="input input-bordered w-full"
+                                                                         value="{{ $exercise->pivot->rep }}"
+                                                                         onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
+                                            </td>
+                                            <td class="px-4 py-2"><input type="number" name="break_time"
+                                                                         placeholder="Break"
+                                                                         class="input input-bordered w-full"
+                                                                         value="{{ $exercise->pivot->break }}"
+                                                                         onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
+                                            </td>
+                                            <td class="px-4 py-2"><input type="number" name="weight"
+                                                                         placeholder="Weight"
+                                                                         class="input input-bordered w-full"
+                                                                         value="{{ $exercise->pivot->weight }}"
+                                                                         onchange="saveExercise(this, {{ $exercise->id }}, {{ $dayIndex }}, {{ $index + 1 }})">
+                                            </td>
+                                            <td class="px-4 py-2 text-center">
+                                                <button type="button"
                                                         class="btn btn-circle btn-outline"
-                                                        onclick="removeExercise(this, '{{ $exercise->pivot->id }}')">X</button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                        onclick="removeExercise(this, '{{ $exercise->pivot->id }}')">X
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -171,7 +179,7 @@
                             @for ($i = 1; $i <= count($days); $i++)
                                 <li class="mx-1">
                                     <button type="button" class="btn btn-neutral"
-                                        onclick="showDay({{ $i }})">Day {{ $i }}</button>
+                                            onclick="showDay({{ $i }})">Day {{ $i }}</button>
                                 </li>
                             @endfor
                         </ul>
@@ -200,16 +208,16 @@
             const description = document.getElementById('description').value;
 
             fetch(`/programs/${programId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        name,
-                        description
-                    })
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    name,
+                    description
                 })
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -266,20 +274,20 @@
             const method = exerciseProgramId ? 'PUT' : 'POST';
 
             fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        day: dayIndex,
-                        exercise_id: exerciseId,
-                        order: order,
-                        rep: rep,
-                        break_time: breakTime,
-                        weight: weight
-                    })
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    day: dayIndex,
+                    exercise_id: exerciseId,
+                    order: order,
+                    rep: rep,
+                    break_time: breakTime,
+                    weight: weight
                 })
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -300,12 +308,12 @@
             row.remove();
 
             fetch(`/programs/${programId}/exercises/${exerciseProgramId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -394,15 +402,15 @@
             const status = document.getElementById('status').checked ? 1 : 0;
 
             fetch(`/programs/${programId}/toggle-status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        status: status
-                    })
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    status: status
                 })
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -421,12 +429,12 @@
             formData.append('image', file);
 
             fetch(`/programs/${programId}/image`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: formData
-                })
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: formData
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -436,12 +444,25 @@
                         document.getElementById('programImage').src = `{{ asset('') }}${data.image}`;
                     }
                 })
-                .catch(error => alert('Erreur: Image invalide'));
+                .catch(error => alert('Erreur: Image invalide\nFormat accepté: .png, .jpg, .jpeg, .gif, .webp, .svg \nTaille maximale: 2MB'));
         }
 
         function filterExercises() {
             const searchInput = document.getElementById('search').value.toLowerCase();
             const exerciseItems = document.querySelectorAll('.exercise-item');
+            exerciseItems.forEach(item => {
+                const exerciseName = item.querySelector('span').innerText.toLowerCase();
+                if (exerciseName.includes(searchInput)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function filterExercisesDesktop() {
+            const searchInput = document.getElementById('search-desktop').value.toLowerCase();
+            const exerciseItems = document.querySelectorAll('.exercise-item-desktop');
             exerciseItems.forEach(item => {
                 const exerciseName = item.querySelector('span').innerText.toLowerCase();
                 if (exerciseName.includes(searchInput)) {
@@ -461,12 +482,11 @@
             }, 1000);
         }
 
-    </script>
-    @if (!$program->exists || $days->isEmpty())
-        <script>
+        @if (!$program->exists || $days->isEmpty())
             document.addEventListener('DOMContentLoaded', () => {
                 addDay();
             });
-        </script>
-    @endif
+        @endif
+    </script>
+
 @endsection

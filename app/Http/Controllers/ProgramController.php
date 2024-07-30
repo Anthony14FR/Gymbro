@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\ExercisesPrograms;
+use Illuminate\Support\Facades\Artisan;
 
 class ProgramController extends Controller
 {
@@ -18,7 +19,7 @@ class ProgramController extends Controller
         $user_id = Auth::id();
         if(Auth::user()->hasRole('premium')) {
             $myPrograms = Program::where('user_id', $user_id)->with(['exercises', 'exercises.muscles'])->paginate(9);
-            $communityPrograms = Program::where('status', 1)->where('user_id', '!=', $user_id)->with(['exercises', 'exercises.muscles'])->paginate(9);
+            $communityPrograms = Program::where('status', 1)->where('user_id', '!=', $user_id)->where('user_id', '!=', "1")->with(['exercises', 'exercises.muscles'])->paginate(9);
             $gymbroPrograms = Program::where('user_id', 1)->with(['exercises', 'exercises.muscles'])->paginate(9);
             return view('programs.index', compact('myPrograms', 'communityPrograms', 'gymbroPrograms'));
         } else {
@@ -320,5 +321,12 @@ class ProgramController extends Controller
         };
     
         return Response::stream($callback, 200, $headers);
+    }
+
+    public function cleanPrograms()
+    {
+        Artisan::call('programs:clean');
+        return redirect()->route('users.index')
+            ->with('success', 'Les programmes inutilisés ont été supprimés.');
     }
 }

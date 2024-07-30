@@ -3,49 +3,43 @@
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
-// Home
-Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
-    $trail->push('Home', route('home'));
-});
-
-// Profile
-Breadcrumbs::for('profile.edit', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Edit Profile', route('profile.edit'));
-});
-
-// Exercises
-Breadcrumbs::for('exercises.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Exercises', url('/exercises'));
-});
-
-// Programs
+// Programmes
 Breadcrumbs::for('programs.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Programs', route('programs.index'));
+    $trail->push('Programmes', route('programs.index'));
 });
 
-// Create/edit programs
+// Profil
+Breadcrumbs::for('profile.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('programs.index');
+    $trail->push('Modifier le profil', route('profile.edit'));
+});
+
+// Exercices
+Breadcrumbs::for('exercises.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('programs.index');
+    $trail->push('Exercices', url('/exercises'));
+});
+
+// Créer/modifier les programmes
 Breadcrumbs::for('programs.edit', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('programs.index');
-    $trail->push('Edit Program', route('programs.edit', $id));
+    $trail->push('Modifier le programme', route('programs.edit', $id));
 });
 
-// Show programs
+// Afficher les programmes
 Breadcrumbs::for('programs.show', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('programs.index');
-    $trail->push('Show Program', route('programs.show', $id));
+    $trail->push('Voir le programme', route('programs.show', $id));
 });
 
-// Manage Users
+// Gérer les utilisateurs
 Breadcrumbs::for('users.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('home');
-    $trail->push('Manage Users', route('users.index'));
+    $trail->parent('programs.index');
+    $trail->push('Gérer les utilisateurs', route('users.index'));
 });
 
-// Show Users
+// Afficher les utilisateurs
 Breadcrumbs::for('users.show', function (BreadcrumbTrail $trail, $id) {
     $trail->parent('users.index');
-    $trail->push('Show User', route('users.show', $id));
+    $trail->push('Voir l\'utilisateur', route('users.show', $id));
 });

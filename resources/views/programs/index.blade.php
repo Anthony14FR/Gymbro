@@ -5,7 +5,6 @@
         <div class="flex justify-between md:flex-row md:space-y-0 space-y-10 flex-col mb-6 p-3">
             <div class="breadcrumbs text-sm">
                 <h1 class="text-4xl font-normal">Programmes <i class="fa-solid fa-list fa-xs ml-2 text-accent"></i></h1>
-                {!! Breadcrumbs::render() !!}
             </div>
             <a href="{{ route('programs.edit') }}" class="btn btn-accent"><i class="fa-solid fa-circle-plus"></i> Créer
                 un

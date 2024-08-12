@@ -15,7 +15,7 @@
     <div class="bg-base-100">
         <!-- Section Hero -->
         <section class="bg-cover bg-center min-h-screen text-primary-content flex items-center"
-                 style="background-image: url({{ asset('images/home-banner.jpg') }})">
+                 style="background-image: url({{ asset('images/home-banner.webp') }})">
             <div class="container mx-auto px-4">
                 <div class="text-white w-full md:max-w-3xl p-5 text-center md:text-left">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">

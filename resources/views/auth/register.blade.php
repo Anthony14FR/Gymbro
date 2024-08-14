@@ -12,45 +12,46 @@
             </div>
         @endif
 
-        <!-- Username -->
+        <!-- Nom d'utilisateur -->
         <div>
-            <x-input-label for="username" :value="__('Username')" class="label-text" />
+            <x-input-label for="username" :value="__('Nom d\'utilisateur')" class="label-text" />
             <x-text-input id="username" class="input input-bordered w-full" type="text" name="username" :value="old('username')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
-        <!-- Email Address -->
+        <!-- Adresse e-mail -->
         <div>
-            <x-input-label for="email" :value="__('Email')" class="label-text" />
+            <x-input-label for="email" :value="__('E-mail')" class="label-text" />
             <x-text-input id="email" class="input input-bordered w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
+        <!-- Mot de passe -->
         <div>
-            <x-input-label for="password" :value="__('Password')" class="label-text" />
+            <x-input-label for="password" :value="__('Mot de passe')" class="label-text" />
             <x-text-input id="password" class="input input-bordered w-full" type="password" name="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirm Password -->
+        <!-- Confirmer le mot de passe -->
         <div>
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" class="label-text" />
+            <x-input-label for="password_confirmation" :value="__('Confirmer le mot de passe')" class="label-text" />
             <x-text-input id="password_confirmation" class="input input-bordered w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-between mt-6">
-            <a class="link link-primary" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <div class="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mt-6">
+            <a class="link link-primary text-sm" href="{{ route('login') }}">
+                {{ __('Déjà inscrit ?') }}
             </a>
-
-            <a class="ml-16 btn btn-neutral btn-sm" href="{{ route('login') }}">
-                {{ __('Log in') }}
-            </a>
-            <button class="btn btn-accent btn-sm lg:ml-0 ml-2">
-                {{ __('Register') }}
-            </button>
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                <a class="btn btn-neutral btn-sm w-full sm:w-auto" href="{{ route('login') }}">
+                    {{ __('Se connecter') }}
+                </a>
+                <button class="btn btn-accent btn-sm w-full sm:w-auto">
+                    {{ __('S\'inscrire') }}
+                </button>
+            </div>
         </div>
     </form>
 </x-guest-layout>
